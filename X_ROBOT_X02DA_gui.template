@@ -1,0 +1,119 @@
+#Sequenz Settings
+#----------------------------------------------------------------------
+# $Author: barendregt_m
+# $Date: 2007/10/24
+#----------------------------------------------------------------------
+record (ai, "X02DA-SCAN-CAM1:XCAL"){
+field (DESC, "The um per pixel at 1x")
+field (PREC, "1")
+field (VAL, "4.0")
+}
+record (ai, "X02DA-SCAN-CAM1:YCAL"){
+field (DESC, "The um per pixel at 1x")
+field (PREC, "1")
+field (VAL, "4.0")
+}
+
+
+record (bo, "X02DA-SCAN-SCN1:IDL_GO"){
+field (DESC, "Brain sample go")
+field (VAL, "0")
+}
+
+record (bo, "$(ROBO):SEQ-GO"){
+field (DESC, "Seq should be running")
+field (VAL, "0")
+}
+
+record (stringout, "$(ROBO):GUI-HOST"){
+field (DESC, "Current user")
+field (VAL, "None")
+}
+
+record (stringout, "$(ROBO):CTRLKEY"){
+field (DESC, "Python checks to ensure ctrl")
+field (VAL, "")
+}
+
+record (ao, "$(ROBO):SMP1-YVALMIN"){
+field (DESC, "Y-Val Minimum")
+field (VAL, "-20000")
+}
+record (ao, "$(ROBO):SMP1-YVALMAX"){
+field (DESC, "Y-Val Maximum")
+field (VAL, "20000")
+}
+
+# Saves Traynumber of each Sample
+# Default value starts at 1 to 20 (one after one)
+
+record (bo, "$(ROBO):GUI-BEGIN"){
+field (DESC, "Allow python to continue")
+field (VAL, "0")
+}
+
+record (bo, "$(ROBO):GUI-STOP"){
+field (DESC, "Stops Python Program")
+field (VAL, "0")
+}
+
+record (bo, "$(ROBO):GUI-PAUSE"){
+field (DESC, "Pauses Python Program")
+field (VAL, "0")
+}
+record (bo, "$(ROBO):GUI-RESET"){
+field (DESC, "Resets to begin")
+field (VAL, "0")
+}
+record (bo, "$(ROBO):GUI-SKIPNEXT"){
+field (DESC, "Skips Next line")
+field (VAL, "0")
+}
+
+record (stringout, "$(ROBO):GUI-FEEDBACK"){
+field (DESC, "Feedback to the program")
+field (VAL, "Not Loaded!")
+}
+
+record (stringout, "$(ROBO):GUI-CCMD"){
+field (DESC, "Current Command")
+field (VAL, "Not Loaded!")
+}
+record (stringout, "$(ROBO):GUI-FULLSTAT"){
+field (DESC, "Current Command")
+field (VAL, "Not Loaded!")
+}
+
+record (stringout, "$(ROBO):GUI-ROBOTSTAT"){
+field (DESC, "Current Command")
+field (VAL, "Not Loaded!")
+}
+
+record (stringout, "$(ROBO):GUI-CODESTAT"){
+field (DESC, "Current Command")
+field (VAL, "Not Loaded!")
+}
+record (stringout, "$(ROBO):GUI-USERPH"){
+field (DESC, "User phone number")
+field (VAL, "")
+}
+record (stringout, "$(ROBO):GUI-PICKLE"){
+field (DESC, "Potentially for autosave")
+field (VAL, "")
+}
+# Keeps track of iterations
+record (ao, "$(ROBO):CM-ITER"){
+field (DESC, "Inter count")
+field (VAL,  "-1")
+field (LOPR,  "-1")
+field (HOPR,  "1000")
+field (PINI,  "YES")
+}
+record (ao, "$(ROBO):CM-ITERMAX"){
+field (DESC, "Inter count")
+field (VAL,  "-1")
+field (PINI,  "YES")
+}
+
+
+

@@ -1,0 +1,411 @@
+# MOVING CENTER STAGE TO LOADPOSITION
+#
+#----------------------------------------------------------------------
+# $Author: mader_k
+# $Date: 2009/2/11
+#----------------------------------------------------------------------
+
+# Tells the user how many motors are resting
+record (calc,"$(ROBO):MT-UNTERWEGS") {
+field (DESC, "SET MOTOR POSITION X")
+field(INPA,"$(MOTOR):TRXX.DMOV CP")
+field(INPB,"$(MOTOR):TRZZ.DMOV CP")
+field(INPC,"$(MOTOR):TRY1.DMOV CP")
+field(INPD,"$(MOTOR):TRY2.DMOV CP")
+field(INPE,"$(MOTOR):TRZ.DMOV CP")
+field(INPF,"$(MOTOR):TRX.DMOV CP")
+field(INPG,"$(ROBO):MT-GONIO CP")
+field(SCAN,"Passive")
+field(CALC,"9-(A+B+C+D+E+F+G)")
+}
+
+# Tells the user if ROTY is Moving
+# for MICOS (1-A)
+# for aerotec (A)
+record (calc,"$(ROBO):MT-GONIO") {
+field (DESC, "OB ROTY BEWEGT")
+field(INPA,"$(MOTOR):ROTYASTAT CP")
+field(INPB,"$(MOTOR):$(GOXX).DMOV CP")
+field(INPC,"$(MOTOR):$(GOZZ).DMOV CP")
+field(SCAN,"Passive")
+field(CALC,"(A)+B+C")
+}
+
+# moves sample stage in load y1-position
+# principally for the robot loading position
+# LOAD loads y1,y2 then gonio and everything
+record (ao, "$(ROBO):$(SPOS)_LOAD"){
+field (DESC, "SET MOTOR POSITION Y")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-Y1")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRY1.DVAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-Y2")
+}
+
+# moves sample stage in load y2-position
+
+record (ao, "$(ROBO):$(SPOS)_LOAD-Y2"){
+field (DESC, "SET MOTOR POSITION Y")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-Y2")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRY2.DVAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-GOS")
+}
+
+# moves sample stage in load goxx-position
+# GO loads gox, goz, then YV, then the rest
+# used for imaging position
+record (ao, "$(ROBO):$(SPOS)_LOAD-GO"){
+field (DESC, "SET MOTOR POSITION GOXX")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-GOXX")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):$(GOXX).VAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-GOZZ")
+}
+
+# moves sample stage in load gozz-position
+record (ao, "$(ROBO):$(SPOS)_LOAD-GOZZ"){
+field (DESC, "SET MOTOR POSITION GOZZ")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-GOZZ")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):$(GOZZ).VAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-YV")
+}
+# moves sample stage in load goxx-position
+record (ao, "$(ROBO):$(SPOS)_LOAD-GOS"){
+field (DESC, "SET MOTOR POSITION GOXX")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-GOXX")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):$(GOXX).VAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-GOSZZ")
+}
+
+# moves sample stage in load gozz-position
+record (ao, "$(ROBO):$(SPOS)_LOAD-GOSZZ"){
+field (DESC, "SET MOTOR POSITION GOZZ")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-GOZZ")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):$(GOZZ).VAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-XX")
+}
+# moves sample stage to correct Y-VAL position for samples
+record (ao, "$(ROBO):$(SPOS)_LOAD-YV"){
+field (DESC, "SET MOTOR POSITION Y")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-YV")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRY-VAL.VAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-XX")
+}
+# moves centerstage to load xx-position (allows Y1,Y2 to be skipped)
+
+record (ao, "$(ROBO):$(SPOS)_LOAD-XX"){
+field (DESC, "SET MOTOR POSITION XX")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-XX")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRXX.DVAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-ZZ")
+}
+
+# moves centerstage in load zz-position
+
+record (ao, "$(ROBO):$(SPOS)_LOAD-ZZ"){
+field (DESC, "SET MOTOR POSITION ZZ")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-ZZ")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRZZ.DVAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-X")
+}
+
+# moves sample stage in load x-position
+
+record (ao, "$(ROBO):$(SPOS)_LOAD-X"){
+field (DESC, "SET MOTOR POSITION X")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-X")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRX.DVAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-Z")
+}
+
+# moves sample stage in load z-position
+
+record (ao, "$(ROBO):$(SPOS)_LOAD-Z"){
+field (DESC, "SET MOTOR POSITION Z")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-Z")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRZ.DVAL PP")
+field (FLNK, "$(ROBO):$(SPOS)_LOAD-ROTY")
+}
+
+# sets rotation stage to appropriate loading angle
+
+record (ao, "$(ROBO):$(SPOS)_LOAD-ROTY"){
+field (DESC, "SET MOTOR POSITION ROTY")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(ROBO):$(SPOS)_VAL-ROTY")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):ROTYDSETP PP")
+}
+
+#-------------------------getting absolute values----------------------
+
+# saves xx-position of the centering stage into X02DA-ES1-ROBO:$(SPOS)_VAL-XX(Index)
+
+record (ao, "$(ROBO):$(SPOS)_SET"){
+field (DESC, "READS MOTOR POSITION")
+field (EGU,  "um")
+field (DOL,  "$(MOTOR):TRXX.DVAL")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-XX PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-ZZ")
+}
+
+# saves zz-position of the center stage into X02DA-ES1-ROBO:$(SPOS)_VAL-ZZ(Index)
+
+record (ao, "$(ROBO):$(SPOS)_SET-ZZ"){
+field (DESC, "READS MOTOR POSITION")
+field (EGU,  "um")
+field (DOL,  "$(MOTOR):TRZZ.DVAL")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-ZZ PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-Y1")
+}
+
+# saves ystartone-position of the base stage into X02DA-ES1-ROBO:$(SPOS)_VAL-YSTARTONE(Index)
+
+record (ao, "$(ROBO):$(SPOS)_SET-Y1"){
+field (DESC, "READS MOTOR POSITION")
+field (EGU,  "um")
+field (DOL,  "$(MOTOR):TRY1.DVAL")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-Y1 PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-Y2")
+}
+
+# saves ystarttwo-position of the base stage into X02DA-ES1-ROBO:$(SPOS)_VAL-YSTARTTWO(Index)
+
+record (ao, "$(ROBO):$(SPOS)_SET-Y2"){
+field (DESC, "READS MOTOR POSITION")
+field (EGU,  "um")
+field (DOL,  "$(MOTOR):TRY2.DVAL")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-Y2 PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-YV")
+}
+record (ao, "$(ROBO):$(SPOS)_SET-YV"){
+field (DESC, "READS MOTOR POSITION")
+field (EGU,  "um")
+field (DOL,  "$(MOTOR):TRY-VAL.VAL")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-YV PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-X")
+}
+
+# saves x-position of the base stage into X02DA-ES1-ROBO:$(SPOS)_VAL-X(Index)
+
+record (ao, "$(ROBO):$(SPOS)_SET-X"){
+field (DESC, "READS MOTOR POSITION")
+field (EGU,  "um")
+field (DOL,  "$(MOTOR):TRX.DVAL")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-X PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-Z")
+}
+
+# saves z-position of the base stage into X02DA-ES1-ROBO:$(SPOS)_VAL-Z(Index)
+
+record (ao, "$(ROBO):$(SPOS)_SET-Z"){
+field (DESC, "READS MOTOR POSITION")
+field (EGU,  "um")
+field (DOL,  "$(MOTOR):TRZ.DVAL PP")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-Z PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-ROTY")
+}
+# saves rotation stage to appropriate loading angle
+
+record (ao, "$(ROBO):$(SPOS)_SET-ROTY"){
+field (DESC, "SET Value for ROTY")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(MOTOR):ROTYDSETP")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-ROTY PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-GOXX")
+}
+# saves goniometer positions xx
+record (ao, "$(ROBO):$(SPOS)_SET-GOXX"){
+field (DESC, "SET Value for ROTX")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(MOTOR):$(GOXX).VAL PP")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-GOXX PP")
+field (FLNK, "$(ROBO):$(SPOS)_SET-GOZZ PP")
+}
+# saves goniometer positions zz
+record (ao, "$(ROBO):$(SPOS)_SET-GOZZ"){
+field (DESC, "SET Value for ROTZ")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(MOTOR):$(GOZZ).VAL PP")
+field (OMSL, "closed_loop")
+field (OUT,  "$(ROBO):$(SPOS)_VAL-GOZZ PP")
+}
+
+# Tells user how far from home we are
+# Used to verify the stage is in the right spot
+record (calc,"$(ROBO):$(SPOS)_DIST-1") {
+field (DESC, "Dist Home")
+field(INPA,"$(MOTOR):TRXX.DVAL")
+field(INPB,"$(MOTOR):TRZZ.DVAL")
+field(INPC,"$(MOTOR):TRX.DVAL")
+field(INPD,"$(ROBO):$(SPOS)_VAL-XX")
+field(INPE,"$(ROBO):$(SPOS)_VAL-ZZ")
+field(INPF,"$(ROBO):$(SPOS)_VAL-X")
+field(INPG,"$(ROBO):$(SPOS)_DISTGO")
+field (FLNK, "$(ROBO):$(SPOS)_DISTYV")
+field(SCAN,"Passive")
+field(CALC,"abs(A-D)+abs(B-E)+abs(C-F)+G")
+}
+# Used to verify the goniometer and rotation
+# is in the right spot
+record (calc,"$(ROBO):$(SPOS)_DISTGO") {
+field (DESC, "Dist Home")
+field(INPA,"$(MOTOR):$(GOXX).VAL")
+field(INPB,"$(MOTOR):$(GOZZ).VAL")
+field(INPC,"$(MOTOR):ROTYDGETP")
+field(INPD,"$(ROBO):$(SPOS)_VAL-GOXX")
+field(INPE,"$(ROBO):$(SPOS)_VAL-GOZZ")
+field(INPF,"$(ROBO):$(SPOS)_VAL-ROTY")
+field (FLNK, "$(ROBO):$(SPOS)_DIST-1")
+field(SCAN,"Passive")
+field(CALC,"abs(A-D)+abs(B-E)+abs(C-F)")
+}
+# Tells user how far from home we are
+record (calc,"$(ROBO):$(SPOS)_DIST") {
+field (DESC, "Dist Home")
+field(INPA,"$(MOTOR):TRZ.DVAL")
+field(INPB,"$(MOTOR):TRY1.DVAL")
+field(INPC,"$(MOTOR):TRY2.DVAL")
+field(INPD,"$(ROBO):$(SPOS)_VAL-Z")
+field(INPE,"$(ROBO):$(SPOS)_VAL-Y1")
+field(INPF,"$(ROBO):$(SPOS)_VAL-Y2")
+field(INPG,"$(ROBO):$(SPOS)_DIST-1")
+field(SCAN,"Passive")
+field(CALC,"abs(A-D)+abs(B-E)+abs(C-F)+G")
+}
+# Tells user how far from home we are
+# YV is so the relative dist for impos is used
+record (calc,"$(ROBO):$(SPOS)_DISTYV") {
+field (DESC, "Dist Home2")
+field(INPA,"$(MOTOR):TRZ.DVAL")
+field(INPB,"$(MOTOR):TRY-VAL.VAL")
+field(INPC,"$(ROBO):$(SPOS)_VAL-Z")
+field(INPD,"$(ROBO):$(SPOS)_VAL-YV")
+field(INPE,"$(ROBO):$(SPOS)_DIST-1")
+field (FLNK, "$(ROBO):$(SPOS)_DIST")
+field(SCAN,"Passive")
+field(CALC,"abs(A-C)+abs(B-D)+E")
+}
+
+
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-XX"){
+field (DESC, "XX Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "-784.2")
+}
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-ZZ"){
+field (DESC, "ZZ Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "1203.8")
+}
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-Y1"){
+field (DESC, "Y1 Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "11133.4")
+}
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-Y2"){
+field (DESC, "Y2 Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "10640.6")
+}
+
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-YV"){
+field (DESC, "Y-VAL Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "0")
+}
+
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-Z"){
+field (DESC, "Z Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "-4000")
+}
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-X"){
+field (DESC, "X Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "-29086")
+}
+
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-ROTY"){
+field (DESC, "Rotation Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "90")
+}
+
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-GOXX"){
+field (DESC, "Rotation Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "0")
+}
+
+# the position fields
+record (ai, "$(ROBO):$(SPOS)_VAL-GOZZ"){
+field (DESC, "Rotation Home Position")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "0")
+}
+
+

@@ -1,0 +1,173 @@
+#Sequenz Settings
+#----------------------------------------------------------------------
+# $Author: mader_k
+# $Date: 2009/09/06
+#----------------------------------------------------------------------
+
+
+# outputs
+record (ai, "$(SNAP):THETA"){
+field (DESC, "X offset")
+field (PREC, "2")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):THETAV"){
+field (DESC, "vert theta")
+field (PREC, "2")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):XOFFSET"){
+field (DESC, "X offset")
+field (PREC, "2")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):YOFFSET"){
+field (DESC, "Y offset")
+field (PREC, "2")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):WIDTH"){
+field (DESC, "width")
+field (PREC, "1")
+field (VAL, "0")
+}
+
+record (ai, "$(SNAP):DIMX"){
+field (DESC, "DIMX")
+field (PREC, "1")
+field (VAL, "2048")
+}
+record (ai, "$(SNAP):DIMY"){
+field (DESC, "DIMY")
+field (PREC, "1")
+field (VAL, "2048")
+}
+record (ai, "$(SNAP):MINPCT"){
+field (DESC, "minpct")
+field (PREC, "2")
+field (VAL, "0.08")
+}
+record (ai, "$(SNAP):HEIGHT"){
+field (DESC, "height")
+field (PREC, "1")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):BOTTOM"){
+field (DESC, "bottom")
+field (PREC, "1")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):TOP"){
+field (DESC, "top")
+field (PREC, "1")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):IMAVG"){
+field (DESC, "img avg")
+field (PREC, "2")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):IMSTD"){
+field (DESC, "img avg")
+field (PREC, "2")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):PCTOVR"){
+field (DESC, "pct metal")
+field (PREC, "1")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):PCTUND"){
+field (DESC, "pct air")
+field (PREC, "1")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):PCTBET"){
+field (DESC, "between")
+field (PREC, "1")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):PCTSAT"){
+field (DESC, "Saturated")
+field (PREC, "1")
+field (VAL, "0")
+}
+# output binary channels
+record (bo, "$(SNAP):GOOD"){
+field (DESC, "Successful")
+field (VAL, "0")
+}
+record (bo, "$(SNAP):FTDONE"){
+field (DESC, "Flat taken")
+field (VAL, "0")
+}
+# Inputs
+record (ai, "$(SNAP):THSTD"){
+field (DESC, "Std Thres")
+field (PREC, "3")
+field (VAL, "0.5")
+}
+record (ai, "$(SNAP):THAVG"){
+field (DESC, "Avg Thres")
+field (PREC, "3")
+field (VAL, "1")
+}
+record (ai, "$(SNAP):ROWAVG"){
+field (DESC, "row avg")
+field (PREC, "1")
+field (VAL, "5")
+}
+record (ai, "$(SNAP):MINTRANS"){
+field (DESC, "Min trans")
+field (PREC, "5")
+field (VAL, "1e-5")
+}
+record (ai, "$(SNAP):MAXTRANS"){
+field (DESC, "max trans")
+field (PREC, "5")
+field (VAL, "1")
+}
+record (ai, "$(SNAP):CUTOFF"){
+field (DESC, "Sat Cutoff")
+field (PREC, "1")
+field (VAL, "60000")
+}
+# Mask mode lets users
+# choose which values to
+# count
+record (ai, "$(SNAP):MASKMODE"){
+field (DESC, "Under/Bet/Over")
+field (PREC, "1")
+field (VAL, "0")
+}
+record (ai, "$(SNAP):READMODE"){
+field (DESC, "Find COM on r,m,rm")
+field (PREC, "1")
+field (VAL, "1")
+}
+# binary control channels
+record (bo, "$(SNAP):FLAT"){
+field (DESC, "Take flat")
+field (VAL, "0")
+}
+
+record (bo, "$(SNAP):SAVE"){
+field (DESC, "save snaps")
+field (VAL, "1")
+}
+record (bo, "$(SNAP):ALIGN"){
+field (DESC, "Process Image")
+field (VAL, "1")
+}
+record (bo, "$(SNAP):RECALC"){
+field (DESC, "Reprocess Image")
+field (VAL, "0")
+}
+record (bo, "$(SNAP):MULTI"){
+field (DESC, "con snapping")
+field (VAL, "0")
+}
+record (bo, "$(SNAP):PREVIEW"){
+field (DESC, "show snap")
+field (VAL, "1")
+}

@@ -1,0 +1,145 @@
+#Bump Channels
+#----------------------------------------------------------------------
+# $Author: mader_k
+# $Date: 2009/09/06
+#----------------------------------------------------------------------
+# Alignment Tool Running Channel
+record (bo, "$(BUMP):GO"){
+field (DESC, "Align and run scan")
+field (VAL, "0")
+}
+# Goniometer Alignment Tool Run Channel
+record (bo, "$(BUMP):GGO"){
+field (DESC, "Align and run scan")
+field (VAL, "0")
+}
+# Alignment Tool Alive
+record (bo, "$(BUMP):ALIVE"){
+field (DESC, "If running makes 1")
+field (VAL, "0")
+}
+# Alignment Tool Alive
+record (bo, "$(BUMP):KILL"){
+field (DESC, "Kills aligntool")
+field (VAL, "0")
+}
+
+# move sample out and back in
+# new value if moved given num pixs
+record (calc,"$(BUMP):BP-SMPOUT") {
+field (DESC, "Bump smpout distance")
+field (EGU,  "um")
+field(INPA,"$(MOTOR):TRX.VAL PP")
+field(INPB,"$(SNAP):XCAL")
+field(INPC,"$(SNAP):LNSDBL")
+field(INPD,"$(SNAP):SMPOUTPX")
+field(SCAN,".1 second")
+field(CALC,"A+B/C*D")
+}
+
+# saves current position
+
+record (ao, "$(BUMP):SMPOUT"){
+field (DESC, "SAVES XPOS")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(MOTOR):TRX.VAL PP")
+field (OMSL, "closed_loop")
+field (OUT,  "$(BUMP):BP-SMPIN")
+field (FLNK, "$(BUMP):BSMPOUT")
+}
+record (ao, "$(BUMP):BSMPOUT"){
+field (DESC, "Unlock SMPIN")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "1")
+field (OMSL, "closed_loop")
+field (OUT,  "$(BUMP):SMPIN.DISV")
+field (FLNK, "$(BUMP):CSMPOUT")
+}
+# actually change the value (sep to avoid feedback)
+record (ao, "$(BUMP):CSMPOUT"){
+field (DESC, "Bump Y")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(BUMP):BP-SMPOUT")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRX.VAL")
+}
+# the position fields
+record (ai, "$(BUMP):BP-SMPIN"){
+field (DESC, "Samp Home Pos")
+field (EGU,  "um")
+field (PREC, "1")
+field (VAL, "0")
+}
+
+# actually change the value (sep to avoid feedback)
+record (ao, "$(BUMP):SMPIN"){
+field (DESC, "Bump Y")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(BUMP):BP-SMPIN")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):TRX.VAL")
+field (DISV, "0")
+}
+
+# bump stage code
+
+
+# channels to bump the stage
+record (ai, "$(BUMP):BP-$(AXCAL)PIX"){
+field (DESC, "The pixels to bump")
+field (HIGH,"2048")
+field (LOW,"-2038")
+field (VAL, "100")
+}
+
+
+# new value if moved given num pixs
+record (calc,"$(BUMP):BP-$(AX)DST") {
+field (DESC, "Bump Y distance")
+field (EGU,  "um")
+field(INPA,"$(MOTOR):$(AXNAME) PP")
+field(INPB,"$(SNAP):$(AXCAL)CAL")
+field(INPC,"$(SNAP):LNSDBL")
+field(INPD,"$(BUMP):BP-$(AXCAL)PIX")
+field(INPE,"$(SNAP):$(AXCAL)BIN")
+field(SCAN,".1 second")
+field(CALC,"A+B/C*D*E")
+}
+# new value if moved given num pixs
+record (calc,"$(BUMP):NBP-$(AX)DST") {
+field (DESC, "Bump Y distance")
+field (EGU,  "um")
+field(INPA,"$(MOTOR):$(AXNAME) PP")
+field(INPB,"$(SNAP):$(AXCAL)CAL")
+field(INPC,"$(SNAP):LNSDBL")
+field(INPD,"$(BUMP):BP-$(AXCAL)PIX")
+field(INPE,"$(SNAP):$(AXCAL)BIN")
+field(SCAN,".1 second")
+field(CALC,"A-B/C*D*E")
+}
+
+# actually change the value (sep to avoid feedback)
+record (ao, "$(BUMP):BUMP$(AX)"){
+field (DESC, "Bump Y")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(BUMP):BP-$(AX)DST")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):$(AXNAME)")
+}
+
+
+# actually change the value (sep to avoid feedback)
+# n means in the negative direction
+record (ao, "$(BUMP):NBUMP$(AX)"){
+field (DESC, "Bump Y")
+field (EGU,  "um")
+field (PREC, "1")
+field (DOL,  "$(BUMP):NBP-$(AX)DST")
+field (OMSL, "closed_loop")
+field (OUT,  "$(MOTOR):$(AXNAME)")
+}

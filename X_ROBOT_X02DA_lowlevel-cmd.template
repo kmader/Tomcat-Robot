@@ -1,0 +1,201 @@
+# low level commands for robot control
+#
+#--------------------------------------------------------------------
+# $Author: mader $
+# $Date: 2013/03/13 10:18:27 $
+#
+# $Revision: 1.13 $
+#--------------------------------------------------------------------
+
+# general strings can be transfered
+
+record(stringin,"$(ROBO):LL-RAW") {
+    field (DESC, "send commands to $(BUS)")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols RAW $(BUS)")
+}
+
+record(stringin,"$(ROBO):LL-RAWSTAT") {
+    field (DESC, "send commands to $(STATUSBUS)")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols RAW $(STATUSBUS)")
+}
+
+record(stringin,"$(ROBO):LL-STAT") {
+    field (DESC, "send commands to $(STATUSBUS)")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols RAW1 $(STATUSBUS)")
+    field (SCAN, "Passive")
+}
+
+# reading satus from VAL3
+
+record(stringin,"$(ROBO):LL-STATPAR") {
+    field (DESC, "send commands to stdnet")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols STATUS($(ROBO)) $(STATUSBUS)")
+    field (SCAN, "I/O Intr")
+#    field (SCAN, ".5 second")
+#    field (SDIS, "$(ROBO):SM-READY")
+#    field (DISV, "0")
+}
+
+# reading satus from VAL3
+
+record(bi,"$(ROBO):LL-READY") {
+    field (DESC, "is robot ready")
+    #field (DTYP, "Soft Channel")
+    #field (INP,  "@robo.ptcols READY $(STATUSBUS)")
+    #field (SCAN, "I/O Intr")
+}
+
+record(bi,"$(ROBO):LL-MOVING") {
+    field  (DESC, "is robot ready")    
+    field  (ZNAM, "still")
+    field  (ONAM, "moving")
+    #field (DTYP, "stream")
+    #field (INP,  "@robo.ptcols MOVING $(STATUSBUS)")
+    #field (SCAN, "I/O Intr")
+}
+
+record(bi,"$(ROBO):LL-WORKPOS") {
+    field (DESC, "is robot ready")
+    field  (ZNAM, "unlockpos")
+    field  (ONAM, "workpos")
+    #field (DTYP, "stream")
+    #field (INP,  "@robo.ptcols WORKPOS $(STATUSBUS)")
+    #field (SCAN, "I/O Intr")
+}
+
+record(bi,"$(ROBO):LL-STGPOS") {
+    field (DESC, "is robot ready")
+    field  (ZNAM, "StageFree")
+    field  (ONAM, "StageLocked")
+    #field (DTYP, "stream")
+    #field (INP,  "@robo.ptcols MOVING $(STATUSBUS)")
+    #field (SCAN, "I/O Intr")
+}
+
+
+# read nStatus from Staubli
+
+record(ai,"$(ROBO):LL-MODE") {
+    field (DESC, "what mode is bot in")
+    #field (DTYP, "stream")
+    #field (INP,  "@robo.ptcols MODE $(STATUSBUS)")
+    #field (SCAN, "I/O Intr")
+}
+
+record(ai,"$(ROBO):LL-CROW") {
+    field (DESC, "what mode is bot in")
+    #field (DTYP, "stream")
+    #field (INP,  "@robo.ptcols CROW $(STATUSBUS)")
+    #field (SCAN, "I/O Intr")
+}
+
+record(ai,"$(ROBO):LL-CSAMPLE") {
+    field (DESC, "what mode is bot in")
+    #field (DTYP, "stream")
+    #field (INP,  "@robo.ptcols CSAMPLE $(STATUSBUS)")
+    #field (SCAN, "I/O Intr")
+}
+
+
+# send setRow(r) to VAL3
+
+record(ao,"$(ROBO):LL-SETR") {
+    field (DESC, "mount sample")
+    field (DTYP, "stream")
+    field (OUT,  "@robo.ptcols SETR  $(BUS)")
+    field (PREC, "0")
+}
+# send setSample(n) to VAL3
+
+record(ao,"$(ROBO):LL-SETS") {
+    field (DESC, "mount sample")
+    field (DTYP, "stream")
+    field (OUT,  "@robo.ptcols SETS  $(BUS)")
+    field (PREC, "0")
+}
+
+# send setSample(n) to VAL3
+
+record(ao,"$(ROBO):LL-SIMPLEMNT") {
+    field (DESC, "mount sample in currow")
+    field (DTYP, "stream")
+    field (OUT,  "@robo.ptcols SIMPLEMNT  $(BUS)")
+    field (PREC, "0")
+}
+
+# send load to VAL3
+
+record(bi,"$(ROBO):LL-MNT") {
+    field (DESC, "mount sample")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols MOUNT  $(BUS)")
+#    field (PREC, "0")
+}
+# send unload to VAL3
+
+record(bi,"$(ROBO):LL-UNL") {
+    field (DESC, "unload sample")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols UNLOAD  $(BUS)")
+#    field (PREC, "0")
+}
+# send unload to VAL3
+
+
+
+# send start to VAL3
+
+record(bi,"$(ROBO):LL-ST") {
+    field (DESC, "START")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols START  $(BUS)")
+#   field (PREC, "0")
+}
+
+# send Stop to VAL3
+
+
+record(bi,"$(ROBO):LL-STOP") {
+    field (DESC, "STOP")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols STOP  $(BUS)")
+#    field (PREC, "0")
+}
+
+record(bi,"$(ROBO):LL-SLEEP") {
+    field (DESC, "SLEEP")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols SLEEP  $(BUS)")
+#    field (PREC, "0")
+}
+
+record(bi,"$(ROBO):LL-END") {
+    field (DESC, "END")
+    field (DTYP, "stream")
+    field (INP,  "@robo.ptcols END  $(BUS)")
+#    field (PREC, "0")
+}
+
+record(calcout, "$(ROBO):CHK_STR") {
+    field (DESC, "Check if disconnect HRW")
+    field (SCAN, "Passive") 
+    field (CALC, "A") #field $(ROBO):CHK_STR.A is written into by $(ROBO):SM-SEQ record in ES1 SMP1 template
+    field (OUT, "$(ROBO):LL-HRW_DIS PP")
+    field (OOPT, "When Zero")
+    field (DOPT, "Use CALC")
+}
+record(bo,"$(ROBO):LL-HRW_DIS") {
+    field (DESC, "Disconnect HRW")
+    field (DTYP, "stream")
+    field (OUT,  "@robo.ptcols HRW_DIS $(BUS)")
+}
+
+record(bo,"$(ROBO):LL-HRW_CON") {
+    field (DESC, "Connect HRW")
+    field (DTYP, "stream")
+    field (OUT,  "@robo.ptcols HRW_CON $(BUS)")
+}

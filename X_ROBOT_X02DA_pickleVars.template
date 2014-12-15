@@ -1,0 +1,17 @@
+#Sequenz Settings
+#----------------------------------------------------------------------
+# $Author: barendregt_m
+# $Date: 2007/10/24
+#----------------------------------------------------------------------
+record (stringout, "$(ROBO):GUI-PICKLE"){
+field (DESC, "Potentially for autosave")
+field (VAL, "")
+}
+# Keeps track of iterations
+record (ao, "$(ROBO):GUI-PICKLECNT"){
+field (DESC, "Number of Variables Used")
+field (VAL,  "-1")
+field (LOPR,  "-1")
+field (HOPR,  "1000")
+field (PINI,  "YES")
+}
