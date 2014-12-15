@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="enterBeam" public="false" >
+    <description>Lädt das Sample auf dem pBeam ab.</description>
+    <paramSection/>
+    <localSection/>
+    <source>
+      <code>begin
+  // Move to pWait-&gt;Camera-&gt;Over Beam
+  // -&gt; Drop -&gt;
+  movej(pWait,tGreifer,mFast)
+  // pWait = Ausgangsposition für Roboterbetrieb
+  waitEndMove()
+  movej(pCamera,tGreifer,mFast)
+  waitEndMove()
+  movel(appro(pBeam,trOutBeam),tGreifer,mFast)
+  waitEndMove()
+  if bPickupSample==true
+    // Pickup Sample
+    movel(pBeam,tGreifer,mSlow)
+    waitEndMove()
+    call closeGripper()
+  else
+    // Drop Off Sample
+    movel(appro(pBeam,trSampleDropBm),tGreifer,mSlow)
+    call openGripper()
+  endIf
+  movel(appro(pBeam,trOutBeam),tGreifer,mSlow)
+  movel(pCamera,tGreifer,mFast)
+  waitEndMove()
+  movej(pWait,tGreifer,mFast)
+  waitEndMove()
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

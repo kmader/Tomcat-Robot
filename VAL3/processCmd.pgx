@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="processCmd" public="false" >
+    <description>A generic function two handle input up to 2 parameters and parse it appropriately</description>
+    <paramSection/>
+    <localSection>
+      <local name="argStartPos" type="num" size="1" />
+      <local name="args" type="string" size="1" />
+      <local name="argCommaPos" type="num" size="1" />
+      <local name="argEndPos" type="num" size="1" />
+    </localSection>
+    <source>
+      <code>begin
+  //putln(&quot;InsideProcess&quot;+sSocket)
+  sNum=sSocket
+  //putln(find(sNum,&quot;(&quot;))
+  argStartPos=find(sNum,&quot;(&quot;)
+  argStartPos=argStartPos+1
+  argEndPos=find(sNum,&quot;)&quot;)
+  argEndPos=argEndPos-1
+  //pos are in index
+  //left, delete use lengths
+  //putln(&quot;FoundPos&quot;)
+  if argStartPos&gt;1
+    sCmd=left(sNum,argStartPos+1-2)
+    putln(sCmd)
+    if argEndPos&lt;0
+      argEndPos=len(sNum)-1
+    endIf
+    args=left(sNum,argEndPos+1)
+    args=delete(args,argStartPos,0)
+    putln(args)
+    argCommaPos=find(args,&quot;,&quot;)
+    if argCommaPos&gt;0
+      sArgs[0]=left(args,argCommaPos+1-1)
+      sArgs[1]=delete(args,argCommaPos+1,0)
+    else
+      sArgs[0]=args
+    endIf
+  else
+    sCmd=sNum
+  endIf
+  //debugging notes
+  putln(sCmd+&quot;-arg0:&quot;+sArgs[0]+&quot;,arg1:&quot;+sArgs[1])
+  if len(sCmd)&gt;2
+    nReady=0
+    //if the command length is greater than 2 the system isnt ready until the command has cleared
+  endIf
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

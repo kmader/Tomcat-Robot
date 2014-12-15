@@ -1,0 +1,137 @@
+
+\subsection{Robot for Automatic Sample Exchange}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Robot Control Software
+		\item Epics Integration
+		\item Operation with 20 Samples
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Robot Expansion to 60 Samples
+	\end{itemize}
+	\item Future Tasks
+	\begin{itemize}
+		\item Beamline Integration with ESCAPE System to simplify future changes, and new components (January 2010)
+		\item Quantification of Robot and Stage Accuracy (March 2010)
+	\end{itemize}
+\end{itemize}
+\subsubsection*{Overview}
+The first task completed as part of this research project is the implementation of the Automatic Sample Exchange Robot at the TOMCAT beamline. The ability to conduct large-scale studies such as this requires an automated system, not only to minimize the human-time required, but also to significantly accelerate the process as the safety procedures  involved with human operation such as opening and closing the door, conducting security searches, and so forth are only required to exchange the tray every 60 samples rather than for every single sample
+
+\subsubsection*{Epics Overview}
+EPICS (Experimental Physics Industrial Control System : http://www.aps.anl.gov/epics/) is the standard for beamline control at the Swiss Light Source. All instrumentation control, automation, and user interaction is conducted through it. The basic role of Epics is to allow control of any instrument from any computer. An Epics driver is written for each instrument which provides access to the instrument through a series of public channels. The machine connected to the device is refered to as an IOC. With most instrumentation this is a machine physically wired to the piece of instrumentation. When physical wires are not involved the machine, and thus the machine could be running anywhere the machine is refered to as a Soft-IOC. The Soft-IOC's are not computers themselves but are rather run under virtual machines where many are run from a single computer. These channels can transmit and receive information from the device. They are also capable of performing computation, and several other more complicated tasks. The GUI applications send and receive information from the channels which in turn communicate with the actual instruments. 
+
+The Sample Exchange (Robot) is a Staubli 4-Axis RX60 Robot system. The robot serves to move samples from a tray to the measurement stage on the beamline. The robot is integrated into the beamline environment using VAL3 code communicating through a network interface to an Epics Soft-IOC (controller computer). The Soft-IOC then serves to provide control of the robot through channels (global variables broadcast over the network). The. The first step was to migrate the robot control software into the EPICS control framework utilized at the SLS for interfacing external instruments with beamline components. This migration not only served to make the robot behavior more predictable and tolerant of computer crashes but also allows other services to interact with the robot in the same manner as they would with a stage or shutter. This was done by writing an interface using the robot's VAL3 programming language to accept connections from other devices on the network. Then a driver was written to connect to the robot and translate commands to accessible channels in EPICS. The next step was to develop a coherent interface for selecting, naming, and positioning samples. The software was developed in Python and scales to whatever number of samples are needed. The software serves as a front-end to everything on the beamline in order to protect against potential collisions. The tool was designed in a modular way to be easily adaptable to updates and changes in the beamline setup. Additionally, a scripting language was developed to allow complex management of many samples. Specifically this language will prove useful for time progression experiments 
+Although no results on the genetic project have yet been obtained, the robot system was tested on cement, bone, and brains samples. With few exceptions the tests went very well and proved that the robot will be a viable source for accurately changing samples over the course of 8 hour or longer experiments.
+\begin{center}
+% use packages: array
+\begin{tabular}{|l|l|l|}
+Performance Comparison & By Hand & With Robot \\
+Sample Loading Time & 5 min & 0.5 sec \\
+Sample Alignment Time & 3 minutes & 3 minutes\\
+Intervention-free Operation Time & 30 minutes/1 scan & 12 hours
+\end{tabular}
+\end{center}
+
+\subsection{Goniometer for Sample Orientation Flexibility}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Installation of Goniometer
+		\item Calibration of Goniometer
+		\item Integration of Goniometer with Alignment Software
+	\end{itemize}
+	\item Future Tasks
+	\begin{itemize}
+		\item Beamline Integration with ESCAPE System to simplify future changes, and new components (January 2010)
+	\end{itemize}
+\end{itemize}
+\subsubsection*{Overview}
+In order for the measurements to be comparable the position and orientation of the sample must be consistent. This is conventionally done by manually mounting the sample using a microscope-based setup and spending several minutes ensuring the sample is straight in all directions. This appears to be sufficiently accurate, but it is quite time-consuming and is highly sensitive to human error. We have, therefore, devised a method to automatically orient the samples using a Goniometer. This will significantly reduce the preparation time and should lead to more consistent results than could be obtained by hand. The most time-consuming step of alignment
+
+\subsection{Script for automatic sample centering, orienting, and ROI detection}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Thresholding
+		\item Fitting Cylindrical Sample to find tilt and offset
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Camera Control Software for Snapshots
+		\item Finding Top and Bottom of Samples and Moving to 56/%
+		\item Safe movement of stages to center sample
+	\end{itemize}
+	\item Future Tasks
+	\begin{itemize}
+		\item Increasing flexibility to allow for more arbitrary sample types (August 2010)
+		\item Self-identification of missing or poorly mounted sample (March 2010)
+		\item Quantification of Accuracy of Alignment Algorithm (March 2010)
+	\end{itemize}
+\end{itemize}
+\subsubsection*{Overview}
+
+Several scripts have already been written for automatic sample detection, center finding, and orientation. The basic premise for their operation is outlined below
+\begin{itemize}
+ 	\item Detection 
+	\begin{itemize}
+		\item Materials Model - Projections are classified into these three categories
+		\item Air, glue, mounting wax are significantly less dense than bone
+		\item Metal is significantly more dense than bone
+	\end{itemize}
+	\item Centering
+	\begin{itemize}
+		\item To center the sample the Bone region is selected and a curve is fit through the center giving the center of mass of the bone in X as a function of Y
+		\item The stage is then moved until the offset is nearly  zero at 0,90,180 degrees
+	\end{itemize}
+	\item Alignment
+	\begin{itemize}
+		\item To align the sample the same data is used only this time it is found
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Organizing Sample Names and Genetic Background in Database}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Beamline Database Setup and Installation
+		\item Integration with Robot and Seqeuncer Software
+		\item Web-based interface for searching and browsing
+		\item Interface from OpenVMS system
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Getting Sample Names, Background, and Parameters from Original Study
+	\end{itemize}
+	\item Future Tasks
+\end{itemize}
+\subsubsection*{Overview}
+The idea behind the database is to have one location where every piece of information about each sample can be found from alignment position and genetic background to quantitive parameters
+
+\subsection{Applications for Beamtime}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Application for First Beamtime
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\item Future Tasks (To be completed after October Beamtime)
+	\begin{itemize}
+		\item Submission of Report from First Beamtime (January 2010)
+		\item Long-Term Beamline Proposal (March 2010)
+	\end{itemize}
+\end{itemize}
+The first application for formal beamtime has been submitted and was granted. While much of the development work can be done during internal shifts, the project itself is too large to be done entirely within these shifts. Based on the current estimates of being able to measure a tray of 60 samples in 13.25 hours, and realistically being able to measure 4 trays during one beamtime (due to mounting, storage, and analysis constraints it does not make sense to attempt more) it will take around 9 sessions to be able to measure all of the samples.
+
+The estimate for the beamtime required is based on each tomogram taking 15 minutes. We will then take 2 tomograms per sample. The loading and unloading time for each sample with the robot setup is 30 seconds. Finally to automatically align the sample and change objectives will be 2 minutes per sample. Thus we expect : Samples (200) * Time Per Scan ( Time per region (3.3 min)*4 + Changing Time (1 min)+Alignment (2 min) ) / Minutes Per Shift (60 * 8) = 6.75 shifts. We request an additional two shifts in the event of specific samples that require re-imaging or technical difficulties. In summary, we apply for 9 shifts.
+
+For the rest of the experiment it will be nessecary to apply for a longer term beamline proposal (for the remaining 1800 samples); however, for this we must first submit the initial results in a report demonstrating that our experiment works and we are capable of continuing the study. In the event a longer term proposal is not accepted it is still possible to finish using a number of shorter beamtimes, but that is a less ideal scenerio.

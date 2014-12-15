@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programList xmlns="ProgramNameSpace">
+  <program name="anticrashstart" public="false">
+    <description>Fährt Z-Achse hoch, um Kollisionen zu vermeiden</description>
+    <paramSection />
+    <localSection />
+    <source>
+      <code>begin
+  resetMotion()
+  pStart=here(tGreifer,world)
+  // Punkt an welchem sich der Greifer gerade befindet
+  //nDeltaZ=abs(pStart.trsf.z-pBeam.trsf.z)
+  //wie hoch kann in Z noch gefahren werden
+  pSecure=pStart
+  // Well Above Everything
+  pSecure.trsf.z=pWait.trsf.z 
+  // pWait is better since it is in the same frame
+  //pSecure=compose(here(tGreifer,world),world,{0,0,nDeltaZ,0,0,0})
+  // Punkt generiert welcher angefahren wird
+  movel(pSecure,tGreifer,mSlow)
+  // No rush to move here
+  waitEndMove()
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

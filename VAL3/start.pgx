@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="start" public="false" >
+    <description>Startet das Programm und kreiert Tasks</description>
+    <paramSection/>
+    <localSection/>
+    <source>
+      <code>begin
+  userPage()
+  cls()
+  // reset values
+  nDeltaZ=0
+  nSpeed=6
+  nStatus=0
+  nColPosition=-1
+  nRowPosition=-1
+  nSampleTray=0
+  sNum=&quot;&quot;
+  sSocket=&quot;&quot;
+  sSockets=&quot;&quot;
+  sSpeed=&quot;&quot;
+  sCmd=&quot;&quot;
+  sArgs[0]=&quot;&quot;
+  sArgs[1]=&quot;&quot;
+  bRunning=true
+  taskCreate &quot;MainLoop&quot;,90,MainLoop()
+  taskCreate &quot;Notaus&quot;,100,notaus()
+  taskCreate &quot;taskResume&quot;,50,resumeTask()
+  taskCreate &quot;status&quot;,60,status()
+  taskCreate &quot;workpos&quot;,91,workpos()
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

@@ -1,0 +1,32 @@
+# Startup script for X02DA robot control
+
+# $Author: mader $
+# $Date: 2013/03/13 10:18:27 $
+# $Revision: 1.9 $
+#
+#--------------------------------------------------------------------
+
+# var streamDebug 1
+
+# for scalcout record
+require "SynApps"
+
+# Serial Interface
+# Newest version
+# require "asyn" , "416.0.2"
+# require "stream"
+# Older version of stream (not needed as of 2012-01-17
+# since dzimoch fixed the latest version and opening is done correctly
+require "stream2" , "2.4"
+
+# set protocol path
+epicsEnvSet ("STREAM_PROTOCOL_PATH", ".:./cfg:../cfg")
+
+# Currently not in use; 15-Oct-2008/ais
+# ip of Robot command line
+drvAsynIPPortConfigure ("cmdnet", "129.129.99.50:50001")
+#drvAsynIPPortConfigure ("cmdnetDebug", "129.129.99.62:50001")
+# ip of Robot feedback line
+drvAsynIPPortConfigure ("stdnet", "129.129.99.50:50002")
+#drvAsynIPPortConfigure ("stdnetDebug", "129.129.99.62:50002")
+# End of file

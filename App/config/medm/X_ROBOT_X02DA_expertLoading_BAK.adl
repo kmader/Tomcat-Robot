@@ -1,0 +1,450 @@
+
+file {
+	name="/afs/psi.ch/user/m/mader/X02DA_ROBOT/App/config/medm/X_ROBOT_X02DA_expertLoading.adl"
+	version=030104
+}
+display {
+	object {
+		x=197
+		y=475
+		width=491
+		height=388
+	}
+	clr=14
+	bclr=4
+	cmap=""
+	gridSpacing=5
+	gridOn=0
+	snapToGrid=0
+}
+"color map" {
+	ncolors=65
+	colors {
+		ffffff,
+		ececec,
+		dadada,
+		c8c8c8,
+		bbbbbb,
+		aeaeae,
+		9e9e9e,
+		919191,
+		858585,
+		787878,
+		696969,
+		5a5a5a,
+		464646,
+		2d2d2d,
+		000000,
+		00d800,
+		1ebb00,
+		339900,
+		2d7f00,
+		216c00,
+		fd0000,
+		de1309,
+		be190b,
+		a01207,
+		820400,
+		5893ff,
+		597ee1,
+		4b6ec7,
+		3a5eab,
+		27548d,
+		fbf34a,
+		f9da3c,
+		eeb62b,
+		e19015,
+		cd6100,
+		ffb0ff,
+		d67fe2,
+		ae4ebc,
+		8b1a96,
+		610a75,
+		a4aaff,
+		8793e2,
+		6a73c1,
+		4d52a4,
+		343386,
+		c7bb6d,
+		b79d5c,
+		a47e3c,
+		7d5627,
+		58340f,
+		99ffff,
+		73dfff,
+		4ea5f9,
+		2a63e4,
+		0a00b8,
+		ebf1b5,
+		d4db9d,
+		bbc187,
+		a6a462,
+		8b8239,
+		73ff6b,
+		52da3b,
+		3cb420,
+		289315,
+		1a7309,
+	}
+}
+"message button" {
+	object {
+		x=196
+		y=65
+		width=260
+		height=32
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_SET.PROC"
+		clr=14
+		bclr=4
+	}
+	label="Save Current Position"
+	press_msg="1"
+	clrmod="alarm"
+}
+"message button" {
+	object {
+		x=196
+		y=143
+		width=260
+		height=32
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_LOAD.PROC"
+		clr=14
+		bclr=4
+	}
+	label="Move to Loading Pos"
+	press_msg="1"
+	clrmod="alarm"
+}
+text {
+	object {
+		x=41
+		y=60
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	"dynamic attribute" {
+		chan="X02DA-ES1-ROBO:STG_LOAD"
+	}
+	textix="XX:"
+}
+text {
+	object {
+		x=39
+		y=83
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	"dynamic attribute" {
+		chan="X02DA-ES1-ROBO:STG_LOAD"
+	}
+	textix="ZZ:"
+}
+text {
+	object {
+		x=39
+		y=101
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	"dynamic attribute" {
+		chan="X02DA-ES1-ROBO:STG_LOAD"
+	}
+	textix="X:"
+}
+text {
+	object {
+		x=39
+		y=122
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	"dynamic attribute" {
+		chan="X02DA-ES1-ROBO:STG_LOAD"
+	}
+	textix="Y1:"
+}
+text {
+	object {
+		x=39
+		y=138
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	"dynamic attribute" {
+		chan="X02DA-ES1-ROBO:STG_LOAD"
+	}
+	textix="Y2:"
+}
+text {
+	object {
+		x=41
+		y=160
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	"dynamic attribute" {
+		chan="X02DA-ES1-ROBO:STG_LOAD"
+	}
+	textix="Z:"
+}
+"text entry" {
+	object {
+		x=74
+		y=62
+		width=100
+		height=20
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_VAL-XX"
+		clr=14
+		bclr=4
+	}
+	limits {
+		loprSrc="default"
+		loprDefault=-1
+		hoprSrc="default"
+		hoprDefault=3
+	}
+}
+"text entry" {
+	object {
+		x=73
+		y=83
+		width=100
+		height=20
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_VAL-ZZ"
+		clr=14
+		bclr=4
+	}
+	limits {
+		loprSrc="default"
+		loprDefault=-1
+		hoprSrc="default"
+		hoprDefault=3
+	}
+}
+"text entry" {
+	object {
+		x=73
+		y=103
+		width=100
+		height=20
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_VAL-X"
+		clr=14
+		bclr=4
+	}
+	limits {
+		loprSrc="default"
+		loprDefault=-1
+		hoprSrc="default"
+		hoprDefault=3
+	}
+}
+"text entry" {
+	object {
+		x=72
+		y=123
+		width=100
+		height=20
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_VAL-Y1"
+		clr=14
+		bclr=4
+	}
+	limits {
+		loprSrc="default"
+		loprDefault=-1
+		hoprSrc="default"
+		hoprDefault=3
+	}
+}
+"text entry" {
+	object {
+		x=72
+		y=142
+		width=100
+		height=20
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_VAL-Y2"
+		clr=14
+		bclr=4
+	}
+	limits {
+		loprSrc="default"
+		loprDefault=-1
+		hoprSrc="default"
+		hoprDefault=3
+	}
+}
+"text entry" {
+	object {
+		x=72
+		y=159
+		width=100
+		height=20
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_VAL-Z"
+		clr=14
+		bclr=4
+	}
+	limits {
+		loprSrc="default"
+		loprDefault=-1
+		hoprSrc="default"
+		hoprDefault=3
+	}
+}
+text {
+	object {
+		x=40
+		y=2
+		width=223
+		height=40
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Sample Loading Position"
+}
+"message button" {
+	object {
+		x=35
+		y=202
+		width=400
+		height=32
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_LOAD-XX.PROC"
+		clr=14
+		bclr=4
+	}
+	label="Move to LoadPos (except Y1,Y2)"
+	press_msg="1"
+	clrmod="alarm"
+}
+text {
+	object {
+		x=15
+		y=178
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="ROTY:"
+}
+"text entry" {
+	object {
+		x=70
+		y=179
+		width=100
+		height=20
+	}
+	control {
+		chan="X02DA-ES1-ROBO:SLD_VAL-ROTY"
+		clr=14
+		bclr=4
+	}
+	limits {
+		loprSrc="default"
+		loprDefault=-1
+		hoprSrc="default"
+		hoprDefault=3
+	}
+}
+"text update" {
+	object {
+		x=265
+		y=240
+		width=180
+		height=15
+	}
+	monitor {
+		chan="X02DA-ES1-ROBO:SLD_DIST"
+		clr=14
+		bclr=4
+	}
+	clrmod="alarm"
+	limits {
+	}
+}
+text {
+	object {
+		x=35
+		y=241
+		width=80
+		height=15
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Stage Distance From Home"
+}
+"strip chart" {
+	object {
+		x=30
+		y=260
+		width=426
+		height=110
+	}
+	plotcom {
+		clr=14
+		bclr=4
+	}
+	period=360.000000
+	pen[0] {
+		chan="X02DA-ES1-ROBO:SLD_DIST"
+		clr=14
+		limits {
+			loprSrc="default"
+			hoprSrc="default"
+			hoprDefault=100000
+		}
+	}
+}
+rectangle {
+	object {
+		x=2
+		y=0
+		width=476
+		height=380
+	}
+	"basic attribute" {
+		clr=2
+		fill="outline"
+		width=2
+	}
+	"dynamic attribute" {
+		chan="X02DA-ES1-ROBO:LL-MODE"
+	}
+}

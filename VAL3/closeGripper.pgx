@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="closeGripper" public="false" >
+    <description>Schliesst den Greifer</description>
+    <paramSection/>
+    <localSection/>
+    <source>
+      <code>begin
+  waitEndMove()
+  dioLink(dclose,io:cDout0)
+  dioLink(dopen,io:cDout1)
+  //dioLink(dGripperclosed,io:cDin1)
+  //dioLink(dGripperopen,io:cDin0)
+  // Variablen den physikalischen In / Out zuweisen
+  dclose=true
+  dopen=false
+  // Ventil schalten
+  delay(0.5)
+  //  if (dGripperopen!=false and dGripperclosed!=true)
+  //    dclose=false
+  //    dopen=true
+  //    delay(5)
+  //    dclose=true
+  //    dopen=false
+  //    if (dGripperopen!=false and dGripperclosed!=true)
+  //      call anticrashstart()
+  //      movej(pWait,tGreifer,mFast)
+  //      waitEndMove()
+  //      sSockets=&quot;gripper could not close; I&apos;m back at waiting position&quot;
+  //      call sendSocket()
+  //    endIf
+  //  endIf
+  // Sensoren abfragen
+  dclose=false
+  // Relais wieder zurücksetzten da es sonst sehr heiss wird wenn es zu lange angezogen bleibt
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

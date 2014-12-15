@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="getSocket" public="false" >
+    <description>Liest ein String von der Socketverbindung ein</description>
+    <paramSection/>
+    <localSection/>
+    <source>
+      <code>begin
+  //sioLink(sNetwork,io:tomcatrobot)
+  sSocket=sNetwork
+  // stellt die Socketverbindung her und schreibt sNetwork (Eingang über Socketverbindung) auf die Variabel sSocket
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

@@ -1,0 +1,60 @@
+# stream device protocol file for tomcatrobot
+#
+#--------------------------------------------------------------------
+# $Author: mader $
+# $Date: 2013/03/13 10:18:42 $
+#
+# $Revision: 1.7 $
+#--------------------------------------------------------------------
+
+ExtraInput    = Ignore;
+Terminator = "#";
+LockTimeout = 1000;
+ReplyTimeout = 900;
+PollPeriod = 500;
+# Double Read and Add write timeout to make it more robust, maybe? /ksm
+ReadTimeout = 500;
+WriteTimeout = 500;
+
+RAW   {ExtraInput    = Ignore; out "%s"; in "%39c"; }
+RAW1   {in "%39c"; }
+
+# whole status line
+STATUS {in "%(\$1:LL-CROW.VAL)i,%(\$1:LL-CSAMPLE.VAL)i,%(\$1:LL-READY.VAL)i,%(\$1:LL-MODE.VAL)i,%(\$1:LL-MOVING.VAL){still|moving},%(\$1:LL-WORKPOS.VAL){unlockpos|workpos},%(\$1:LL-STGPOS.VAL){StageFree|StageLocked}";}
+
+#READY {in "%*i,%*i,%i,%*f,%*39c";}
+
+#MOVING {in "%*i,%*i,%*i,%*f,%{still|moving},%*39c";}
+
+#WORKPOS {in "%*i,%*i,%*i,%*f,%*{still|moving},%{unlockpos|workpos},%*39c";}
+
+#STGPOS {in "%*i,%*i,%*i,%*f,%*{still|moving},%{unlockpos|workpos},%{StageFree|StageLocked}";}
+
+# just the current robot status ( started, mounted, off)
+#MODE {in "%*i,%*i,%*i,%f,%*39c";}
+
+#CROW {in "%i,%*i,%*i,%*f,%*39c";}
+
+#CSAMPLE {in "%*i,%i,%*i,%*f,%*39c";}
+
+SETR  {out "setRow(%i)"; in "setRow success"; }
+
+SETS {out "setSample(%i)"; in "setSample success"; }
+
+SIMPLEMNT {out "simplemount(%i)"; in "mount success"; }
+
+MOUNT {out "mount"; in "mount %{failure|success}"; }
+
+UNLOAD {out "unload"; in "%{unload failure|unload success}"; }
+
+START {out "start"; in "%{start failure|start success}"; }
+
+STOP {out "stop"; in "%{stop failure|stop success}"; }
+
+SLEEP {out "sleep"; in "%{sleep failure|sleep success}"; }
+
+END {out "end"; in "%{end failure|end success}"; }
+
+HRW_DIS {disconnect;}
+
+HRW_CON {connect 1000;}

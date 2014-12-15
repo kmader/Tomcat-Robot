@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="updatePositions" public="false" >
+    <description>generate the intermediate points based on the row and column position</description>
+    <paramSection/>
+    <localSection/>
+    <source>
+      <code>begin
+  //use pXIn2 as a reference
+  pAvoidTray=pRootAvoid[nSampleTray]
+  pAvoidTray.trsf.y=pAvoidTray.trsf.y+(nRowPosition)*nOutpathWidth[nSampleTray]*2
+  // for intermediate points not as much space is needed
+  // row position
+  pCurrentRow=pRootPosition[nSampleTray]
+  pCurrentRow.trsf.x=pCurrentRow.trsf.x+(nRowPosition)*trRowOffsets[nSampleTray].x
+  pCurrentRow.trsf.y=pCurrentRow.trsf.y+(nRowPosition)*trRowOffsets[nSampleTray].y
+  pCurrentRow.trsf.z=pCurrentRow.trsf.z+(nRowPosition)*trRowOffsets[nSampleTray].z
+  pSample=pCurrentRow
+  // orientation
+  pSample.trsf.rx=pSample.trsf.rx+(nRowPosition)*trRowOffsets[nSampleTray].rx
+  pSample.trsf.ry=pSample.trsf.ry+(nRowPosition)*trRowOffsets[nSampleTray].ry
+  pSample.trsf.rz=pSample.trsf.rz+(nRowPosition)*trRowOffsets[nSampleTray].rz
+  // sample offsets
+  pSample.trsf.x=pSample.trsf.x+(nColPosition)*trSampleOffsets[nSampleTray].x
+  pSample.trsf.y=pSample.trsf.y+(nColPosition)*trSampleOffsets[nSampleTray].y
+  pSample.trsf.z=pSample.trsf.z+(nColPosition)*trSampleOffsets[nSampleTray].z
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

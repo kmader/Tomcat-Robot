@@ -1,0 +1,177 @@
+\subsection{Automated Center Finding and reconstruction}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Implement Algorithm to Find Center based on Entropy
+		\item Test Algorithm on Bone Samples
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Tune Algorithm Parameters for Femur Samples
+	\end{itemize}
+	\item Future Tasks (To be completed after October Beamtime)
+	\begin{itemize}
+		\item Automatic Quality Assesment (January 2010)
+	\end{itemize}
+\end{itemize}
+
+Some of the code for automatic center determination has been created, but it is not currently in a state where it is able to be blindly run on data as several parameters require tweaking. The problem will be greatly simplified through the automatic alignment which will  ensure the center of rotation is very close to the center pixel and the sample is properly oriented.
+
+\subsection{Correction for Local Tomography Artifacts}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Development of Algorithm
+		\item Test on Simulated Datasets
+		\item Test on Aluminum Cylinder Samples
+
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Test on Bone Samples
+		\item Test on Embedded Samples
+		\item Compare results to other algorithms
+		\item Publish Results
+	\end{itemize}
+	\item Future Tasks (To be completed after October Beamtime)
+	\begin{itemize}
+		\item Implementation of Reconstruction in Standard Beamline Pipeline (August 2010)
+	\end{itemize}
+\end{itemize}
+For the samples we are imaging we will be doing local tomography. Meaning the samples will be larger than the field of view. One of the basic assumptions in Tomography reconstruction is that the entire object be within the field of view in all the projections taken. When the entire object is not visible, there is missing data. Without these data it is impossible to reconstruct perfectly. Additionally using standard algorithms, the region outside the field of view will create artifacts in the gray-values of the reconstruction. Giving the so-called ring or halo. When attempting to analyze the data, principally in the thresholding step, the artifact can cause regions that are not bone to appear as bone. As the primary interest in this project is the porosity this could have a significant effect on the end results causing less of the porosity (that closer to the edge of the field of view) to be visible. Particularly parameters such as $\dfrac{Porosity_{Volume}}{Total_{Volume}}$, and canal density could be greatly skewed. Since there are so many lacunae the results for them would, however, likely remain usable.
+The basic idea for our reconstruction technique is to make strong assumption about what the object outside of the field of view looks like, and to then to tweak this assumption until it matches the observed results best. I have called the assumption the Plum-Pudding model as it brings to mind a very clear visual.
+
+The plum-pudding model for local tomography implies that the object being measured can be approximated as a bath of relatively constant absoprtion material. Within this bath sit the plums, holes and bumps with higher absorption. This model is used because the primary assumption of this technique is that smooth radial gradients in intensity come entirely from data outside of the region of interest and are thus background. Sharp edges represent the actual signal, and boundaries between the bumps, holes, and bath.
+
+Initial Draft of Local Tomography Paper in Appendix
+
+\subsection{Loading Data to ETHZ IfB Cluster}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Test FTP pipeline between IfB and PSI
+		\item Manually copy and register datasets
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Setup scripts to copy all datasets to IfB as a background batch job
+	\end{itemize}
+	\item Future Tasks (To be completed after October Beamtime)
+	\begin{itemize}
+		\item Setup scripts to automatically copy and register samples in Database (March 2010)
+	\end{itemize}
+\end{itemize}
+
+The procedure for transferring the data from PSI to the IfB cluster involves moving the data to the PSI FTP Archive Server using the existing scripts and then downloading and extracting this data using another script running on the cluster.
+After the data is downloaded, the samples need to be registered into the ScanCo sample database and the project such that the analysis can be run in parallel with only a single command per batch and the results stored in the same location
+
+\subsection{Mophological Analysis using XIPL Cluster}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Perform standard Canal metrics on Cortical Bone Samples
+		\item Measure femur and create new scripts to analyze our samples
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Revise scripts used in original study to work on data with orders of magnitude higher resolution and only small subregion of bone
+		\item Develop metrics for Lacuna analysis
+	\end{itemize}
+	\item Future Tasks (To be completed after October Beamtime)
+	\begin{itemize}
+		\item Analyze lacuna on existing data
+		\item Publish Lacuna Metric Paper
+	\end{itemize}
+\end{itemize}
+\subsubsection*{Overview}
+All of the parameters being computed are morphological, meaning they are related to the shape of the bone and the shape of the holes in the bone. The data measured will be a stack of grayscale images, this cannot be directly analyzed and must first be converted into a black and white image where black or 0 is empty space and white or 1 is bone. This is done over several steps, the first being a filtering. The filtering smooths out the noise and artifacts. After filtering an adaptive threshold is run. This automatically finds the threshold values for bone and air by searching for a minima in the intensity histogram. After thresholding several open operations are run to remove small objects
+\subsubsection*{Bone}
+Within the bone or solid areas, we will be looking at parameters such as thickness (the thickness of the bone) and total volume of bone. These parameters have already been measured in the previous study, we do not expect to gain much new information, but the results will be much more precise (due to our higher resolution), and will serve as a cross-check to ensure samples were not mislabeled, broken, contaminated, misaligned or some other disturbance.
+\subsubsection*{Porosity}
+In the cortical bone, the porosity, or empty space, will be assessed. Looking at two different features. The first is canal networks, and the second is lacunae.
+The canal networks will be assessed using the same tools developed to analyze vessel networks in vascular systems. Specific parameters that will be quantified are thickness, connectivity, density, and length.
+\subsubsection*{Classification}
+The problem of classification is not trivial because while it is easy to identify by eye what is a canal, what is a lacuna, and what is an artifact, it is significantly trickier to do in an automated fashion. The easiest way to classify objects is to group them by volume. While single lacuna are around 400-900 $\mu m^3$ canals are closer to the order of 27000 $\mu m^3$
+
+\begin{itemize}
+	\item Lacuna
+\begin{figure}[htp]
+ \centering
+\begin{center}
+ \includegraphics[width=0.9\textwidth]{Figures/TypicalLacuna.ps}
+ % TypicalLacuna.ps: 156757072x156142432 pixel, 0dpi, infxinf cm, bb=
+\end{center}
+ \caption{Here is how a typical Lacuna looks. The lacuna volume is around (550 $\mu m^3$ and the dimensions are 15.4 x 46.2 x 127.4 $\mu$m}
+ \label{fig:NormLacun}
+\end{figure}	
+
+\begin{figure}[htp]
+ \centering
+\begin{center}
+ \includegraphics[width=0.9\textwidth]{Figures/JoinedLacunae.ps}
+ % JoinedLacunae.ps: 1179666x1179666 pixel, 0dpi, infxinf cm, bb=
+\end{center}
+
+ \caption{It is often a problem that lacuna will touch at one point and thus register as one object. The object contains around 4800 voxels and the dimensions are 36.4 x 15.4 x 37.8 $\mu$m. This problem is however alleviated by performing an erosion before determining groups. However when they overlap more than this it is exceedingly difficult to seperate the spaces. }
+ \label{fig:TwoLacun}
+\end{figure}
+	\begin{itemize}
+		\item Anisotropy
+The lacuna are generally non-isotropic, and it is known that they play a role in force sensing
+
+
+		\item Orientation
+Since the shape is not isotropic the cells have a primary axis, allowing for an orientation to be determined, from this information it will be possible to identify trends in the cell orientation such as sheets. The primary factor to be measured will be the coherence distance for orientation very similar to metrics used in optics for polarization. This distance will represent how well organized the cells are, a high number would mean there is a high degree of either planning or communication between these cells while a low number would suggest less of a trend. These factors could be important determinants of bone strength and potentially crucial factors in pathological bone as an early metric for identifying high-risk osteoporosis patients, cancer, and other similar diaseases.
+	\end{itemize}
+	\item Canal Network
+\begin{figure}[htp]
+ \centering
+ \includegraphics[width=0.9\textwidth]{Figures/Canal.ps}
+ % Canal.PS;1: 1179666x1179666 pixel, 0dpi, infxinf cm, bb=
+ \caption{Here is how a typical canal looks. The canal contains around 10000 voxels, and the dimensions are 81.2 x 120.4 x 302.4 $\mu$m}
+ \label{fig:NormCanal}
+\end{figure}	
+	\begin{itemize}
+		\item Orientation
+Since the shape is not isotropic the cells have a primary axis, allowing for an orientation to be determined, from this information it will be possible to identify trends in the cell orientation such as sheets. The primary factor to be measured will be the coherence distance for orientation very similar to metrics used in optics for polarization. This distance will represent how well organized the cells are, a high number would mean there is a high degree of either planning or communication between these cells while a low number would suggest less of a trend. These factors could be important determinants of bone strength and potentially crucial factors in pathological bone as an early metric for identifying high-risk osteoporosis patients, cancer, and other similar diaseases.
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Automatically Register Results in Sample Database}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Interface between OpenVMS Cluster and PSI Sample Database
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\begin{itemize}
+		\item Integration of OpenVMS analysis to Sample Database
+	\end{itemize}
+	\item Future Tasks (To be completed after October Beamtime)
+	\begin{itemize}
+		\item Analyze lacuna on existing data
+		\item Publish Lacuna Metric Paper
+	\end{itemize}
+\end{itemize}
+\subsubsection*{Overview}
+As stated earlier the database plays a critical role in keeping track of the progress of each sample (measured, reconstructed, analyzed), as well as having one place where all the relavant information for a sample can be found to make the analysis at the end significantly easier. It furthermore serves as the basis for future experiments of such scale in order to avoid a convoluted, disorganized system.
+\subsection{Genetic Loci Analysis on Parameters}
+\subsubsection*{Timeline}
+\begin{itemize}
+ 	\item Completed Tasks
+	\begin{itemize}
+		\item Read previous study and examine analytical methods used
+	\end{itemize}
+	\item Current Tasks (Expected to be operational by October Beamtime)
+	\item Future Tasks (To be completed after October Beamtime)
+	\begin{itemize}
+		\item Use model established in earlier study to analyze parameters obtained
+	\end{itemize}
+\end{itemize}
+\subsubsection*{Overview}

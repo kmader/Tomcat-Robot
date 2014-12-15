@@ -1,0 +1,62 @@
+# robot control templates for ROBO at X02DA
+#
+#--------------------------------------------------------------------
+# $Author: mader $
+# $Date: 2009/12/15 11:09:12 $
+#
+# $Revision: 1.17 $
+#--------------------------------------------------------------------
+
+
+
+# low level commands for robot control
+#--------------------------------------------------------------------
+#
+# Macros:
+#
+#--------------------------------------------------------------------
+
+file X_ROBOT_X02DA_lowlevel-cmd.template { 
+    {
+    ROBO = X02DA-ES1-ROBO
+    BUS = cmdnet
+    STATUSBUS = stdnet
+    }
+}
+
+file X_ROBOT_X02DA_bump.template { 
+    pattern
+    {SNAP		BUMP		MOTOR		AX	AXCAL	AXNAME}
+    {X02DA-SCAN-SNAP	X02DA-ES1-BUMP	X02DA-ES1-SMP1	Y	Y	TRY-VAL.VAL}
+    {X02DA-SCAN-SNAP	X02DA-ES1-BUMP	X02DA-ES1-SMP1	X	X	TRX.VAL}
+    {X02DA-SCAN-SNAP	X02DA-ES1-BUMP	X02DA-ES1-SMP1	Z	X	TRZ.VAL}
+    {X02DA-SCAN-SNAP	X02DA-ES1-BUMP	X02DA-ES1-SMP1	XX	X	TRXX.VAL}
+    {X02DA-SCAN-SNAP	X02DA-ES1-BUMP	X02DA-ES1-SMP1	ZZ	X	TRZZ.VAL}
+}
+
+file X_ROBOT_X02DA_snap.template { 
+    {
+    SNAP = X02DA-SCAN-SNAP
+    }
+}
+file X_ROBOT_X02DA_gui.template { 
+    {
+    ROBO = X02DA-ES1-ROBO
+    }
+}
+
+file X_ROBOT_X02DA_stageRobotPos.template { 
+    pattern
+    {ROBO		MOTOR		SPOS	GOXX	GOZZ}
+    {X02DA-ES1-ROBO	X02DA-ES1-SMP1	SLD	ROTX	ROTZ}
+    {X02DA-ES1-ROBO	X02DA-ES1-SMP1	SIM	ROTX	ROTZ}
+    {X02DA-ES1-ROBO	X02DA-ES1-SMP1	SAM	ROTX	ROTZ}
+}
+
+file X_ROBOT_X02DA_pickleVars.template { 
+    pattern
+    {ROBO	       N}
+    {X02DA-ES1-ROBO    0}
+    {X02DA-ES1-ROBO    1}
+}
+

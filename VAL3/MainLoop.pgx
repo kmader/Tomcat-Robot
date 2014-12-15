@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="MainLoop" public="false" >
+    <description />
+    <paramSection/>
+    <localSection>
+      <local name="oRowPosition" type="num" size="1" />
+      <local name="oColPosition" type="num" size="1" />
+    </localSection>
+    <source>
+      <code>begin
+  userPage()
+  cls()
+  sioLink(sNetwork,io:tomcatrobot)
+  while bRunning
+    nReady=1
+    // at the beginning of the loop the system is always ready
+    sSocket=sNetwork
+    call processCmd()
+    //parse input string into command and arguments
+    if sCmd==&quot;start&quot;
+      // &quot;start&quot; ist das Startsignal
+      enablePower()
+      //bPower=isPowered()
+      bPower=true
+      if bPower==true
+        sSockets=sCmd+&quot; success&quot;
+        call sendSocket()
+        putln(&quot;robot is running&quot;)
+        call anticrashstart()
+        // fährt mit der Z-Achse hoch
+        //movej(pXIn1,tGreifer,mFast)
+        //waitEndMove()
+        movej(pRootAvoid[nSampleTray],tGreifer,mFast)
+        waitEndMove()
+        movej(pWait,tGreifer,mFast)
+        // pWait = Ausgangsposition für Roboterbetrieb
+        waitEndMove()
+        putln(&quot;robot is ready&quot;)
+        nStatus=1
+      else
+        sSockets=sCmd+&quot; failure&quot;
+        call sendSocket()
+        disablePower()
+        //sSockets=&quot;robot could not start&quot;
+        //call sendSocket()
+        putln(&quot;robot could not start&quot;)
+      endIf
+    endIf
+    if sCmd==&quot;setRow&quot;
+      // Cannot change row when sample is loaded
+      if (nStatus==1)
+        oRowPosition=nRowPosition
+        toNum(sArgs[0],nRowPosition,bOk)
+        if nRowPosition&gt;=0 and nRowPosition&lt;nSampleTrayRows[nSampleTray]
+          sSockets=sCmd+&quot; success&quot;
+          call sendSocket()
+          if oRowPosition!=nRowPosition
+            call updatePositions()
+            if nStatus==1
+              // move to new row
+              movej(pRootAvoid[nSampleTray],tGreifer,mFast)
+              waitEndMove()
+              movej(pAvoidTray,tGreifer,mFast)
+              waitEndMove()
+            endIf
+          endIf
+        else
+          sSockets=sCmd+&quot; failure&quot;
+          call sendSocket()
+        endIf
+      else
+        sSockets=sCmd+&quot; failure&quot;
+        call sendSocket()
+      endIf
+    endIf
+    if sCmd==&quot;setSample&quot;
+      // Cannot change sample when sample is loaded
+      if (nStatus==1)
+        oColPosition=nColPosition
+        toNum(sArgs[0],nColPosition,bOk)
+        if nColPosition&gt;=0 and nColPosition&lt;nSampleTrayCols[nSampleTray]
+          sSockets=sCmd+&quot; success&quot;
+          call sendSocket()
+          if oColPosition!=nColPosition
+            call updatePositions()
+          endIf
+        else
+          sSockets=sCmd+&quot; failure&quot;
+          call sendSocket()
+        endIf
+      else
+        sSockets=sCmd+&quot; failure&quot;
+        call sendSocket()
+      endIf
+    endIf
+    if sCmd==&quot;manmount&quot;
+      toNum(sArgs[0],nRowPosition,bOk)
+      toNum(sArgs[1],nColPosition,bOk)
+      sCmd=&quot;mount&quot;
+    endIf
+    if sCmd==&quot;simplemount&quot;
+      toNum(sArgs[0],nColPosition,bOk)
+      call updatePositions()
+      sCmd=&quot;mount&quot;
+    endIf
+    if sCmd==&quot;mount&quot;
+      // mit kmount wird Proben gezaehlt von 0-9 und leitung von 0-1, um nur ein Zahl zu haben
+      // validate arguments!
+      if (nStatus==1) and nRowPosition&gt;=0 and nRowPosition&lt;nSampleTrayRows[nSampleTray] and nColPosition&gt;=0 and nColPosition&lt;nSampleTrayCols[nSampleTray]
+        sSockets=sCmd+&quot; success&quot;
+        call sendSocket()
+        // beim String mount(X) wird das Sample X geladen, bei X 1 - 20 wird eine singleSession gestartet welche durch zurückfahren an pWait beendet wird
+        movej(pAvoidTray,tGreifer,mFast)
+        waitEndMove()
+        //pCurrentRow=appro(pTrayY,trRowShift)
+        // pSample wird gerechnet
+        movel(appro(pSample,trInTray),tGreifer,mFast)
+        // Der Punkt pSample wird um den Vektor trInX approximiert angefahren
+        call openGripper()
+        movel(pSample,tGreifer,mSlow)
+        call closeGripper()
+        movel(appro(pSample,trOutTray),tGreifer,mSlow)
+        // Der Punkt pSample wird langsam verlassen bis um den Vektor trOut approximierten Punkt pSample
+        movel(appro(pSample,trInTrayHigh),tGreifer,mFast)
+        // Der Punkt pSample wird langsam verlassen bis um den Vektor trOut approximierten Punkt pSample
+        waitEndMove()
+        movej(pAvoidTray,tGreifer,mFast)
+        waitEndMove()
+        movej(pRootAvoid[nSampleTray],tGreifer,mFast)
+        waitEndMove()
+        bPickupSample=false
+        call enterBeam()
+        waitEndMove()
+        //sSockets=&quot;mounted sample:(&quot;+toString(&quot;&quot;,nRowPosition)+&quot;,&quot;+toString(&quot;&quot;,nTrayPosition)+&quot;)&quot;
+        //call sendSocket()
+        putln(&quot;mounted sample:(&quot;+toString(&quot;&quot;,nRowPosition)+&quot;,&quot;+toString(&quot;&quot;,nColPosition)+&quot;)&quot;)
+        // Holt Sample und entladet es auf dem Punkt pBeam
+        nStatus=2
+      else
+        sSockets=sCmd+&quot; failure&quot;
+        call sendSocket()
+      endIf
+    endIf
+    if sCmd==&quot;unload&quot;
+      if nStatus==2
+        sSockets=sCmd+&quot; success&quot;
+        call sendSocket()
+        // Der String &quot;unload&quot; ist das Signal die Probe wieder zuholen
+        // Unterscheide die X oder Y Seite des Tray
+        putln(&quot;unload&quot;)
+        bPickupSample=true
+        call enterBeam()
+        // old getBeamX Code
+        movej(pRootAvoid[nSampleTray],tGreifer,mFast)
+        waitEndMove()
+        // ensure the XIn1 point was constructed properly
+        // for intermediate points not as much space is needed
+        movej(pAvoidTray,tGreifer,mFast)
+        waitEndMove()
+        // end old code
+        movej(appro(pSample,trInTrayHigh),tGreifer,mFast)
+        waitEndMove()
+        movel(appro(pSample,trOutTray),tGreifer,mFast)
+        waitEndMove()
+        movel(appro(pSample,trSampleDropTy),tGreifer,mSlow)
+        call openGripper()
+        //movel(appro(pSample,trInY),tGreifer,mSlow)
+        movel(appro(appro(pSample,trInTray),trOutTray),tGreifer,mSlow)
+        waitEndMove()
+        //sSockets=&quot;back sample:()&quot;
+        //call sendSocket()
+        movej(pAvoidTray,tGreifer,mFast)
+        waitEndMove()
+        // dont really need to go all the way back home
+        //movej(pXIn2,tGreifer,mFast)
+        //waitEndMove()
+        //movej(pWait,tGreifer,mFast)
+        //waitEndMove()
+        nStatus=1
+      else
+        sSockets=sCmd+&quot; failure&quot;
+        call sendSocket()
+      endIf
+    endIf
+    if sCmd==&quot;sleep&quot;
+      sSockets=sCmd+&quot; success&quot;
+      call sendSocket()
+      movej(pRootAvoid[nSampleTray],tGreifer,mFast)
+      //movej(pXIn1,tGreifer,mFast)
+      movej(pSleep,tGreifer,mFast)
+      waitEndMove()
+      stopMove()
+    endIf
+    if sCmd==&quot;end&quot;
+      sSockets=sCmd+&quot; success&quot;
+      call sendSocket()
+      call anticrashstart()
+      movej(pRootAvoid[nSampleTray],tGreifer,mFast)
+      //movej(pXIn1,tGreifer,mFast)
+      movej(pSleep,tGreifer,mFast)
+      waitEndMove()
+      stopMove()
+      taskKill(&quot;MainLoop&quot;)
+      disablePower()
+    endIf
+  endWhile
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

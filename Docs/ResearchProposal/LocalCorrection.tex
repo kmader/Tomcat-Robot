@@ -1,0 +1,535 @@
+
+
+%% AMS-LaTeX Created by Wolfram Mathematica 5.2
+
+
+
+
+
+\noindent\(\pmb{<<\text{PlotLegends$\grave{ }$}}\)
+
+\section*{Introduction}
+
+\subsection*{Plum Pudding Model}
+
+The plum-pudding model for local tomography implies that the object being measured can be approximated as a bath of relatively constant absoprtion material. Within this bath sit the plums, holes and bumps with higher absorption. This model is used because the primary assumption of this technique is that smooth radial gradients in intensity come entirely from data outside of the region of interest and are thus background. Sharp edges represent the actual signal, and boundaries between the bumps, holes, and bath.
+
+\subsection*{Overview}
+
+The first step in this involves median and Gaussian filtering. The purposes for the filters is two-fold. The first is against noise coming from beam-fluctuations, amplification equipment, shot-noise, and uncorrected dark-noise. The second purpose is to remove as much structural signal as possible. The fitting of the data to the circle model is easily led astray by deviations in the absorption values coming from actual structual information.\\
+The second technique to minimize the effect of structural information, is to assume the data consists of several phases being either bumps or holes with respect to the embodying media. Thus when fitting, the iterative technique commonly used for background subtraction in Raman-spectroscopy. The basic principle is the data lying more than one standard deviation above (or below in the case of holes) is structure, and should not be included in the fit. The data is then masked-out of the fit.\\
+For every sinogram, guess the centerline by thresholding the sinogram and determining the center of mass for each angle (x-coordinate)\\
+Using this centerline as a starting point, fit a radius and absorption value to the sinogram.\\
+Once the global values for radius and absorption have been calculated there is no enough information to fit each slice individually. \\
+\\
+The current way the fit is setup is to fit absorption, radius, and center location separately on larger chunks of data and to run these fits in a repeated fashion. This is done to minimize the effects of noise in the data and smooth the edges.\\
+\\
+\\
+While the method is designed for solid homogeneous materials, it does in-fact work with shells and heterogeneous materials so long as the transitions are not abrupt enough to cause other sorts of scattering events and the object is wholly outside of the field of view. Clearly for these objects reconstruction is not possible because the information obtained from this technique is heavily model-based, but given the correct model the information can be used to determine exact quantitative values.\\
+\\
+Reiterating, gradients and particularly ones with radial symmetry will not yield meaningful results, since the fundamental assumption is that the objects consist of essentially step function deviations from the background.
+
+\subsubsection*{Cylindrical Model}
+
+Although the phrase cylindrical model is used repeatedly, the technique is not limited to cylindrical objects. The only requirement is that the contour line is a piecewise continuous and can be described in polar coordinates with R as a function of theta.
+
+\subsubsection*{Variable Radius}
+
+Even in cases when quantiative gray-values are not important this reconstruction algorithm can play a crucial role in compensating for variable radius samples. As can be seen for the derivations below, the larger the radius of the global sample (the more that lies outside of the field of view), the more the gray values in the image are effected. If this is not corrected the gray values in the image will flucuate in different slices, and functions such as global thresholding will not function properly. This is particularly pertinant to bone samples where many quantiative morphological paramters are derived. The very first step of this analysis is a global threshold which assumes that the gray values correspond to the same amount of absorption in all pixels. If this threshold is not correctly made, all of the following parameters will be meaningless, and the measurement will be extremely senesitive to position, orientation of the local region within the global sample, complely precluding the ability to compare parameters from different regions
+
+\section*{Derivations}
+
+\subsection*{Background Isolation}
+
+Using the plum pudding model as a starting point it is important to be able to then distinguish the pudding or background from the plums. The method used is described in detail below Starting with a sample with a smoothly curving background with several step functions representing bumps and holes. For this example we will assume that the background has a multiplicative relationship to the final result (the normal assumption would be additive), the background is circle with radius larger than the field of view, and the data consists of sharp deviations from this background
+
+\noindent\(\pmb{\text{CircFun}[\text{x$\_$},\text{R$\_$}]\text{:=}\text{Sqrt}[R{}^{\wedge}2-x{}^{\wedge}2]}\\
+\pmb{\text{SampleData}[\text{x$\_$}]\text{:=}\text{Piecewise}[\{\{1.9,\text{Abs}[x-2]<.75\},\{1.4,\text{Abs}[x+2.5]<.25\},\{1.1-\text{Abs}[x]/5,\text{Abs}[x]<.5\}\},1]}\\
+\pmb{\text{SampleProfile}[\text{x$\_$}]\text{:=}\text{CircFun}[x,8]*\text{SampleData}[x]}\\
+\pmb{\text{dX}\text{:=}0.05}\\
+\pmb{\text{xData}\text{:=}\text{Table}[x,\{x,-4,4,\text{dX}\}]}\\
+\pmb{\text{TestData}\text{:=}\text{Table}[\text{SampleProfile}[x],\{x,\text{xData}\}]}\\
+\pmb{\text{TestDataD}\text{:=}\text{Differences}[\text{TestData}]/\text{dX}}\)
+
+Here I briefly explore the relationship between Radius and the derivative of the background, showing an approximately linear relationship with R$>>$x.
+
+\noindent\(\pmb{\text{Plot}[\text{Table}[D[\text{CircFun}[x,R],x],\{R,4.5,8,.3\}]\text{/.}x\to \text{xv},\{\text{xv},-4,4\}]}\)
+
+\noindent\(\underline{\text{GraphicsBox}[\underline{\text{List}[\underline{\text{List}[]},\underline{\text{List}[]},}}\\
+\underline{\underline{\underline{\text{List}[\underline{\text{Hue}[0.67,0.6,0.6]},\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwt1vk7lGsDwHFrajzzPNaUQ9Zke3USEjPdtxYlS5kSskUKlSWVJEWWUiki} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{56\text{TlKNtJaiSVFHPfKYekRGpCUpYUKWPMGGOM932v6}/\text{zwvb7}/\text{wscgJJq1S05G} \text{Rubs}\text{//}r/\text{rcD84dlZCotHTvWHKc}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{C6CmjjCkxhZVDrlmunpCCu1XLTPgCClvP} 3\text{W26rkcKrE3dQ76OUDgsa4nzswopWKGa1tXCpfCkGzWWs00KYD}+\text{vOb}+\text{Cwij2} \text{tFCnfAawTr0qXx5E4Z1}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{J710IiUg16nb5T}/\text{bKcxwgYPM7RLQMf1tyMSLwiWr} \text{//}54\text{dL0EbItRMNZ2pfDmfex3roYS4OfreFVmBYW9n7vxl3dOg1CLssxXJIVT} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{r7Y5f3OdBodb0yLDOCTWsVP1slwjBpkjcdyJRyTO3va2UslaDAqVIpxSqkhc} \text{ZvopalpfDFqAu}+\text{a1myR}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{bxKqbjE7BQzvata155A4YlFifHHtFHidXUqsCiPx} \text{dKdR3yvHKWDCairXUCHxoYTDLjkuIsCIeqxZSCOxZqzpXyqOIuB55nbSUkUS} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{h52Tkb1hKQKJ9dlbNorpOJIM3jRJiUC7te900gAds21m6g5xJ8Ex9eGNI4}/o \text{mLhxt}/9\text{SxCTo6FAefhpMx8zAmJsn84XgROgDTrk}/\text{HS}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{4\text{NfO}+45\text{wQWE0E5uZ5} 07\text{HqBkX1pSlCkKF}+\text{jxHhTscBn}/\text{t9lPYKAZPlk6Wyko6vfI9lr2UKQWlrsU2Q} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Ch0PuRW19vYLQHwzM0nCIbAlIPToKwVAF0drrNAh8Gemi9mJWT5oUbM96KBF} 4\text{JHIG98jhXyQsEv8lqlG4CHWL8uQUT54T0vPXTuXwPN4n}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{jB3XyQ7XVZjTWh} \text{jMecykUPq}/\text{lAfuS5SmSLMn63biOnZj8ffNfUphclKmODLJZq}+/\text{A4eLD3uSLV} \text{Q8NaKRdS1}\text{//}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{iAXv9qGWlXBou1S4ONx7igccdWgHMdhpuU7c6qNTLA5i59}/7e \text{Rhp2}+\text{fNzV}+9\text{rHmim1HY2VdJwqi5j7AObBz5XBeETJ2kYyf9AA9E8QJOIEyaW} 0}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{rA4TBRvLhwDOzKXjXWmzMOO5mqOXapjQJRzNAOBuZjrOJBZYzYKishPCy99} \text{mYMLoSdjtc8wuLpxWezb04q4LUbHgD0wBFL2BcebuSjgb4MVYXVvB8FR}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{VuH} \text{Y0fl8HpWzangxn4QnNxq}/\text{P6mLJ7TlT0vQb4P5NUNXrq6RwavXOt}\text{//}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{diuz}+\text{Bx} \text{rylx21CK}+\text{ndw0u4c7wFGKnD11r}+\text{m0ckC}/0\text{HPvC5wzzxjT1}+/\text{CC382FtDu8gF} \text{vQ2V}+\text{nZ2QpQ}+\text{mzSU}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{7\text{QDDFrmWaOHfJRAuzPOsG8HqsfL7KxkeUjlylEDV51W} \text{YGn3y7KE}/\text{wPdrtQ3j1vXDFLXjr6piR9CxLa2vMTFDUBzKzvbV6sP3Q9O3lJo} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{i8E9YQPVZNyFPEtdi195VYOS7sFz39NeI8NOhwMXzctBgKfO}/\text{e6d95EWUfA}+ \text{Xz8H1NCOvqs}/\text{VAWkg1pLe9wuINs}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{2\text{UUnfFpB6tKS2IShcmQ09mTKob4THEqM} 6\text{NKbeYhcijpfefj0gfaoeJnmGIzWuavJCx4MgfvLQxOsAhtQVhA3}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ffqH}+\text{Dd} \text{g7NrWUQzavTQpW9W4wFztXMmycxWNGqgebz9Mh}/\text{YaueF}\text{++}\text{m0o0MHLYKz5gtB} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{QtmYxsj1DsT9qMLa3SQC7ntOxSXFcdGOI4whJbdp8MwXPqy270LPLFaceaYo} \text{BTlHasL3}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Pcgk3m134o3yMCGmFr5lw6fkW7t3nWKGbJQQSGBf5b7BcmI5cpi} \text{++}\text{RgWJgFM626H0161gU2LFaA}/\text{DVWL22uDqJum6DfFqcpwuUW4Ym9XUMoxltF} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{1\text{fDjHLhrkrH4kfswWnhxwEdBdy7sOKVf19zzA7H9rv}/\text{Nj58HX7w}/3\text{btdcQx5} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{M5M2NNXRoE18x2gW5qGPgq9UfT0Nzrr5yPIaeSiE7cF90kiDJ1WnLbxbeWif} 3\text{qLdFW00KE0Y}/\text{WL9iYdSZOtS}/\text{xikwZCjGTmmEh5iN4g5oXRlyGhwX62}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{chwp} \text{eMTZygYow3UZqwq0q8dRZWCkoYNEGVbzWCMvG}/\text{go5MGY7nVZAt5nyTUdaOUj} \text{DeLgwjlKBHyj1LDCuJOP4moSVNpVCTg}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{YE0r}+\text{MFHDhoZ0oglBLTNF2lK1SdQ} /\text{YvCrnwWAYcC0xdEh06gDpsPOVM3CXjb}+5\text{B5FiFA6Wf9zgexCfjSU7AgXEuA} 7\text{Po}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{nW6oImBTdFSlq6EAXcoaTL7AIWDhnXKr5fYCFDA8HmXWQcBrejpn0kMF} 6\text{GsB3dV3loAirWmeCxIgEW2NfI0XHU62xb35eUyI1H6SF}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{u30yHPp2XzgdNC} \text{ZNHWZdwSRIdBrH8uy}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{cJUeCfsc69EXS4VrdqYP1tIXpmVHha8Tgdzs9vawnu} \text{FqLzDFkVVikdeqZ3X}/\text{vlOIkWRyGdESEdVgRvu2eiJEKrPM}/\text{emZimw6It0f5b} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{NUTIx8Z7lVSGhHVznLQvGIjQGfHPIFVlEholymyyZ4jQ2MlFRSv0SGhhq2jk} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{FCtCtQXHzNLWk3Crsdw33y8ixGpztNO9RMLzDNOSspYpRHNUflp7jYSCW}/\text{uX} \text{NPVMoafFXa7}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{RSSscq4Imf05hX6PPxJ8hU3CXK7LnBpVMSL1qjMXNpBQM}/\text{G4} 8\text{w4fMXqxz7pfc5yEftqM}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{bXDYgTnmmWTbhT0EHGSWxdLkGi}/\text{SJvtScE1ClZR} \text{fzhIUEV3Y4m7NwVFSuMeyZskaFHF7ieZIRT8bePuLM4RCZJ4FX}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{lHaHgLo0a} 3\text{lirBFUX6TGVSikYblFYkpM6g6LovxpLyynIts}+\text{frrs8g0wOc1jOlRTMO5Lx} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{SP3eDLq4MSA8vZaCV76CbPhlBsXyLufKv6XgTRVpSIWTFJn77VlU9IGCZ}/\text{zt} \text{M5nbpejL85Vlqz9RUHZebaU4Voo2X}/\text{rAOfGdgu7W}/8}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{QolEjRXLmbLga}/\text{KGim} H+\text{zJ4kgR2nu4A09Q8Oyj3No2rhTFvXMO2iGmoG8sJyCVJ0X}/+\text{gT}+6\text{xP0X8Em} \text{VTY}=\text{      }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwtlWk41Xkfxi1Z4pz}\text{//}9\text{iSEbJWoyR5kO33k6mpKeI8QomDZkpUjMqSGSWm} \text{kIksM0JPyjK2IcqoLN9}/5}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{LE8ZEuWg4qRLA3HWS0dT3Nd8}+K+7\text{nf39bnuNx9d} /2\text{Dmd1ISEhKBn}/\text{N3m6ANM2trJJW3dugXrrYIBS}/\text{pxy8tkxT5ZKA7XVmEHj7a} \text{ZcTlk9T}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{y36WjrIiZLbVyf}/9\text{LEnNpjnqt3wUIkuluOGOAZIyjeynAuqFCE9w} 2\text{u9UkNSnEwIbsY8QMW90lu5mkRTj8nTlQIkAhXfFnTvdQFCER8uauh8fJc2G} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{DfCeENQd6YHfk9356IHcGYdrjwiqTWzlrHSYjzqQk9rdIoLSVSvebGbJR3oP} 1\text{ep7UwmK1nHM9AOdj16mFNLsTxPUsSsHctXreciI2VqqyiCo}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{xkXsjbq8dCr} \text{V4ozz}/3\text{o1JhdmtNjaS6K}+\text{ba6ofQEnboWYOD935VFZMLzScvwoFNtyY8sx7iL} \text{KF6lyvaME52aWvfHDp0}/\text{F5Ed0zOZsYdO3b}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{njCdfLKLCrnxzFoNOyede2Bd1} \text{YxFFtNtdWW2gUb4vVDjZjEWkRQWrWm6iUQpU76rDLg6qDnohQ44qULZZjU}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{0 3\text{OaRb9KuhaFr6yn7xeLAW9}/\text{PIVFqVDwgecolwnDkN3IG5RFjGpnvZKmFpA2D} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{exqmUM43u0L7EmSo}/\text{uaJOY3ySXTtrF}/\text{EtoPrKNuTHbTJDxMoSrokPPSjFGXT} 3p/\text{dtnkc}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{V3tMnhdJEkdyTqtlJv6FmXUT2bmBEpQ5TcUNmz8agw9e7OVVqYn} \text{hlshbvsuOLGRPgPvdfvPCpj0jfr4lAyiqi}/\text{jA8cnRBCiaK02PNeP3jRXbraw} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{EMDyM0cjwr0PTW7PMIM}/\text{uJANgkNn17qRUnSxhYkkB6y2bN0jIDvRdov57QXc} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{OSibPpuqcbsVxX71sftpxBTwRx02trQ3ITW38pRj6uPwWvGBoYx3A6oSNJOt} \text{BsPwneYyI3e0GhWwJ3}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ejnsJr4NYdS}/\text{DipG366bH7JOP4ZRZjHqUOAU9VYjq} \text{b7z0CLGsCj}+\text{tWqbAv8YltWM8u1ApNZP0cksJ6C}/\text{ULlk3DiGxmSHkJFbDwbyh} \text{TmfPcXQ42nUo}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{38\text{NsM9JWZpfPYX88ntWi9eaIJk1cNW0Zg5NA8d53qsVWpy1} 6\text{C7KHFS7Vb630aQTPuqqRfdmcVEFGv}+\text{leLIbLl009kveIEBLnJKTUlZ9MDDC} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{YJ5qFSGHIymrPT394BtpOyV3eAXtxuFpxu6D0GRsmdgkI0YPXdDR6yZsMFpf} 9\text{yH}/\text{gATuKS5YKBWOglZd0D6ZeElc}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{SYkpzzoLUgsSxWHjkthqRqxzoTyOAhd} 632\text{aDdfh9h8MjKeeTADbnKVpGCeDzZsjM5oKJiHEg6GkNyKLVX}/\text{NtA}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{tngKN} 9\text{D8912nJY}+2\text{UEJWZnmko98r9jRuxHnfdLLvY7z0HHnZXDrTWK}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{DbqipsA}/\text{o8} \text{VPqc07NeVcQ2SduUz8lxwL96QStXkoZJzcbxEIIDqrSLGrJyNBx3edUlUo0D} \text{YU8vM3qVaNg63147U58D1qrx4jNbaPi}+\text{Q6UhgTnQ2PZg}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{A6Thp}/19\text{Rx}/\text{F8mB} V+\text{aDqUtFNFwXtt6PyeGASMFR}+\text{ulROj4pqh9bXlgE5b}+\text{I9MbjdHzcT9}+5\text{U7QI} \text{xj3DBh0sOu7y}/\text{RRQIMEFn19D9785Q8eZb3}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{gTjG40KT}/\text{IEEmmo5jR2Rfm5hy} 4\text{ZatJINZSMeqwXbt7BAuGJ6HTbMCOhbfi2meFHDB3vXm77wVOr79bZly9BoX} \text{PM097MUSBD5iNm2kJc}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{DxOW}/\text{WEqKBB7YuNQRrMGDhevaeZY6BK6zfWYSYMuD} \text{uns}/\text{bov7msDWI}+\text{Y3y2N5wOyxsdDKJPBPe7ckv1Xng4KN4vO6uwQ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{9\text{nWQZqwe} \text{H57nDx86kUdgpz6t9zt38ME0ItIvu5zAu3Xjrxbt5QOhU5Ok0Uzgoe6uAfXz} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{fGg7azahtkjgrJ0SBhItfMDy21KIwyS2UvGqTYwRgOh70RflriQuvGqTnvOz} \text{ACrYLQVOHiS}+\text{WzHkU3tHANoVp2qT}/\text{Ek8q96}+\text{c3OVAFaP5r9XiCSx47}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{z7yZM} \text{CKAmT8dOrpD8}/\text{E9CAveAEM7T51sKS0n8Kcxa891RIRiFNzD3V5L4tMsXXqP}+ \text{Qkj}/\text{xjvgpzoSR}/\text{Y8Z0n9KIRQTlaadB}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{JL8XKTktWCeFLr0DtvEESl9kbuQeA} \text{EN692FO8d4zEbjWJwWMdQnDJHGyImSZxC9tpx}/\text{KUEOSlig7qzv}/\text{NC2q5fCFA} \text{UPgrivd5v}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{iembu0CML697N8l0nMvr5SuElJBP}/4\text{CP}/\text{jI}/g/8\text{ZZWxQ}\text{==}\text{      }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwt1P8z1HkcwPG1vrba}/\text{cglQ2ER41tNJErl}/\text{Q45hJNRNCVfmjDUyabYNEqn} 7\text{B3ilMlRrmt9KYVChOX1sRISW1LyJbS}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Jd}/3s+\text{RLcXcz}/\text{fCc53}/\text{w0A0M9zxJ} \text{p9Fobv}/1/7\text{eiDV9WVwnymI5C6kUbKQpf1OctLhFkiEtDua2FFD0uNTek5giy} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ntGmrGgiRRZGboEj4wRpe0tTu0BDiqzXxXe}/6\text{iTInUlD0p2LFMKDsy}\text{//}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{KibI} \text{LVOyppxKCnkmtD7c7keQjpP0gY22FIoSxZ8OrmWRH54duSs8LEEdHcpf6gKY} 5\text{FX19hy}/}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{rBmkRYavt960llRX0ZtwCJtCT8OeyxMfGWShbVbpsZVx5J9kPtN1} \text{ZQ3JfRgQnMwfQwtpMTxASqSB0wRXN28U8Vl9GhmfFEh273L21KNhdNvFnPP2} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{d3lS5XUVd3BwEF05FRBt7CxHRjYnmnIOi1GMbEEUZ5JOCs82p43WDaCAy6LN} 7+/\text{LkI8VeKKUqj6UXjOccTuURl7XvHF}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{jt2LqvqN1j7SW4F69zYeLbwL6atg} \text{O6}/\text{sZUgccOCZyneiEhNeqHhwAT6}+\text{OZHIv9SB}+\text{huesK2s5mHH44i8Js12NGyW} \text{bgHlFNTfqqGx}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{0\text{RoXewDq60ys1CuFuL4an8LMrOaNsulJsDQNdS5VrUR}/\text{eYw} +\text{boyehR}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{KZUc2pMpRGpeRalH1MXgNMW0}/\text{pIsQCXzDUTT5m7o5yK6cVoZyu0Z} \text{Th6Lb4PrgT5BMfP5yPfgprKeE2VQuYe5SP}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{egioZMe}+\text{E50rRlszCHScTrsMO} \text{sYx2nI8IXXAe2bd6}+\text{z7oz1Qv2gi7kJNCgi}/\text{boQyc}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{V2t7j5iZDGtkVE7J4D9} \text{bqqyc09H0bXYSMe2FiGk}+\text{HVe3lYxgfxsyo}/\text{IfXoBje5aTA}/\text{VWZT19YIwIbAF} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{JnXVYtszKcROz15rVSSCc5GmASkb5pG6BQTPrLyBzl4Vz6CmBTTlvVBQEtQB} /\text{tw9o4quy2h35Stuf8V7qDe1}/}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{qNefgWl3kkteeHZBYZrBJ9znGg45bKlRmFP} \text{D2gJwvbL82Qwzz28PDqyD2hL9AccMR1XLzuNxz0dgK8Ha443GMjh7cHBkxvM} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{xNBj6bfRIF4eF7U8y8}/\text{uHYQz3irr9HoVcO6fB7pP5A6Dxs0hHzktJXw}+9\text{mzk} \text{asQoFB29m09Fr8FdQqO4vTfGwHvvJaemGgb}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{rPqPD7thHJ4cP61n800Zz8oa} 5\text{D83noIFhr1s5SEmtlxfd}+/\text{n5BnwfLPbSiuDhR08vuqE6kmAsVu5TnCHhb3M} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{vXYyTCRQl9N94BifhUfKhgTF5hLYFs0NyCpi4W}/\text{nzhop75MAS6ciSaOBhe1e} \text{WvrK}+\text{Uug}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ZTFoJqEhT1UM5mKf0sAKxmnslwJvE2E3BJ0KViIWNAsOkjgo5zI} \text{uCFjCop7GnPdvAlcJSnc6mRBgXZxUHVSIIFTQ0M09e0p}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{HYoZ4TBJbBH9LCj} 0\text{UkKKvg6exXzCKyXOF8eXUDBr8zpxryHBA40u8i2K6XAMKrW0}/\text{EJgRsLPHNV} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{BRTcdPENuSog8D3}/\text{a2bNrRRwZjNvyL4lcHsCDk6epcDkaKg2}/\text{wOBvb4PDaQu} \text{UfDp}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{a4Hdn0ENso6I8qSlYJHxofauDECV6f17mpSk4IS}/\text{b6z7jSBHdJdW8e0} \text{pQBhUR2klMAR}/\text{Hq5n4ykcP6do5}\text{//}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{EoHzxC4T9uZS}+\text{OEX}/\text{uEX}/\text{AsZKmzS}\text{      }]}]},\underline{\text{LineBox}[\underline{\text{CompressedData}[ }}}}}\\
+\underline{\underline{\underline{\underline{\underline{1:\text{eJwt1Ps3lHkcwPFxjWHmQWnXalSolMtBa1i377ckJdrYWu1SblsySMTS0aE2} \text{u43YlGqTlMqtqdaMVJPI55GsVELDTu4ZDYnJ8zTlvuzuOf3wPu}\text{//}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{4\text{LU8LNZ}/ \text{jyqDwfD9r}/9\text{vgxa}/\text{m58nSPeDbk57imgUO2XGn5omyCWu8cc8LtNIVGG3UvmJ} \text{IMGlZeuKXBrZW}/\text{iGDY4QZKQy}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{3\text{tlJo0c9dM7n0sJMvmGKdw}/\text{SCM8QD}+9\text{ICRI} \text{lRCRUO5BI}\text{//}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{jTTfXBhOkZkmNlnCQQknN6TERNWzSLa551MuBQm1tOu9qQ1nk} \text{M1Ht6y0iBeKQsYscl}+\text{iS3sbTP81FjaC7UY81iB4mef39e0HFvmEUkmVHdfyi} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{TS5qFlzL5A2hyZwUPiAtkq7sinK5I0eF7F6j3H5NMm3CSTt6ZgDle9vFSzI0} \text{SFGPNl8UIUO}/\text{RIcmr96sTnrrtVlra}/\text{SjFLUbSfEKVdLQuvTPKrs}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{FHqk2fzv} 6\text{yrks5Kitns3utG5h}/\text{LcfB6DtLkk1GVu6UQP}+\text{ix0b5nOgbG4deJwqxSZ6eH1} 2y/\text{PwPg1}+\text{bzX}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{XZ0ew2fJxuYhNbpgnW9WIL66suXcbnjcJ89xkvTbEVyq3P2} \text{cE8JCycTxM7zTUg}/\text{VcC1UaEhCCLymssbkRV3zKpYOQriUf39ErIeHdugaKlM} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{HoKMnDdJmVm1yHB72akfvpABf8CWb6V8gG6P1xNPzDuhtbBR1B1VgYq75L8P} \text{p78A5wPRs}/9\text{cKUG7}/\text{Jbc6Qq}/A+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{GMt9S4w0lUyUxpf5RYgTZkytxM2rPAQaZi} \text{cnRnM}/\text{Jijyrt3UvBjKqacn7UgY65jni7mVbA5sKOpq07ZcjC32BGa0cVePoa} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{qH26O4Ry4n4zXFtVC9nB0iO24lEU4dPuYJxTDw1bOaxtBjSaVWQdhOeNoFhu} \text{mPoyT4kazSNHol82QWKCZWj24nGELay1M0ZbQNqt57}/3}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ySS6WfEi7fZqCYQc} \text{ch1a4DODznsNhtd92w51lo4n6jTm0NWOYkmqWAortavfFm1iYANfmfM5nU7g} \text{VEd5avBV8I9zKavkvG5gTKsK4mWqeGIpZ5mfcR9M}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{D3cXb9CHQtsRKdZfa}+h 6+\text{tg4xXpGngkkk51CZXBgQA9fdNuTXyi9K}/5\text{Zx8HwOjsm53qHC2cW6C5UOO4} \text{HMoCr5Qqk7Vx}/\text{L0Cx}/}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ygIQhwS9v05CETL3avjr7lNAzlu2NMnWd18PsCXVsz} 7\text{ghMMj3UKnewsFd4gpn4ggL8W124nFw2nu5vayjTpYDpolNbfYmNpWFk4kUD} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{CmqLOrcEFbJx4EZ5bOaXFNgmHwq9WMbGs9LTAYnmFLCXirOM6tmYo7gbFOdK} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{QWO0}/\text{YDhBzaO5yedYcVQgLVWn2L7EFiRr37tQwsFk3GTX5X5EbhVXhe5TUqB} \text{sKuh2DeAwHk85}/\text{nyHgpMhHurssIIbOmNi4}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{8\text{o2B2R9Eg8xCBRZ6fgnzUaRAX} \text{LnVbUELg4}+\text{auJ6860bCfNdZQcpPA}/\text{cKCQHdEw8qkGv}+\text{N5QQmGSrr}+\text{zxpOOu9} \text{a9}+\text{v1QSeOlwaY}/0}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{dDfF03hk1CYGNBI1NMzE0rAnkmRS}+\text{IrCawyqqMoGG}/\text{sff} \text{CNb3EnidhLv9cAoN23Jf1RwdJrBtSMw4K4MGLdXrm5ePEXjoqCXqyaYBopLa} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{yI8ETt}/\text{wtFf0Bw0}/\text{t28MDpkm8AGPW538SzR89gt}/9\text{gv}+\text{BQpTea8}=\text{      }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwtlGs0lHkcgJnBuGRetGZSLrmmyEZhU87}/\text{n65IaXItuWWpaMVuzYRQy2Zd} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{DiW7KnXquFTbRk262Ibf65bZVinkzmQwcpl5aUpDyu6e04fnPB}+\text{e749peCzn} \text{e5qSkpLXf}/\text{xvO8QaX1ggSHru4}/\text{jgdArFzppnzM4R5GyXy}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{JriRS6e9}/\text{eSv6B} \text{IJuvtFpI4ijkYO0VLpkgSN5dlayUYAo566b1NHcSZCbvzTuJM4Xw0PSzixUE} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{uWQiUJA2IUOcs89vrw0hyLbrwvODvjLEbUk7GlXDJPNp73sDnaSovV1rvDZM} \text{m8QxemvwzDgyImO}/\text{cTZcRNqnd1hmaY}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{hB9ENqkS}/\text{JqlDv54U6TOKQrPtp7rP} \text{aJCKMVV1}/4\text{sjSHE}+\text{MQOQOllZktAnZQ}+\text{jYuaAQeGgGkk3C}/\text{pgnSdGRR728W2}/ }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{qpKXB9S6Ry0H0ZmYMN5KdxWyNvDBSq9nIpRI}/4\text{MbL6WRbVpa}/\text{rMO}/\text{SgstcWi} 46\text{Yy2VAgMNQV96CC6pHCoiNK5BbdTAmH34X}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Elkv}+\text{tPsCxzntyYsRHUgcx3s} 5\text{nP1E5zKPpi8xK8d8VdlHBEPKcAsse3UuxWtSNR4b7mT0wwcGDArdtR7iUZs} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{CxzgoRxO4PqE237NSDf5lpOd8jSEJa5mCz2EyNaJsi2VT0KoZwKaym9AP2}+R \text{vqzijQKXPbJLqYhE}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{j7leYFsMZQ9daoPTKtC}/\text{JlGQmjRA3cCDkn}+\text{ieCj0t6R} \text{nLG0F8DyDIrOji1FB}/\text{YYVvYerASWyQrG66vZqEoz8XXd8ftonfmxdee8s8BR} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{rGx8OqAFzRY482JVysB86smsS103epn3i5qhCR}/\text{ci7uf7woQI5FufaXkTRVs} 9\text{dKjf3gwihSQs09PSEJuSGfqmkeTyE7e}/50\text{oqgGadhlpe}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{tNI}/\text{bu1ectIoQg} \text{NdVPbr0kRxc7z1L5ts1w}/\text{CebsFzWDFIOeLGsVt4CnX06nEihAjmmnOj31GuF} 0}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{JMbRxk7P6Hux12vkhe3Q72Nc2a96hf09LeFYfHuDrDSELwt2aGEcw6z9z3m} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{doGRIHqraoYybs6QvDh0oweU5mi34sU0nGTjPpdk3A8f91QHN1qq4OKYdCuf} \text{dBH0rgtZZpmmivnXHhqylg}/\text{CMX8dXbM}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Nay8sKnZNVMMBheGA1SM1LHW3jo3} \text{ihqC8v3Xbsh5GtiiqJq9ImcE}/\text{F1TdgirNfHv}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{nvT5KtG4V7wUTOXeS2cxd62} \text{GURvQaG5mV7lq41br0ZtjBwaB86rDU5GhUzcXaGjq}/1+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{EjQ3aNUKrjAxLdWh} T/\text{B5EmpLejyDipnYZapNI44hhTW8k2GXy5mYVcO6IlkqBabJo2yDRib2vum9} \text{hOEmhb9jHIb03}/3}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{XhZsMTM9JAauvzGPuJPBaU9tvuxxkoIhTLC3fQ}+\text{ANz0f4} \text{hq4yqOhtKvXyJ}/\text{B8p4515HYZGFdEPskOJ}/\text{Csn}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{McI0gG874lEs2TBD4nTG86} \text{my6DR8UmrowyAn}/0\text{Z0UndcvgB22qqew2gQ8n7gjSG5aBFbeGs}+0\text{egdm}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{U7l3} \text{ZDK44HHgULqAwAEevW1yOgXx05fy6W0Ejpv3iyDtKFi1}/4\text{hxcReBXX}/\text{cuJC6} \text{noLBhvW33AYIrJHSwti}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{hQLvwq6a02ME5ny24Q0FUqBOu}+\text{luShG4TmoyURVB} \text{AURz28n3BDbIZokLYik48XpbSOgcgUW0qnBuAgVf}/4W\text{//}\text{gv}+\text{BTKNaNY}=\text{      }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwB4QQe}+\text{yFib1JlAgAAAE0AAAACAAAALj8W6v}\text{//}\text{D8CvZniiJZ}/\text{sP2}/5\text{I4j5} +g/\text{ATRwnHxCX7D}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{wszEm8}/\text{UPwBNT9aX9juw}/\text{MihNYubrD8DrAm}/\text{I4X7sPzcR} \text{hNrM1w}/\text{AqRvdHs5e7D9A4}/\text{HKma8PwGLiBQo1H}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{w/\text{UofNqzNfD8BPnIsbLKLr} \text{P3fPhG1nvg7AFWHvqUiw6j}/\text{U1AvqwWENwO6XQDhZxeg}/\text{HcBvFDccDMBPFuTC} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{lB7nP7VrxAUP3QrADwvMAD6c5T9gjDHw2YIJwHAcxev0E}+Q/+\text{JJ7iL8}/\text{CMB2} \text{nOVabbviP6MO3hmY4QbANuTfwkNa4T}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{cSjFy04kFwNTBacs5EeA}/\text{gmxheClJ} \text{BMBGNhpHCdjdP3sDqndy7QLAxyb3uD522z9hgM8k1qgBwBMF}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{FdxUtk}/\text{lb3l} \text{mJxqAMC7g1WWE0vXP7rfKAysIv6}/\text{gdvdTO0o1T8jEEBCVJ77v}/\text{cy4QCgOdM}/ \text{siqIauLj}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{L/\text{iMRfRUy7RP9}/\text{FsSA2Nva}/98+0\text{IxRxzj}/\text{lLJUyv7bzv1sp3diG} 28o/\text{EX6pNi4B8b9wh3ccfwnHPyw27yyl8}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{y/\text{Jobzdz}+\text{Gwz}+\text{DRO3QuXjnvxa5} \text{YdItiL8}/\text{FVSukFkX4r8g2IzFujq4P7L2xQ}/\text{IJNq}/4\text{bBUNDt4sT}+\text{l2}+\text{WN6YTO} v+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{1\text{pJca5XKQ}/\text{XVEctNtjtL8UXq}+\text{cbDCLP7kKe9XCdbM}/\text{JTn}+\text{mOHyib814gEe} \text{gVjPP9w6lokh6qS}/I/\text{C7}+\text{TrC2T}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{iYVvsEzaxv0mj2c1OWOI}/99\text{Ub8IWSuL9F} \text{TRID9bXnP47QqHu027}+/\text{j1}/\text{XgDC37D}+\text{OfjGKilzDv8dOHQ1QEvE}/\text{cE0jfXYh} \text{x7}/\text{tIRV}+0\text{przP2e}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{epvSs8q}/\text{dXQrYY8W9j9gXG2PREPOv9fcEFJmyPg}/\text{Udpp} \text{af8Z0b9geTznB0z7P051ahtE}+9K/\text{wys3isMF}/\text{j82v3d7bBLVvyYJvOikSABA} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{wk00PpUU178dvGtFBYgBQCRSYzUdHNm}/\text{APoCqXLiAkBtl48XXGPbv}/\text{dRvV7F} \text{JQRAj8GU4cmY3b}/\text{bNF8bJYQFQP7TLuXrC}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{C/\text{cFcQESLcBkBRtM1R6FThvxmU} 5\text{FgEHQhA9}/\text{Gsz4GX4r}+\text{uW6Cn83gJQI1zNaYbCeS}/\text{Vz1}/\text{SMi9CkA}+\text{Wm6IuHfl} \text{v7FebSI6}/\text{AtAIZI7nK325r}/4}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{CkMDuVUNQMGJcl0ltei}/\text{UtE7Nh2YDkAU4i4i} \text{NXjqvwo7C8G8nQ5A}\text{++}\text{j2UGiA6r}/\text{BpNpLXKMOQDpOp5meiOq}/\text{MHh5YZuuDkDr} G+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{GCFJnqvw4ft4wZxQ5ArqE2}/\text{CW66r}/\text{JbDLjFfIOQEHQzc}/h/\text{Oq}/\text{QAgpkA5M} \text{D0Ax2qnCz4Trv}/\text{hx}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{BquUQ9ArrNzTWuN67}+\text{v28elTVcPQCwu1kgKluu}/\text{Hq9m} \text{u4xiD0AH1A}+\text{dUqfrv}/\text{xVpOYKeQ9AjULADQ3K67}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{3\text{ox89B6YPQNa6zK4rEOy}/ \text{bg3vx6arD0Auekyo}/\text{xjsvyZ3vlJGsQ9AaVekQtch7L}+\text{USl1ohbwPQN04amaR} M+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{y/\text{cvGakwPTD0BKEAHDMVfsvypbah6j2A9AMnbaGyNg7L}/\text{hxDmpQt4PQOKy} \text{CS8Yaey}/\text{UJjYvoHpD0BRbnGRDXvsvwgCqEkh7w9AO5g35w2E7L}+/}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{a3fUwPQP} \text{QI77bgQSjey}/\text{dtVGX2D6D0DzVWjsGZbsvy4}/\text{Fur}\text{//}\text{w9Ar2Z4oiWf7L8Qa2fi}\text{       }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwtlHs0lHkch8egGMxLJ0pFRRxUym0o9PudonJdZnXolBiVXCpFmpG2TCvh} \text{KC1pddG2DW2yuZSyg}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{b7jpqNtqv7mCLDMO}+\text{LLaxbtdr2nP54zuev53z}+\text{e5ZH} \text{JXD3MhkMRsBX}/\text{l97ZEJ}/+\text{UKQh37O27bTn0YJM5aZMx8JUnZBDyd606jynoP1} +}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ARB6tRm78zeQCNHm4CogSGCXGJUaCVdSyNXo}/\text{SuZx0EyeJYvdhqTCPcN}/\text{r0} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{UgVBRvVsWAPdFOKeeV7mFEGQu}/9\text{CthuSKMR}/\text{mX5gn4RNShWN3W431Ki1VY}+W 8\text{gxIZqyRR8}/\text{EADIjE}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{a7LtEns3B}+\text{kTRNhe7HP9Ym3rLIHhOLB5k2}/\text{Sgyx}+\text{GD} /\text{JQuad}/\text{ZuIzRqETTeamZgHRICSs4Q}+\text{t8LxKxu00Le}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{eQrp7LctiB79BVX4fE} \text{lixt8nm6U0gq7kan9vMEtj5aZPKiiVmZ5RuUqnmbnzjCJHEW36L}/\text{bznipb1c} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{0\text{X5Lg6w9xrAKGu1ABQ9VhVfjGOQVZ7dQgX47qu2x0f}/\text{dYhZ8IvwsJ}/\text{VbkaUh} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{3\text{hhy7RNcqmriiN2b0V27zDhl3zTsNfD4dSjwFeqRVS3jcCahtHMfmU0}/\text{Q6pV} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{BY7wYBwWBNlWNmQ0IaMTpRx7jVHo439fvE4tQ6s471eVjA9DtvrUTwvzG9CP} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{XiOvxIJBGI60uxbBlCDjkPLz2xcoIVep6zJoWIPuTsqIxhVdIMi}/\text{UxR2oxKV} \text{KFRnqfQXMLP53zqLPSIUHrykWrG7Gm4O8ZuH}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{rOQmJXa1pB8D3131vm68EEm} \text{uCg1zIVhL5EfN6nvT1oElh}/\text{qZtY3yJFaK3ZB1O5K8BHJnweGKdHRUk}/\text{d2D01} 4}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{B0wT3Pi}/\text{iA67se6TAZLIDeiI21tzTCqY3vdTYtvgCeBZgZB80ZRWtsfR8Zm} \text{ZTCy3PhE8}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{VxdF96Aq}/\text{mNUHykZW8XJNJ5GuXVIzhGXS8MeRGN04jSRV3Pen}+ \text{CiJTPAbn}+\text{n9CjlPWKYYazfBopWv2I}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{1\text{ZJBYV9cunWsBat15dvJWBq}/\text{ccbxfK} 28\text{CsPt5bO1MDK6iqqTJJBzA}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{MksTlUxsN}/\text{GD3Y63cpgKfrhLZqWF1QczmIGU} \text{AhTOEYut0rXxyrw6YzGnGw6FGhpZvJmDr7m0WNr4vAPTC}/1\text{hWmY6uCDWP2ZX} \text{Qi}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{U77j}+27\text{hAFzu1eZW5SJQQ6nlya}+\text{NDFl4o9nrRPrcfqnYdsFj}/\text{WQ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ryjSd} \text{wsJVMM3apCneZoCT2MKK4sEB4L5255gVsnFUsptL3mE1sNz1pPVFbLzJ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{czF} \text{SoEapMVdfjtFbNy68fCm1yfVsFaQwrtSzsa2trUZpufUwF5ak2MqY}+\text{Nx9Uiv} 7\text{LYamvY79hmPsTHlXx}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{d268GrGN7nu1P4ORwN}+\text{XodgqmD08vKg8mcGDIcYNw} \text{HgUViiclAaEEdlBW1D}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{NocC8IrouJ4rABcKY8jt8Cj5vKx5gpRD4XJfZ}/\text{LwC} \text{CmpESz3n3iRweN3AxfbXFBw0eP}/\text{kZhmBm08fHYiTU2DNl3A3VxHY6JayU6OX} \text{ggu}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{4\text{TGn6wmctSa43PUDBYmjl}/\text{M1WwjcpKcV8ohNg92OOHNR51dfXzW234SG} 3\text{sfrSjd2f}/1}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{frPAyNachqLBTIqQIHDTmyzq2mgYd5i2f5e8JvCV6WGjvQgPE} 81\text{vJfwjc5j1WrfKg4Wjb5ojIjwTGncklv3jR8K1f}+\text{Fu}/4D+\text{qtWvx}\text{      }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwB4QQe}+\text{yFib1JlAgAAAE0AAAACAAAALj8W6v}\text{//}\text{D8DCSgZ2zmHoP2}/5\text{I4j5} +g/\text{A6P0XHsJb6D}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{wszEm8}/\text{UPwO501Wy3Veg}/\text{MihNYubrD8BF50r6pknoPzcR} \text{hNrM1w}/\text{AbK8QuZkx6D9A4}/\text{HKma8PwPczO}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{jMAeg}/\text{UofNqzNfD8Boil1IY6Pn} \text{P3fPhG1nvg7AqsOxZBzr5j}/\text{U1AvqwWENwMSAkJufbuU}/\text{HcBvFDccDMBlGZF3} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{NiDkP7VrxAUP3QrA197RMlzp4j9gjDHw2YIJwEbxR83MqOE}/+\text{JJ7iL8}/\text{CMC2} \text{yzRKW4vgP6MO3hmY4QbAExdgW1DG3j}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{cSjFy04kFwMZEIrspmNw}/\text{gmxheClJ} \text{BMDnPnQaB6LaP3sDqndy7QLACUHv}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{2\text{aT2D9hgM8k1qgBwJs74Y2rttY}/\text{lb3l} \text{mJxqAMDEdjMnuO}/\text{UP7rfKAysIv6}/4/1\text{S0WsO0z8jEEBCVJ77v07zbICTV9E}/ \text{siqIauLj}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{L9kcLKSaQvPP9}/\text{FsSA2Nva}/\text{AfUbIxmKyz}/\text{lLJUyv7bzv13vuDC8} \text{Usg}/\text{EX6pNi4B8b}+\text{V1}+\text{SKWuLEPyw27yyl8}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{y/\text{REy}+\text{Hre2wT}+\text{DRO3QuXjnv2PB} \text{f9mzoLw}/\text{FVSukFkX4r}/\text{jw}+\text{iFdwK2P7L2xQ}/\text{IJNq}/0\text{SvzsAvArz}+\text{l2}+\text{WN6YTO} v+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{bT7}/\text{UwgqI}/\text{XVEctNtjtL}/\text{Gmh3Ij7eIP7kKe9XCdbM}/\text{QVYOGeaWh7814gEe} \text{gVjPPxIyl}+\text{uvAqO}/I/\text{C7}+\text{TrC2T}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{YRIAD6Uevv0mj2c1OWOI}/\text{EL4jQxdStr9F} \text{TRID9bXnP1MEeVFV7Ly}/\text{j1}/\text{XgDC37D}/\text{cf0LVBpHBv8dOHQ1QEvE}/9\text{Zy1Q}/\text{X3} \text{xL}/\text{tIRV}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{0\text{przP2Z1zEYML8i}/\text{dXQrYY8W9j8bxSziDWHLv9fcEFJmyPg}/\text{EAp0} \text{BCHnzr9geTznB0z7P}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{4\text{hxhctING}/\text{wys3isMF}/\text{j8Ueimyh}/\text{rSvyYJvOikSABA} \text{hl4rW9O}/1\text{L8dvGtFBYgBQCcOfRQ2h9a}/\text{APoCqXLiAkAfAuLlBYPYv}/\text{dRvV7F} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{JQRA4eix95xr2r}/\text{bNF8bJYQFQNEH4T0ej9y}/\text{cFcQESLcBkBoIgIERr3evxmU} 5\text{FgEHQhATbL6x2Rt4L}+\text{uW6Cn83gJQE9Kxdbdn}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{G/\text{Vz1}/\text{SMi9CkB20UTsuMvi} \text{v7FebSI6}/\text{AtAeNf}/2\text{VUA5L}/4\text{CkMDuVUNQIJuCrfrYeW}/\text{UtE7Nh2YDkA6saIm} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{FsDmvwo7C8G8nQ5AWsplj2LG5r}/\text{BpNpLXKMOQNdScLqwzOa}/\text{MHh5YZuuDkCp} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{TO9bUtnmvw4ft4wZxQ5A17LV7Kry5r}/\text{JbDLjFfIOQOtrmEuyJee}/\text{QAgpkA5M} \text{D0DL5e9dIo3nv}/\text{hx}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{BquUQ9ACyVtWqmT57}+\text{v28elTVcPQGCHxz8ymue}/\text{Hq9m} \text{u4xiD0DlJy}/\text{KSafnv}/\text{xVpOYKeQ9ALTDKAZDB57}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{3\text{ox89B6YPQGCXAyB69ue}/ \text{bg3vx6arD0BKDvFFIP3nvyZ3vlJGsQ9ATtawacgD6L}+\text{USl1ohbwPQFWEDrAe} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Eei}/\text{cvGakwPTD0Cep1le4yvovypbah6j2A9AEHHomJky6L}/\text{hxDmpQt4PQH8n} \text{ONxROei}/\text{UJjYvoHpD0Cri6mCyEbovwgCqEkh7w9AkgOW6IZN6L}+/}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{a3fUwPQP} \text{QOL}/2\text{FxHVOi}/\text{dtVGX2D6D0CqHtvgCVvovy4}/\text{Fur}\text{//}\text{w9AwkoGds5h6L}/\text{S1HA1}\text{       }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwt1Ps3lHkcwPFxGZfBPFImWcaWSGUtEq3Gfr}+\text{ntovLOAy5bK5TWamwcxIy} \text{XURFh2K3zpGslMumCSG3MJ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{HRiOtyCW3JKN52myRRMw4tbvn9MP7vP}+\text{D12p}+ \text{DO}+\text{AKo1G4}/7X/7\text{dBrMkvXwjSKOSuy48SCsUsmqctKgjS}/\text{MTO6OdiCt2ttrOc} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{nSNIjeoBKqmBQvZWXD71D0Eql7PKxOUUclqWOvzXAEGWnXM77nOVQnhipuNq} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{BUHyd51KaoimEO98p2hTKEF2PXrIExhTKL4r9cgvYiaZdr2nWhAnR319OpMt} 4\text{XqkIjuR08B}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{hUzJmBVOJrrknPLxQZ9pGao5JKETowxyR01BbXbvOArLsHs}/ \text{dEabrCyyb3Mve4kWfktKA6RFrpvzOzHoPoYKmS9W5YxrkH7GOu5iy1GU52Yn} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{6\text{E2nkzS1mz52ZiPozOHwhPWu6uRdvV1NK9yGUJLa7XjBO1WySad3LiFoAIWf} 7\text{lr77JYKeexUSrNHXj}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{60\text{izPyYuikUuGKqNnpnvR}/\text{TEr3TtrPoNmy2TmU6se} \text{ZK6Pt}/\text{nmK6HY}/\text{sNIYHo3qtqQFiWbWADRcPL1t}/\text{mdaKyt8ltHx3kY1pem7HHr} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{QHLrK}/\text{ZQOwtUgOaFcWcpWnay1NFGZQaUc22pZh8fIGvHaevi2bewz8siWGOK} \text{RCk}/\text{vetuSHgNBucVAr}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{QRmToW54VuFIGJVmKicc6Nahqvo1oXzsMnUvumeHB} 5\text{ah4RJ75JvUJODMiA6eqb6Bgb5N7I}/\text{vuwZzwhuhg0XnUwEjqb42rRn6xZt97} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Zp2DzTIVdnJAFzpuYX3vqc1NMH}/\text{fuOjcOoQ267vgc5Nl4Fo41OkZIEO1ygyx} \text{zL8GdnAN1OZqXiNZh61HVkkjXAodOG1b9xZ1BPEmiA4SpJ6mel4GM6g}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{7\text{ER7} \text{nZYE3q02PNmTO4vyaZH1lJEU4o5uDL}/\text{EmkfdrMg}+\text{rnkHDDzX50W0L6BY}/\text{rOJ} \text{RGEnhCVyXmt6KNHid5ybg77d8GCj04UH9M}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{IM6qwU2H1gKV2099Fu2lYclzE} 8\text{mrtBdOmQzvoaSo4mW7skx}/\text{TDzSFaqlApoqFgf2uRtwB}+\text{OTdHNJmoY7hkrbR} \text{upVDMOIQ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{o1FKh3zFayKFtYIxPrrL1vzXANrlTigAPYorLr8KkDdVAsLvOIk} \text{B1eMQfnegj9nE7SxaH4myqD4Jfi7nNrd3szAJml}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ntH141AZcmSN85IONrP6} \text{FMHtkcECY7tawx497FG1bjtn}+\text{SvgPd3qaJrDxByTz9l9nnJgbNVpafqDiaNP} 9\text{x8Q}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{sqhpWjYPaiQiY9GuedZ}/\text{CwH24TE8GvlTCyhBzkID8iBaVaXsaqNiQMK} \text{HKychXJ4dNh}+\text{wvADE7Mr6MOLpXLAWuuzmB4Evh1ltO}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{iBgULvy4Yl3sTWDSb} \text{Z7Nfl4KKEWkx15}/\text{A7AJuwlYDCtgVEY0ZfALXpvemT5lSsLSniGIkEnhXnFIc} \text{sZmCukIzF80SAt}/\text{nHsMF}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ymI1puWlogIrCvUDL4YRYFlvJi3s5LAYz9e0zgZ} \text{S8Flt}+\text{DIs00Ebr2aq84XUiCYyf1drZfAU}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{N9DzmXKdiwN4pdOEjg4CzvCKdc} \text{CsYlP5Rue0FgRuDZ3E0FFHjlDIqT3xBYmqKU2N6hQEv1luvqaQIvz3Rotqui} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{AA7F95EfCfyEZuDpUE}/\text{Bsf6doWEKAkdvyU7YIqbgq1}/4\text{q1}/\text{wL976ZmY}=\text{      }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwtlGs01GkcgMetNJr5q1BoFIMtrGWqIVbvG91UCmVNGzHTsp2o0Baq05VI} \text{ths2usjuuCSXEuW4}/\text{l4kl8LSZBLFjP}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{flI7sbJro1Lbn9OE5z9fn02Mu2ecb} \text{oslisby}+8r/\text{tkdHrL18oorqXdOakmEH7PvITP05SpKlyrzwvgEF3Sh2tVe8p} \text{EnHL3abdn0GCRV6SoTcUSWTy}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{3\text{ibGOQ0K}+75\text{YzlFiJlRaIsLg}/\text{DgeGvGbYqo} \text{JacyvA0Y5JvQVrAkiCK2IpX2}/\text{GYaRXfE7fm1lkv2vrZjJwtoJJPpva4Tc0i6} +}}}}}\\
+\underline{\underline{\underline{\underline{\underline{0\text{vvoEkl4pF9Bk7zZ5KlGfkFElqB7oU90KFesEn9sL1iTv8ACk52fNdzcgYx} \text{qf0l88b1fqS}+\text{dDgRkC6RW}+E+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{h7IXSMp9aZyumEb63CBIu6wXXVvvGPXkjA5Z} \text{FElCCtp60MlwccxiT20yteDgse8Nn6HDWreio95qErsEjqZkVTcSH}\text{++}\text{w7L6p} \text{QebF52RtuC5DaTVM}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{rXdLFJXyXfKnP4EVfYvmllo8RnINqnvOVEn4utj962Z} \text{U5AQr3Vo5GoHumuTuFs5qIailC1dllseo}/7\text{GkoVC4QS8N3Iqllm3IMYuTQD3} \text{VSDyXH5pv}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{tDNOtovtBeYxwMQ1kowqQB2QnH7HJUo5DVMnnnkJCgU6ve}/\text{l0R} \text{MwxDaj3ntU6VyHBr8YVtc5VQrGFcpVhchu5ONFLNls}/\text{h0ek6Zdi8IpTTy}/w+ }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{EtcOF1dUnh6cyEKBPvPLeneWQUSFQYLg5mlUwT78tP5AKbrbMOSWcSMelik1} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{zE6IOhAqmkiShv8J}/\text{HdVH13qe1CbIrUg5FYheEp72jaJlCgysNq7JqoMVnvN} 1\text{np}/\text{bxjJP4RlhxyphPNB8uMO5aMoItU53siAQNMmHsd79jji2Jk08}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{wb4K25} 4\text{dGuKyq0rKfkhLbpQzjwm634vNEECl872yNTowXkffq}+\text{oc1qpJ}/\text{iKxYJHkNw} 7I/\text{D0zdOoajAV7mGzh3QYOuU1KDzGSkkmSmlazrBekb1q}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{x1LNz4Q39He18X} 8\text{KrDVuskauA3rrIuar8MWJOa}+\text{VFKTTyn9Y9XimXd8MGnZkejlTa}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ESXYvI6R} Q+/\text{SIFOrOB0sHlgSUN}/\text{YAxH}\text{++}\text{rMs}+\text{qZhvpVyrm1hLxin0iJtni6}+\text{asr4pRx}/ \text{AcXbs}/\text{JUMTPwh61Tf}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{041w/+\text{bsfWNdewsdnoxTydhwNQsmOPhcsnPTxwRJ9f} 3\text{qIANdtDq8KPgx952RT1jynBt9NVyEvn4kFxhWYsRQPbVa}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{u+\text{joXB3u}+2\text{XXN} \text{gIa67OcbAqRcXK6SjhJjGhxiYsVXi7l4SZbxZo4lDdwF5cnGjVy8snPFxVJn} \text{GlrCBYOG}/3}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Cxcr95mlBCA9ZdfIG7kcJ5Nd}/\text{pmt6nQR2pNin2obDZZLPfzioa} \text{bvc25Xj5U5iI1j8tJDSY3Q6tSpZQ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Gfp5XCPRzR88sseYsdSOPOSGXVsgIZy} 6\text{QK36bkUphySqhz0GNjLGWvKLaBwa9vCmGR9Bqyja33XlFA41yA2csSQgdT1} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{gbviqyksj3fm5S1kIGr8SorWEwqHGqSFOwoZsNm}+20\text{z6jMIrz8otLrsyoHiw} \text{PN}/9\text{JYU9ho6YfsYMeKc}/\text{qz0xQmGn9tbujg0M6Gre9DQf}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{9r/\text{TnHFxYcBCIuW} \text{kX8pzDdfnp37EwMHn64JCp6ksD}/\text{rjGpOAAPf}/\text{oW}\text{//}\text{Qv}+\text{A4OAZzc}=\text{      }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwt1P8z1HkcwHG7vsRi31RCrEIZlZStW0eZ9ztF6domTqcvwrop3fZd5zCc} \text{vunojqGi5HKZIaUtkrTjS14foqVNviUs}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{bKfTxwx2}+\text{a21tfubqYfnvP8Dx72} 4\text{ScCDrJ1dHSE}\text{//}X/\text{XfGi0S9fEGW0peq5xoXBJyYdkyenENXqd6sq2ZnBD0vd} \text{nCY0iEoNDPvNdhmD}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{c7C8KH3iOpsUl31tWGwu3mi4mUnovIkMSn5RgwmtPrF} \text{jWJEyZKv5SQN0TggqUmyLhRRSdf1bg3n0ji6OfFYRDWXGvNOaJqypPHr18aj} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{NSJT6oC52MFwchDzqBML3W1NKCyQThPtAC47UqeP3nIoRvgHu1d}/\text{AIeluH3o} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Pm9EDd8P1tww68PaK3HJgA2pdUFLypy29uI8bp911qAB5acIbOg}/\text{pMA3t7tF} \text{tl}/\text{Sp7zMe56Ic7rw}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{aOimBV}+\text{etRSn85fZ2ff4Djde9GR42xK5jYdnOnbgUVn} \text{m5e9ucuiuty3RpWXtePMp}\text{++}\text{ybop1qAf5Cm3u}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{jZc0e9sct9hDtYcL1j4JLsF} \text{O5oR78C}/\text{pkG62iSk0ucVfrQyWayktbDYFQmeO8pxf33JUoHgE1CyjxFqmwb8} \text{ziWTD08mwGls7fsg}/3}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{psnlAocGWpwfjaYvuKgFrsIlC53J4YA02Ky4sRG8AX} \text{toy3lMcMw42BRFtX53JsEViUvtdSCQXSw5J1}+0\text{rxo0}/1\text{qGGZAkQJYyEZ4xJ8} u+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{dd6kjiK4j2zhLPbcvFB}/\text{xtH}/\text{f8}+\text{BgaLVX3VlAXcTknrqM2qhT3yQ}/\text{WOdUm} \text{wjdKlt25Pc044nl2h15FLjh}+\text{qJz0rO3GG}/\text{mO7}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{cuSMAvr7tp5x4lDl0pnLDM} \text{LQUf4XxdTdkwVhd65JwWl0NaaOfZtdIxLDmZEcxSVINsJ89013w1Fq9hxV4}+ }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{WAvj9hYJbdkTOOEHF11}/\text{fj1E}/\text{bxKlLboE2a}/\text{tFot0sqgs9cs4FCDFvMlZTnR} \text{enIIi904PG}/\text{HNGY8v790ZagJnq1y}\text{//}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{2Z/\text{hy2CuEUSC}+1\text{gJNR1d}/523\text{TIufPx} \text{pyeM24BXdcRHP5lF9u}/\text{wOHMvtR10ptiFkUo22VRUXtPzbQd89n8aUr9cj1Rr} 8\text{fXaljfQsz7UZnmiPnnGUgk}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Z3bBySAzc4deA6IddU8}/\text{G6oA6wxmjx7PkATN} 3\text{gloW9QLRftz70zEGBHTjDiTEHYfBHmd2dbwlEPi7T}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{EO7zth5KQYw6eM8Yk} 32\text{rWIK1}/\text{ALSczbrlu03JQPpe9T7VIAS0bhDwsrhEUykwaP2sBM4G45qqHC75} \text{ks9JT5pRQk2}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{4\text{rvgPC6JuDani1k0rI2JFf1ZxCUlng73H3Jo4C6RpljXc4lf} \text{n5hzi0dD41E}+\text{bfGRS1qZy4fvbqaBGK5I5}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{5\text{ARH55dN6pdBq0p7SLi}/\text{wRkbWO} 1\text{Phk0lDcI7stDEIkrSE}+\text{yiabBrviQ5Up4Yj0VojkjXk0zOzOH}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{LEIsKJ3034} \text{UhqkeUu85hUgYvfgWA2}/\text{j4bjpipZgQSR7uJX}/\text{pY0DU7R1QG}+\text{JYh4LpiiZ4Zp} \text{yNh}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{4\text{PDFKkSuFDciuZqGSHX2Vd12RGb7F2Sc1mdg5X6xXV4XIiNWqZvCOAwM} 1\text{nkUevchMrDdVCNEDOzK6qo}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{N4KITtHWky7WDBiy7}/\text{rZqxD5aZeFB8}+\text{OATgS} /\text{Zr6BxHjZjMOcmTglw7f0LApRLzkdTTLmYGvfpGvfsG}/8\text{vdtog}\text{==}\text{      }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwtlGs01GkcgMe4xEzmpTW1UyFEFIVqOkr7vrXpyFIRy65c25Qk20jIyUZI} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{G0eiXavbtO7pKLpIht9fCJXGZcQg8Z9cS5qmZCRte04fnvN8fT49RoFhbnuZ} \text{DAbD5Sv}/\text{eyWeP}/}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{blC6KMMyY6ovRlOExpkqycRtQmIk8P4snwzVs2ZooPiNrx} 88\text{iMO1eGbc1dAodeIepmcGLfam0ZXqeb0P2kE1GPuSsalTM0JjL5o39uIEq0} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{x1KR10tjt1PNxav9EJXBKxIev0jjSHFC6L5qDuX43kK40IDGEgl7rCZAm2o9} 1\text{V7npTeA9akwvXWL51JGT8VWKab9}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{E5InTp6zqLSvNsjryb1Yf8Um7fSeC0q} 6\text{HycZ2VxL546F5MMWJPyMBgKVp}/\text{txjmcPl7WgAZ1TEW4K8tOii862QjaT6tT} \text{XezDl5JOd}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{L4gwFRFtvUqNECp1jCeIZjVK9FCsaZFLUs03qfnwQHnBAvfVao} \text{QrW}/+1\text{X4G92Gz1cNZl08wKBqkdWzmvBWfP}+F+\text{dzrxrOQ7h}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{aXicVYxMdstn9} 8\text{ieov5KIZtnNuGx58gFaNgUFRwThRPsRflFfuoTPn4ToqPLD}/5\text{o14EHL87Zw} \text{VwHX9UxEk9F1WDe2iL9SRQ7ctc5qHdk12JI}/\text{YZmneA2}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{yw0few1W4ZNbxlsq} \text{oobh5rTlO7uV9zDXveTsLwtoKHz4Rutqdhkum6xHjUu7QSluVmuXXsN5PYOp} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{owlP4b693r7PO69gH9fFt3v23AZ3bWfp9GgCrmDFdDyIuIXHHj}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{orvpwEtbS} \text{KgZxXmLMfGg1Y84VgsnbSuX6B1K833SowePINdiWI23e7kVjxauC}/\text{qbnZeDg} \text{Mk}/1\text{w51h7HXMYaI}/9\text{B6k}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{XWesC5}/\text{jTXtnyzTy6}+\text{Chu362jvnyfGbN626I9dr} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{YNyIG9uWrcDZYbk8u911EHFkRUDa}/\text{En81NV9TYZaA3T26rgFNU7hM7wCpfNE} E/\text{hH2w}/\text{Pcf6EU6MdB1DpE6hdse7PWvVZXNxmH}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{pRIQYzLdFIriOD8OVd7C}/O \text{raAvCnFQT1Yhgz8cN3cUtQFjmlkkoJkkZNHrQ75uEvjoWuVbb6pGzMIN}/\text{QI7} \text{OqBnjd8i0wR10prWUHEsvhN}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{99\text{TRNe7VIMKxt3NzbaXAy3zppaavSRLFFxxS} \text{W7qhxFtYoIjSIi}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{bdJcGXO4Fz41}/\text{ODZWsUjZo6Pn5nn3QalvqPH6GTZZ7JLS} \text{mMzphynWj6oVHtpkrxNrkw97ANxaN}/\text{D1szjEYfWwhT}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{DBtYGdo3oEoeMH3x1} \text{oVKNhprc7p9253AISPpaFmjRYB0VHXChhEN26WoktunSwDEsT}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{HVc8im4KQl} \text{riY0NB20lXHfcYhNYOLR8K00EE2LsxxnRD4G1W7YkUrD1OGphSWuiHRlCGpr} 02\text{m40dOQ5}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{KJCF}/\text{w3UK7v2gwuBFUmRKICOqoWGt2hYYZj9whVjQi5ocybFil} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{NJTnGG6ck4}/\text{IWIJeplJCwyHtiYb8YkTu8a3Xx0hpMIusdttaisiawr}/\text{vfH5O} \text{Q6aTz}/5\text{EESLRkhEr9WEaBPLsDNV2RO6e}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{bTKQEnDcu8DBjldiCTd7z6T}/5\text{mG} \text{gTq7os19iGhsdKJWMWWwM6urOm4Uke2ucbe3sGWgySzcZjSBiL}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{OfkQLkgGE} \text{REqo91}/7\text{YuXIR08GRzu2}+\text{vlPIxLhEZw49r0Mvv2LfPsX}/\text{AcvkGwW}\text{      }]}]}]}]},}\\
+\underline{\underline{\text{Rule}[\text{AspectRatio},\underline{\text{NCache}[\underline{\text{Power}[\text{GoldenRatio},-1]},0.6180339887498948]}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{Axes},}}\\
+\underline{\underline{\text{True}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{AxesOrigin},}}\\
+\underline{\underline{\underline{\text{List}[}}}\\
+\underline{\underline{\underline{0,}}}\\
+\underline{\underline{\underline{0]}]},\underline{\text{Rule}[}}\\
+\underline{\underline{\text{PlotRange},}}\\
+\underline{\underline{\underline{\text{List}[}}}\\
+\underline{\underline{\underline{\underline{\text{List}[}}}}\\
+\underline{\underline{\underline{\underline{-4,}}}}\\
+\underline{\underline{\underline{\underline{4]},\underline{\text{List}[}}}}\\
+\underline{\underline{\underline{\underline{-1.9402846229484099\unicode{0000}\grave{ },}}}}\\
+\underline{\underline{\underline{\underline{1.9402846229484099\unicode{0000}\grave{ }]}]}]},}\\
+\underline{\underline{\text{Rule}[\text{PlotRangeClipping},\text{True}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{PlotRangePadding},}}\\
+\underline{\underline{\underline{\text{List}[}}}\\
+\underline{\underline{\underline{\underline{\text{Scaled}[}}}}\\
+\underline{\underline{\underline{\underline{0.02]},\underline{\text{Scaled}[}}}}\\
+\underline{\underline{\underline{\underline{0.02]}]}]}]}\)
+
+Here are the plots for the data and the derivative of the data respectively
+
+\noindent\(\pmb{\{\text{ListLinePlot}[\{\text{TestData}\}],\text{ListLinePlot}[\text{TestDataD}]\}}\)
+
+\noindent\(\{\underline{\text{GraphicsBox}[\underline{\text{List}[\underline{\text{List}[]},\underline{\text{List}[]},}}\\
+\underline{\underline{\underline{\text{List}[\underline{\text{Hue}[0.67,0.6,0.6]},\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJxdlgtMU1cYx7uZbSyiDB84J2ipL4YgCDgQxf6FWhAR2vIoLY}/\text{etrCpmzp8} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{IUO0LDof0cVEWRyIq8FNZMG3KKj06lQGTKcwx4TNYYZvB0weA9lgmp0v4bRJ} 0/\text{z6u}\text{//}\text{bc8}/5\text{mu9zN63QpL8qkUgOvHi}\text{//}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Pz}/1\text{S4viUp8}+\text{EnZOLAvUHkzYGdt} \text{PbED6jp99n}/\text{VTvwWwt40FfQ4ujIehbsXcnoaPIjfxlHZIje5gtgVHs4e7}/\text{sY} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{iKW4ZkybVJJFLEOjWtx}/\text{bDfxJJSvrnJWlBJPgewzv2PpV4k9cPXD0CKX34k9} \text{UXbUZWji38ReKD4z0O}/\text{p5MZ4OtJ7fti5awqxL1YKYyq3hRDPwC3frZ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{PiSP2} \text{gzLTtTt4KbE}/\text{rLr0ls6NxAEIMlyZp8wjnolf7pa0}+\text{ZQQv4esa1Xfn6gkDsSE} \text{euWBH}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{uIgzB1Rr9yy33iWXCcYc1t7CUORt66RyNqHMczno2xucn320ZPZjwH} \text{YtY2v0My4hA4DqQGv}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{NDPBdzVR1rFswmlsNlR6VuZjgx8FPGyYQ7GsYWoMNJ} 26\text{hIJT8P2mUN0UuWkJ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{HniD3cVGryYeiMWBUduxptj5LKLI7txyZcpnWGwZ5} \text{yBenCuvIh6HTs2Z4eTN5BbwydwVntZJXoDE65vidPvLzMXlizsNHDhOYnw8}/ \text{S5m6YDRjiRJDO}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{v0He7klZjv1LvsmTf5cHy09fhfe2eRD0fN9t6IBwryEdgb} \text{FFf}/\text{Wwz5CEQubnq6Xk9}+\text{AbwOxrReTiO}/\text{AMNWTfUuW04}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{EnvaC}/\text{tU68hHYto5} \text{sTgvl}/\text{xCJIXkWDZtJ78Qz7WltW67yUdBtXLiDWMB}+\text{Si81nX6hqqI}/\text{CIYAyKH} \text{PSkhvwjB1}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{9\text{c8j1BPhqbNuZNk5WTj4ZhzfkNNhv5GPi4NbQ7XCUfA2nmNyf7} \text{a8mr4NXq2229yRgqfH22uqXtZ7peha7vxhx}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{0\text{sRYfHH9dNele5opr8bZmKCo} \text{xy2UV2OD1j}/\text{jz4eUV8OcLe8pfEp5NSbY}+v/\text{ta6O8BpqxFd2LZVKW12B7znnb} 8}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{SjGFg3S}/\text{Ks9GtYyFjXQzbk40GBlLImFLT3P}+\text{WQN5WPhsC}/\text{Q84NOyseixXXH} \text{qA43d5aPhd9mfX58OGNJHCrOzN2082PGiEP}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{ly9fjC12Xoyzy8fz90e83e}/H 8+\text{sT4}+3\text{Wn8A}/\text{HxLsnj8B6sH7IybY7Z}+\text{W319o7fZfy5}+\text{PqLU7v0T}+\text{fJFod}/6J \text{fH2IiXb1o}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{PrCzq}+/\text{iw6vj5FnV396vn6hp6vf4ue}/3+\text{IeniXtjzo6vdm}+\text{SS4} \text{VIWV1nQzRhL2bXDzjm5lbEmCLmOOzHKPsZiEEyM3KoRfKZ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{MS8W1Ea11lE}/G \text{yKIhd9}+\text{tpnwyuhZ3nxtho3wyHDNjNxefonwK}/\text{JsK7j0}+\text{TPkUnHpl5Ke391M}+ \text{BSHXj}/\text{yzajflU1Dd}+3\text{pn}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{RbKp8L3SNiQb7Mpn4rT2qGXlCson4olB1dc3mGi} \text{fCquF9}/\text{OXx9PeQPypF03R0dQ3oCmi}/\text{nPtMGUN2Df3vLcUC}/\text{KG5BvkEtuuVFe} \text{gLx24PFwJ8ZSAYEV}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{RVtA17sfgKGyY1}/\text{rG1nLAh4vnrWraJmxhYBWc65fWtu} \text{MLYKUBa1nn9qYywKEJZnZL9xlHGzgKp6pz1XChlLjHx}/\text{kxr5}/\text{gcj3x8FI8YP} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{7\text{p8WI99frUa}+/4\text{pGBA7uz81Gu}/5\text{t4vu71MT3f5j4}+\text{UAw8fODxYRDg}+\text{cLq4mf} \text{P0QTP580m}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{zmFzPODp5vpGZ}+/\text{oGZn48EMz8}/\text{Wcz8fGU18}/\text{OXaObns2az3fyW} \text{hguD5ztpGmj}\text{++}w+72\text{MWN}\text{        }]}]}]}]},}\\
+\underline{\underline{\text{Rule}[\text{AspectRatio},\underline{\text{NCache}[\underline{\text{Power}[\text{GoldenRatio},-1]},0.6180339887498948]}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{Axes},}}\\
+\underline{\underline{\text{True}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{AxesOrigin},}}\\
+\underline{\underline{\underline{\text{List}[}}}\\
+\underline{\underline{\underline{0,8.]}]},}\\
+\underline{\underline{\text{Rule}[\text{PlotRange},\underline{\text{List}[\underline{\text{List}[0.,161.]},\underline{\text{List}[6.928203230275509,14.997969862618072\unicode{0000}\grave{ }]}]}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{PlotRangeClipping},}}\\
+\underline{\underline{\text{True}]},\underline{\text{Rule}[}}\\
+\underline{\underline{\text{PlotRangePadding},}}\\
+\underline{\underline{\underline{\text{List}[\underline{\text{Scaled}[0.02]},\underline{\text{Scaled}[0.02]}]}]}]},\underline{\text{GraphicsBox}[\underline{\text{List}[}}\\
+\underline{\underline{\underline{\text{List}[]},}}\\
+\underline{\underline{\underline{\text{List}[]},}}\\
+\underline{\underline{\underline{\text{List}[\underline{\text{Hue}[0.67,0.6,0.6]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJxTTMoPSmViYGCQAmIQDQEf7Bt0LnOmBz2yhwo4NLz5OqeLBcbncFhwzMd}+ }}}}}\\
+\underline{\underline{\underline{\underline{\underline{3\text{vaHUL6Aw4FHAYazsmF8EYcDDPMZyxVgfAmHBdxXO3SvPYDyZRwU0jc93dYD} 4\text{ys4KHCUVfK4wPhKDgemvT7h}/+M+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{lK}/\text{i4HD4KitbFoyv5sDAe}/+y/\text{t17UL6G} \text{A8ObkJMHA2F8LYeGd56PNxy}/C+\text{XrODi8mdDwyQ7G13NwEGCKrdl}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{B8o3cDhQ} \text{zdLrYgjjGzo48EZUOq65DeUbOTR8kLqdqQHjGzsw}/\text{GPbsWXpLSjfxIHB43Gc} \text{pAqMb}+\text{rg0KmW0r}/4\text{JpRv5tDAf3wenwqMb}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{7\text{A0GWq2r}/0\text{BpRv4eBwr96LUwPG} \text{t3RwyJ45u3T1dftNp78}/2\text{MVm6WDhpSti5vjfHgA}/\text{JXM6}\text{        }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{List}[\underline{\text{List}[26.975766230987986\unicode{0000}\grave{ },1.953420714202947]},\underline{\text{List}[27.,0.4967189882213674]},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[28.,0.4863022768886083]},\underline{\text{List}[29.,0.47595714292761215\unicode{0000}\grave{ }]},\underline{\text{List}[30.,0.4656814300309975]},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[31.,0.4554730395260975]},\underline{\text{List}[32.,0.4453299278804579]},\underline{\text{List}[33.,0.4352501043230461]},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[34.,0.4252316285749558]},\underline{\text{List}[34.03970782848326,-2.0138840435889183\unicode{0000}\grave{ }]}]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJw9k11IU2EYxx9Trwo0FCk00IiSrDFCRNPwUbf5}/\text{bW5L8ULA0WCFKSLvKhO} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{mZbRyAgJuzA}/\text{LpQoFJsoudrRNLXUNNTALLGbSAkqC1OJetv5vw0O48fv}/\text{Lbz} \text{vu9zok5Xm8t3EVGGuP59ly4n1ul3Uvhq7GRSdQSp5PukMjf2FND1N8k}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{VFKZ} \text{fi7dHg8FUxrzwc}+\text{qvmMOPo3JtDIQpweTgZUWV9X8s1l4A6ulmVsBeWAystJW} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{GXRt6DW84Nao8bDlGXgT017DSs}/\text{vaXgTK6u63MxIMKUzrQfGLqVNwQuu6}/\text{vo} \text{rHwFn8F0anPO63oJL7i}/\text{ucPfPQmfycqJ}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{vAD7ybgBc8lRAf4gymLldrtxd6Y} \text{cfgspvNGe7j1BXw2K67UX4mXxuCzmd6mHNn9YBQ}+\text{h5VRU9XlhefwOUwVrTV3} /\text{cCUK9arbBh1I}/\text{C5TAlDE}/\text{Ulw}/}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{B5rHRWrOY3qvB5TMHp9ServfD5Yj3De2am} \text{nsILTrK4c2I88AVMpT92um880ZgFN8U3LKwN4n7BISFhY9kDGquCPV03zzzq} \text{R1}/\text{I9OHwp8EgN3rBtY}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{TOmv60At}+\text{aPZELPaiL}+\text{Sm}/\text{e75pSvb6M1MnRfbL5wF} \text{s5m5}+1\text{tXmR2smDmyJbCkgcGqmdWVlkPr0bK3cNuXsvJbwbK3sNI4e65mcwu9} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{hVW9X}/\text{ud92DVwtR8X}/\text{d9BExFTMemHa4uMP9nr9YXyfs1Vovk72lMVvl}/\text{GrNV} \text{Pg96q3xe9Fa5HvQ2uV70Nm7T9gO9jb}/\text{u8}+0\text{XepvcT}/\text{R2ud}/}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{o7fI80NvleaG3} y/\text{NE75Dnjd4h5wG9Q84LeoecJ}/\text{ROOW}/\text{onXIe0TvlvKJ3ynlGXyznHX2xfB}+8 R\text{++}\text{tRW4Ijs86HhqX8if5L7mbZDc}=\text{        }]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJxTTMoPSmViYGCQA2IQvWPhHbtf}+6\text{IcLLx0Rcwc}/9\text{szgMCBKIcGS}/\text{tJQjlX} 9}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{oP5DNEODIZb4x3Mr0L4DtEODeoLjaSZr0H4DUC}+\text{YlbkqvNQ}/\text{gGg}+\text{ohuh69z} }}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{rkP1xzg0mPKVMGffgOqPcWDwFlx4x}/\text{ImVD9Q}/\text{ljM9A7OW1D9QP48Vm}/+\text{W1A}+ \text{Q6xDw175axWrb0P1A}/\text{krG6rO1t6B6o91YFCavFg08C5UP1D}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{n82LSNV7UP1x} \text{Dg3GN3gW}/4\text{LyHeIcGOwcWH9duA}/\text{VH}+\text{dwoLHqt3HIA6j}+\text{OAcH91Wy1QegfIZ4} \text{h4aMbwbhug}+h+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{uMdDvQVS56dBeU3AOWdjt94yPEIqh8oX1jZP6scymdIcGDw} \text{Cq378wzKV0hwaPhyk503}/\text{DHUvASHA9P3bLx4HMpPSHBwSKxRC7B8AjUfKL}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{f 07\text{xvNZS}/\text{AKhfvunORLmnUPuA6u0ZrRInPd1}/\text{RGufeiCQ32Jy0iZfhuEAAPWA} \text{oxo}=\text{        }]}]},\underline{\text{LineBox}[\underline{\text{CompressedData}[ }}}}}\\
+\underline{\underline{\underline{\underline{\underline{1:\text{eJxTTMoPSmViYGCQAmIQfT}+\text{Za}/\text{Gc}/\text{wkOLSYnbfJlGA4wgEGig0P2zNmlq6}/v \text{B3MVgPx79V6cGjcgfAcgv9tUtX8plJ8A5PMdn8enchPCbwDyO9VS}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{hdD}+\text{QuA} \text{fM}/\text{HcZIqtyD8A4kOB}/6\text{w7diyFMp}/\text{kOjQ8EHqdqbGbQifIcnBgTei0nENlK}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{Q 5\text{HCgmqXXxfAO1H6gvABTbM12KD8hyaHh7YSGT3Z3ofYD5d96Pt5wHMpfkOTA} 8\text{Cbk5MHAe1D7gXze}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{5\text{f170L5D4D6j1xlZcu6D7U}/2\text{aFh6usT}/j+\text{gfIVkBwWO} \text{skoelwdQ}+4\text{H89E1Pt}/\text{VA}+}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{QnJDgu4r3boXoPyG5IdDjDMZyxXeAi1H8h}/\text{FGA4} \text{KxvKPwBUf8zHft52KP8B0Ly3X}+\text{d0sTyC2p}/\text{i8ED7Mmd60KP9AByvkGY}=\text{        }]}]}]}]},}\\
+\underline{\underline{\text{Rule}[\text{AspectRatio},\underline{\text{NCache}[\underline{\text{Power}[\text{GoldenRatio},-1]},0.6180339887498948]}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{Axes},}}\\
+\underline{\underline{\text{True}]},\underline{\text{Rule}[}}\\
+\underline{\underline{\text{AxesOrigin},}}\\
+\underline{\underline{\underline{\text{List}[0,0]}]},\underline{\text{Rule}[}}\\
+\underline{\underline{\text{PlotRange},}}\\
+\underline{\underline{\underline{\text{List}[\underline{\text{List}[0.,160.]},}}}\\
+\underline{\underline{\underline{\underline{\text{List}[-2.0138840435889183\unicode{0000}\grave{ },1.953420714202947]}]}]},}\\
+\underline{\underline{\text{Rule}[\text{PlotRangeClipping},\text{True}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{PlotRangePadding},}}\\
+\underline{\underline{\underline{\text{List}[\underline{\text{Scaled}[0.02]},\underline{\text{Scaled}[0.02]}]}]}]}\}\)
+
+The following code runs a median filter on the data iteratively until the values stop changing to smooth out all the bumps. The median filter was choosen because an line is an eigenfunction of this filter which is our desired result. It is also not desired that the bumps and holes are blurred out into the data set, but rather removed completely.
+
+\noindent\(\pmb{\text{FSize}=\text{Round}[8/\text{dX}*1/8];}\\
+\pmb{\text{MFiltDataD}=\text{FixedPoint}[\text{MedianFilter}[\#,\text{FSize}]\&,\text{TestDataD}];}\\
+\pmb{\text{xyTestDataD}\text{:=}\text{Table}[\{\text{xData}[[i+1]],\text{TestDataD}[[i]]\},\{i,\text{Length}[\text{TestDataD}]\}]}\\
+\pmb{\text{xyMFiltDataD}\text{:=}\text{Table}[\{\text{xData}[[i+1]],\text{MFiltDataD}[[i]]\},\{i,\text{Length}[\text{TestDataD}]\}]}\\
+\pmb{\text{ListLinePlot}[\{\text{xyTestDataD},\text{xyMFiltDataD}\},\text{PlotLegend}\to \{\text{$\texttt{"}$Raw Data$\texttt{"}$}, \text{$\texttt{"}$Filtered Data$\texttt{"}$}\},\text{LegendPosition}\to \{.5,.3\},}\\
+\pmb{\text{LegendSize}\to \{.5,.25\}]}\)
+
+\noindent\(\underline{\text{GraphicsBox}[\underline{\text{List}[\underline{\text{InsetBox}[\underline{\text{GraphicsBox}[\underline{\text{List}[\underline{\text{List}[]},\underline{\text{List}[]},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[\underline{\text{Hue}[0.67,0.6,0.6]},\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJxTTMoPSmViYGCQAmIQPWsmCPAfaNC5zJke9MjeGAyA}/\text{Ddf53SxPLI}/\text{ewYE} +}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{A4sOOZjP2}/7Q/\text{s0MOA7cOBRgOGs7If2DGAA5DPMZyxXeGgPMY}/3\text{wALuqx26} 1\text{x5AzeM9oJC}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{6\text{em2ngdQ83gOKHCUVfK4PICax3PgwLTXJ}/x/3\text{Ieax3PA4fBV} \text{Vras}+1\text{DzuA8w8N6}/\text{rH}/3\text{HtQ8IP9NyMmDgfeg5nEdaHjn}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{XjD8btQ87gOOLyZ} 0\text{PDJ7i7UPCBfgCm2ZvsdqHmcBw5Us}/\text{S6GN6Bmsd5wIE3otJxzW2oeRwHGj5I} 3\text{c7UuA01j}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{MAwz}+2\text{HVuW3oKaB}+\text{R7PI6TVLllDzZuJvsBh061lP7FN6HmsR9o} 4\text{D8}+\text{j0}/\text{lJtQ8tgMMXaaq}/\text{UtvQM1jO}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{Bwr96LU}+\text{MG1DwgP3vm7NLV1}+29\text{wiVW} d/5\text{lPcDRM0d1hvhfewCF2rfh}\text{         }]}]},}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{List}[\underline{\text{List}[-2.6510992616785445\unicode{0000}\grave{ },1.8182603329848934\unicode{0000}\grave{ }]},\underline{\text{List}[-2.65,0.4967189882213674]},}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[-2.6,0.4863022768886083]},\underline{\text{List}[-2.55,0.47595714292761215\unicode{0000}\grave{ }]},\underline{\text{List}[-2.5,0.4656814300309975]},}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[-2.4499999999999997\unicode{0000}\grave{ },0.4554730395260975]},\underline{\text{List}[-2.4,0.4453299278804579]},\underline{\text{List}[-2.35,0.4352501043230461]},}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[-2.3,0.4252316285749558]},\underline{\text{List}[-2.2981433278483,-1.8557483777683625\unicode{0000}\grave{ }]}]}]},}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwtk2tIVFEQx8}/6\text{gKBAw7DCApVMQTExES1l7KElPTHCQvxgoZiRgvUhg}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{pW} \text{aCkuWmG5ZObjgyaFZiuaWnN95WtXd02tzNqsyEwzH2u6q6ut58zA5XK4M785} 85\text{//}}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{dTuTEhVvwxg7aH1W30mhOZ47HivkoAlFoMcLC6p4KOSwzMrj7E4f7OSh} \text{kNnc0N32DX2g1awGk8Pcx2S}/\text{Ej0k8GAyizDUBvrpgYmQJZUyuf}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{NjupXUI6N} \text{NNkd1VH}+\text{MkpFiQ63G3pB9LOgVOjW7jzcAxyvWUK2fr}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{h0qKFFR6LKI34Hol0} 1\text{RJvEdm4fcDQPg3xzMhuVX87ndhNPBOy0Hk9KruIt4CsJq}/\text{EVt1JvHmU}/\text{NNd} \text{tn7qIJ71rA}/2}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{srPtIN4}/\text{lNLMg1Xe7cSbQ3Y5PNrl5FviGVFS7l3Yfb2NeLPI} 3u/\text{xXFvRCv6cN4tSa0TyjYEW4s0gSyhMfahoId60dV5pNty3mXhTyIIbOtJj} }}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{mmCZ8}/6\text{iVJowcixThnheP4nM8UD6rhSEbp4}/\text{YZ2naV2P5jX1G0cWckJ92LsR} 8\text{jl}/\text{DFmscbE8q554o8hygzIGftcR7ycyJyfntkO1xPuBrLEsO}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{l5DfG}+I/\text{uy} \text{fbTOQU28EWRpL0NKU6thifMMyJ5FNW4ZrIJOXj}+\text{MuZvV}/\text{UM3zfCA539EVnqt} +}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{OoFM5zl}/\text{QYxrHy6LC7aDH6c}/\text{w5dVfYxGWFmWOC8XpQNqm3jXma4x}+\text{s7sehP} \text{XHyOoxl8eH4LSpm6S6nzJsji31}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{h7Kcovv}/\text{ZBFf4}+\text{SmyvCe}+\text{M80m8l9VCPPR} \text{nlKWmaBefAc6Y4WoB8rHEMEH4mGJ6A}/\text{UD}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{04\text{Twd0HwwS9we6L54X8wHNg4Vi} \text{fqB5US}/0\text{gSKhB9pw3leY2sT1wgKhL5CeGCj0B9Ibe8V}+\text{gPaB58T}+\text{gPZFvF9A} +\text{yTeGNC}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{iTcO5AfiTQD5hXiTQH5CBedNAfkNe4Q}/\text{gfyIj4R}/\text{gfyKicLfQH7G} \text{AOF}/\text{IL8Tzwj0P}+\text{BF9y73DzZGWJNd4JG}/0\text{QL}/\text{AYH9Wgs}=\text{         }]}]},}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJwtzVsow1EcwPHz3}/\text{wz5RIlSSxqPCnMbZLzy4viBbmW0pRLKInCsA6lFBHK} \text{mKXEC548eKOzB}/\text{FiLsXMzGWz4cGjucyG}/}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{ef3rdPp9Dvnc1JbeqpbZYSQlOCS} \text{dn}/\text{dgWVi0UsV0ybVUkKArixLeSnT0Pm47gve0Sb1Tkn2bjMUXPI8tdQHZRlr} }}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{OUlyKxeI1CdlqZ2NW6dWfnIs9UlJwxR4TVf83}/\text{uiLC}+6\text{X95lQ89HSUXsmkNz} \text{jd43ZYdNhskIO3p}+\text{ylbFihi7Hb3geV9pHdy}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{QS9A2SbTWUYd6P1QkrawHl91} \text{i94vZT}/\text{FL42qO}/\text{QIMLUtct13x9tD9wmQEhB9Z}/\text{foEzCP6b7VNQ88N}/\text{ReACjb} }}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{Sh42P3Bj6D8BWMd7Vn2mEz0ZmGf6Ei1GJ3oyYKVHNqfChV5w3js0axxwoScH} \text{Ul6r9z}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{50\text{JMDe7sOj6p}/\text{RC8MzIa9nfOjR}/\text{TCALQj6ZUaN3rBOY8omNl2oycC} \text{U4475lI86IkAVCjSznt45tXzht4oQuGrkK}/\text{aCfA}/5\text{tXgYQ}\text{==}\text{         }]}]},}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJxTTMoPSmViYGCQAmIQ}/\text{fDlVFb3VDYHizeMZqob}/+5\text{PTwMBNgeH7JmzS1df} 33/\text{uDAgA}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{ffqvTg1buw3MQYBdgeHblPV}/\text{qU39s}+\text{aCQJAPt}/\text{xeXwqN}/\text{czMoAA} \text{h4NDp1pK}/+\text{KbUPOAfM}/\text{HcZIqt6DmcTgc}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{MO2Y8vSW1DzOB0aPkjdztS4DTWP} 08\text{GBN6LScc1tqHlcDgeqWXpdDO9AzeNycBBgiq3ZfgdqHpdDw9sJDZ}/\text{s7kLN} }}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{43\text{ZweOv5eMPxu}/\text{tng83jdmB4E3LyYOA9qHk8Dgy89y}/\text{r370HNY}/\text{HoeHIVVa2} \text{rPtQ84D8qa9P}+P+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{4\text{DzWP10GBo6ySx}+\text{UB1DwgP33T0209D6Dm8Tks4L7aoXvt} \text{AdQ8PocDDPMZyxUeQs0D8h8FGM7Kfgg1j99hwTEf}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{3\text{nbH0LN43dQePt1ThfL} o/1\text{g4xgEHB5oX}+\text{ZMD3q0HwCogLlV}\text{         }]}]}]},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[\underline{\text{Hue}[0.9060679774997897,0.6,0.6]},\underline{\text{LineBox}[\underline{\text{CompressedData}[ 1:\text{eJxd1Q9MVVUcwPHDe49}/7}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{z3eQy03o1aYf9hsDklIijrXUgvRSqslK2qrJJSm} \text{m6sNKOdpjRKKaTYj0jGFuRJtMoNBip1LqEDyR0we8B5}/\text{IlpKoJGC8vfR5fx}+ }}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{nLvO2d7Yd}+/\text{ez733nMO7kW}/\text{t3LzVQgg5Ynxm}/\text{n5bMDPcuhZuSfmoopM}+\text{KobZ} \text{jQ0zwyU7VQyziRhmgxemeGGK51Q8p}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{I5Fc}+\text{heA7FsyueXfHsiheqeKGKF6J4} \text{IYpntuAKghUvWGcbHQsS2awXpOsf2vLWrJj1gnSS1a897POhF6RrYVsyV5}/0 }}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{oReos7m7K}/1\text{xPvSMHrrPty3Kh55NJ}/6\text{gyrJjXvSMfq7vjQWLvOjZdC1nyTv7} \text{ijvQs}+\text{rMXVvoWtSBnlUnubGL9x1rR8}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{ia9171odGtaNndHrBoQ9OtKFndM6p} \text{F8neK}+\text{gF6GTE}+2\text{XtPVfQC9C1hf16dFELekQn63oq4qJb0CM6K8jbcfXny}+\text{gR} \text{XU9JHLM9fxnPn}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{bsSJr7s7PNeLyfs8LI2vmdTXi9KU7mrOk5NdVIBd8wyVnv} 8\text{o2JDzXSaTEmOBkIXOl9pgE9oz85}/\text{Udy2iX0xjl58m4Lz}/\text{sVvTFOyg8WWcvq} 0}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{RvlLCY74gFfHXp3ZYNnNnh3ZIM3Ihu8YcW7zVlLfJTNWkdjhGc2eLdkg}/\text{ev} \text{bPCGZPuF94}/\text{sreL8m7IvieMHOcsc95Quq8XrDXCSsfbViFcu0m}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{E389Z3tOj} T+\text{y5gN41TtpWL3WUnEfvL87Or9vxcWsNen9yklq4Kz}+\text{gBr0}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{Y33Y7bXLf0Gv} \text{l5P4s3XZr1XTSeH1cFac2vtCjk7rxfmdnIQ}/m/34\text{Tk6}/\text{Fsd3GPNf7WxqOEff} \text{FtfzcJLwUtmGZVU0Wvi}/\text{cZIyPPF97hk6KrxmTvav}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{rT170p6QJxfz8m8efMv} \text{JFXQR8TxNZxUfffF9h}/\text{Kaa74}/\text{idOupdcq3SX0SzRxznJ}/\text{DGheNdp3H}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{lCeTk} 5\text{qr7PaX0DHxPsXkJnE}/\text{xeJ4APkWPF8H1KV6P24Rn7Gu4H74K7l92Ojwfxfvn} \text{hfD8FJ}+\text{Pt8D8UHx}+\text{bhHe7xTnhx}+G+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{aU4fzwO5p}/i/\text{PJmWB}+\text{K88}+3\text{wfpRXB}/0 \text{rlNcP}/\text{T6Ka4vegOUxdMDc9}+7\text{it4gJSvK39Qea0XvJmVLj8ZEWD08QHhDlEVu} \text{Ty5p9vAm2J}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{UbPlcGzncxg}/B/\text{pWdBvtb9krY}/7\text{LBG5YN3rDijSjeHdmx8P}+p \text{eKOKN6p4Y5TFut63prejN05J0pyjnfEd6E1QdvH1}/\text{L2hXvQmjfkMTHJ7veiZ} }}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{Dd6UbPD8ssGblg0e0Wb7Xfh91P7vmw3zFaDh7z}+\text{H95fR5x70ZJzwoWfR8P2B} \text{nkXD9w16Fo0dZ1mNuzvRs2r4vkLPqrEb}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{9\text{mtp7rQs2lk4VfF927qQs}+\text{maTcS} +0\text{pru9CzacyfcD15cTd6gRoZfLm}+\text{elM3emaDFyQbPLPBMxu8YMUL1thkQVNG} /\text{qwXIhs8s8EzG7xQ2fj}+}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{Vzy74tkVz654Dtmw}/\text{g7FcyqeU}/\text{GcihemeGGK51I8} l+\text{K5FM}+\text{teGbD9guX}/R+\text{Cp710}\text{         }]}]}]}]},}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Rule}[\text{AspectRatio},\underline{\text{NCache}[\underline{\text{Power}[\text{GoldenRatio},-1]},0.6180339887498948]}]},}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Rule}[}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Axes},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{True}]},\underline{\text{Rule}[}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{AxesOrigin},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[0,0]}]},\underline{\text{RuleDelayed}[}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{DisplayFunction},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{$\$$DisplayFunction}]},\underline{\text{Rule}[}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{FormatType},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{TraditionalForm}]},\underline{\text{Rule}[}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{PlotRange},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[\underline{\text{List}[-3.95,4.]},}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[-1.8557483777683625\unicode{0000}\grave{ },1.8182603329848934\unicode{0000}\grave{ }]}]}]},}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{Rule}[\text{PlotRangeClipping},\text{True}]},\underline{\text{Rule}[\text{PlotRangePadding},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[\underline{\text{Scaled}[0.02]},\underline{\text{Scaled}[0.02]}]}]}]},}}}\\
+\underline{\underline{\underline{\underline{\text{List}[-1,-0.6180339887498948]},\underline{\text{List}[}}}}\\
+\underline{\underline{\underline{\underline{\text{Left},}}}}\\
+\underline{\underline{\underline{\underline{\text{Bottom}]},}}}\\
+\underline{\underline{\underline{\underline{\text{List}[}}}}\\
+\underline{\underline{\underline{\underline{2,}}}}\\
+\underline{\underline{\underline{\underline{1.2360679774997896}}}}\\
+\underline{\underline{\underline{\underline{\unicode{0000}\grave{ }]}]},}}\\
+\underline{\underline{\underline{\text{GraphicsGroupBox}[\underline{\text{List}[\underline{\text{List}[\underline{\text{GrayLevel}[0]},\underline{\text{RectangleBox}[\underline{\text{List}[0.55,0.25]},\underline{\text{List}[1.05,0.5]}]}]},}}}}\\
+\underline{\underline{\underline{\underline{\underline{\text{List}[}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{GrayLevel}[1]},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{EdgeForm}[\underline{\text{List}[\underline{\text{GrayLevel}[0]},\underline{\text{Thickness}[0.001]}]}]},}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\text{GraphicsGroupBox}[\underline{\text{List}[\underline{\text{RectangleBox}[\underline{\text{List}[0.5,0.3]},\underline{\text{List}[1.,0.55]}]},\underline{\text{InsetBox}[\underline{\text{GraphicsBox}[\underline{\text{List}[}}}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[\underline{\text{List}[\underline{\text{InsetBox}[\underline{\text{GraphicsBox}[\underline{\text{List}[\underline{\text{List}[\underline{\text{Hue}[0.9060679774997897,0.6,0.6]},\underline{\text{LineBox}[\underline{\text{List}[\underline{\text{List}[0,0.5]},\underline{\text{List}[1,0.5]}]}]}]},}}}}}}}}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[]}]},\underline{\text{Rule}[\text{PlotRange},\underline{\text{List}[\underline{\text{List}[0,1]},\underline{\text{List}[0,1]}]}]}]},\underline{\text{List}[0.08,0.08]},\underline{\text{List}[\text{Left},\text{Bottom}]},\underline{\text{List}[1,1]}]},}}}}}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{InsetBox}[\text{Filtered Data},\underline{\text{List}[1.2100000000000002\unicode{0000}\grave{ },0.58]},\underline{\text{List}[-1,0]},\text{Automatic},\underline{\text{List}[1,0]}]}]},}}}}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[\underline{\text{InsetBox}[\underline{\text{GraphicsBox}[\underline{\text{List}[\underline{\text{List}[\underline{\text{Hue}[0.67,0.6,0.6]},\underline{\text{LineBox}[\underline{\text{List}[\underline{\text{List}[0,0.5]},\underline{\text{List}[1,0.5]}]}]}]},\underline{\text{List}[]}]},}}}}}}}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{Rule}[\text{PlotRange},\underline{\text{List}[\underline{\text{List}[0,1]},\underline{\text{List}[0,1]}]}]}]},\underline{\text{List}[0.08,1.24]},\underline{\text{List}[\text{Left},\text{Bottom}]},\underline{\text{List}[1,1]}]},}}}}}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{InsetBox}[\text{Raw Data},\underline{\text{List}[1.2100000000000002\unicode{0000}\grave{ },1.74]},\underline{\text{List}[-1,0]},\text{Automatic},\underline{\text{List}[1,0]}]}]}]},\underline{\text{List}[]}]},}}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{Rule}[\text{AspectRatio},0.5]},\underline{\text{Rule}[\text{FormatType},\text{TraditionalForm}]},\underline{\text{Rule}[\text{PlotRange},\underline{\text{List}[\underline{\text{List}[-0.1,3.26]},\underline{\text{List}[-0.1,2.42]}]}]}]},}}}}}}}}\\
+\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\underline{\text{List}[0.5,0.3]},\underline{\text{List}[\text{Left},\text{Bottom}]},\underline{\text{List}[0.5,0.25]}]}]}]}]}]}]}]},}\\
+\underline{\underline{\text{Rule}[\text{AspectRatio},\text{Automatic}]},\underline{\text{Rule}[\text{Background},\text{None}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{ColorOutput},}}\\
+\underline{\underline{\text{Automatic}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{ImageSize},}}\\
+\underline{\underline{\text{Automatic}]},}\\
+\underline{\underline{\text{Rule}[}}\\
+\underline{\underline{\text{PlotRange},}}\\
+\underline{\underline{\text{All}]}]}\)
+
+Now the raw and filtered data are fit to the model used for the derivative with an initial guess that R is 150$\%$ of the field of view
+
+\noindent\(\pmb{\text{FitRraw}=\text{FindFit}[\text{xyTestDataD},\text{Re}[D[ \text{CircFun}[x,R],x]\text{/.}x\to \text{xv}],\{\{R,6\}\},\text{xv}][[1]][[2]]}\\
+\pmb{\text{FitRfilt}=\text{FindFit}[\text{xyMFiltDataD},\text{Re}[D[ \text{CircFun}[x,R],x]\text{/.}x\to \text{xv}],\{\{R,6\}\},\text{xv}][[1]][[2]]}\)
+

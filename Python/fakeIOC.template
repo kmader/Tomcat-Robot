@@ -1,0 +1,1868 @@
+record(ai, "X02DA-ES1-ROBO:LL-CROW") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:LL-CSAMPLE") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:LL-MODE") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESXX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSONE9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTOP9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESYSTWO9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:MESZZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RELX") {
+field (VAL,"-10000")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RELXX") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RELY") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RELZ") {
+field (VAL,"-44257")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RELZZ") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMXX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMY9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMYSTOP9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:RMZZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:XWERT") {
+field (VAL,"-6504")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:XXWERT") {
+field (VAL,"-417.3")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:YWERT1") {
+field (VAL,"3342.8")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:YWERT2") {
+field (VAL,"2874.3")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:ZWERT") {
+field (VAL,"-22293")
+field (DESC, "FakeIOC")
+}
+record(ai, "X02DA-ES1-ROBO:ZZWERT") {
+field (VAL,"1086.4")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT1") {
+field (VAL,"1")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT10") {
+field (VAL,"10")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT2") {
+field (VAL,"2")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT3") {
+field (VAL,"3")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT4") {
+field (VAL,"4")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT5") {
+field (VAL,"5")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT6") {
+field (VAL,"6")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT7") {
+field (VAL,"7")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT8") {
+field (VAL,"8")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDMNT9") {
+field (VAL,"9")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL1") {
+field (VAL,"1")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL10") {
+field (VAL,"10")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL2") {
+field (VAL,"2")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL3") {
+field (VAL,"3")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL4") {
+field (VAL,"4")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL5") {
+field (VAL,"5")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL6") {
+field (VAL,"6")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL7") {
+field (VAL,"7")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL8") {
+field (VAL,"8")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-DUDUNL9") {
+field (VAL,"9")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTXMNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTXUNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTXXMNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTXXUNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTY1MNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTY1UNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTY2MNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTY2UNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTZMNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTZUNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTZZMNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:AL-PUTZZUNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:CM-ITER") {
+field (VAL,"-1")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:CM-ITERMAX") {
+field (VAL,"-1")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRXX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRY9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETRZZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETXXLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETY1LOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETY2LOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSONE9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTOP9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETYSTWO9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:GETZZLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:LL-SETR") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:LL-SETS") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:LL-SIMPLEMNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESXX9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSONE9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESYSTWO9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:MMESZZ9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:PUTX") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:PUTXX") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:PUTY1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:PUTY2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:PUTZ") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:PUTZZ") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:RXLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:RXXLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:RYLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:RZLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:RZZLOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(ao, "X02DA-ES1-ROBO:SINGLELOAD") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bi, "X02DA-ES1-ROBO:LL-MNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bi, "X02DA-ES1-ROBO:LL-MOVING") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bi, "X02DA-ES1-ROBO:LL-READY") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bi, "X02DA-ES1-ROBO:LL-ST") {
+field (VAL,"5")
+field (DESC, "FakeIOC")
+}
+record(bi, "X02DA-ES1-ROBO:LL-STOP") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bi, "X02DA-ES1-ROBO:LL-UNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bi, "X02DA-ES1-ROBO:LL-WORKPOS") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bo, "X02DA-ES1-ROBO:GUI-BEGIN") {
+field (VAL,"1")
+field (DESC, "FakeIOC")
+}
+record(bo, "X02DA-ES1-ROBO:GUI-PAUSE") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bo, "X02DA-ES1-ROBO:GUI-RESET") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bo, "X02DA-ES1-ROBO:GUI-SKIPNEXT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(bo, "X02DA-ES1-ROBO:GUI-STOP") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calc, "X02DA-ES1-ROBO:MT-UNTERWEGS") {
+field (VAL,"6")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSMNT9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-MVSUNL9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-WAITMNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(calcout, "X02DA-ES1-ROBO:AL-WAITUNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(fanout, "X02DA-ES1-ROBO:AL-FLFMNT") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(fanout, "X02DA-ES1-ROBO:AL-FLFUNL") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(mbbo, "X02DA-ES1-ROBO:SHOW") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_ONE9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO10") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO3") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO4") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO5") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO6") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO7") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO8") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:CLEAR_TWO9") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:PUTCLEAR_1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:PUTSCAN_1") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(seq, "X02DA-ES1-ROBO:PUTSCAN_2") {
+field (VAL,"0")
+field (DESC, "FakeIOC")
+}
+record(stringin, "X02DA-ES1-ROBO:LL-RAW") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringin, "X02DA-ES1-ROBO:LL-STAT") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE1") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE10") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE2") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE3") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE4") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE5") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE6") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE7") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE8") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:CM-FILPRE9") {
+field (VAL,"0.000000")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:END") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:FEEDBACK") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:GUI-CCMD") {
+field (VAL,"Not Loaded!")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:GUI-CODESTATUS") {
+field (VAL,"Not Loaded!")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:GUI-FEEDBACK") {
+field (VAL,"Not Loaded!")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:GUI-FULLSTATUS") {
+field (VAL,"Not Loaded!")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:GUI-ROBOTSTATUS") {
+field (VAL,"Not Loaded!")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:MAN") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:MULTI") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:OW") {
+field (VAL,"asdf")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:SINGLE") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:SINGLEUNLOAD") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:START") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:STATUS") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}
+record(stringout, "X02DA-ES1-ROBO:STOP") {
+field (VAL,"")
+field (DESC, "FakeIOC")
+}

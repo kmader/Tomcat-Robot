@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="workpos" public="false" >
+    <description />
+    <paramSection/>
+    <localSection>
+      <local name="bOldCombPos" type="bool" size="1" />
+      <local name="bCombPos" type="bool" size="1" />
+    </localSection>
+    <source>
+      <code>begin
+  //sioLink(sNetwork,io:tomcatrobot)
+  dioLink(dWorkPos,io:usrIn0)
+  dioLink(dMotPos,io:fIn0)
+  //bCombPos=bWP and bMP
+  //if dWorkPos==true and dMotPos==true
+  //  bCombPos=true
+  //else
+  //  bCombPos=false
+  //endIf
+  bCombPos=(dWorkPos==true and dMotPos==true)
+  bOldCombPos=!bCombPos
+  // prevents annoying infinite loops
+  while true
+    //bCombPos=bWP and bMP
+    bCombPos=(dWorkPos==true and dMotPos==true)
+    if bCombPos!=bOldCombPos
+      if bCombPos!=true
+        if taskStatus(&quot;MainLoop&quot;)==1
+          taskSuspend(&quot;MainLoop&quot;)
+        endIf
+      else
+        if taskStatus(&quot;MainLoop&quot;)!=1
+          taskResume(&quot;MainLoop&quot;,0)
+        endIf
+      endIf
+      bOldCombPos=bCombPos
+    endIf
+  endWhile
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

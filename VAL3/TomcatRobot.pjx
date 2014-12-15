@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project xmlns="ProjectNameSpace" >
+  <parameters version="s6.3.2" stackSize="5000" millimeterUnit="true" />
+  <programSection>
+    <program file="MainLoop.pgx" />
+    <program file="anticrashstart.pgx" />
+    <program file="closeGripper.pgx" />
+    <program file="enterBeam.pgx" />
+    <program file="getSocket.pgx" />
+    <program file="notaus.pgx" />
+    <program file="openGripper.pgx" />
+    <program file="processCmd.pgx" />
+    <program file="resumeTask.pgx" />
+    <program file="sendSocket.pgx" />
+    <program file="start.pgx" />
+    <program file="status.pgx" />
+    <program file="stop.pgx" />
+    <program file="updatePositions.pgx" />
+    <program file="workpos.pgx" />
+  </programSection>
+  <dataSection>
+    <data file="TomcatRobot.dtx" />
+  </dataSection>
+  <aliasSection>
+    <alias name="io" interface="io" autoload="true" password="" />
+  </aliasSection>
+</project>

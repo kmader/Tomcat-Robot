@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="resumeTask" public="false" >
+    <description />
+    <paramSection/>
+    <localSection/>
+    <source>
+      <code>begin
+  while true
+    if taskStatus(&quot;MainLoop&quot;)==125
+      taskResume(&quot;MainLoop&quot;,0)
+    endIf
+    if taskStatus(&quot;status&quot;)==125
+      taskResume(&quot;status&quot;,0)
+    endIf
+  endWhile
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

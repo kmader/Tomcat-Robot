@@ -1,0 +1,880 @@
+#Boa:Frame:GUI_Main
+
+import wx
+import wx.lib.buttons
+import socket
+import os
+import time,datetime
+import sys
+import Queue
+import cPickle
+from optparse import OptionParser
+
+# Expert-only panels (zb Robot Expert Mode)
+userGuiExpertPanels=['Robot Expert']
+# Blocked Panels (no-one can access, list is edited by user and computer)
+# Tray Setup for example cannot be loaded since that is the 
+userGuiBlockedPanels=['Scan Settings','X-Ray Energy','End Station Control']
+
+try:
+    import X_ROBOT_X02DA_robotCommon
+except:
+    print "Initial robotCommon not found!"
+    try:
+        sys.path.insert (0, os.path.expandvars ("$SLSBASE/sls/bin/"))
+        import  X_ROBOT_X02DA_robotCommon
+    except:
+        wx.MessageBox('RobotCommon Python Library is needed to run this program!')
+        sys.exit (1)
+try:
+    import X_ROBOT_X02DA_robotScript
+    #from  X_ROBOT_X02DA_robotScript import *
+except:
+
+    print "Error : Initial robotScript not found!"
+    try:
+        sys.path.insert (0, os.path.expandvars ("$SLSBASE/sls/bin/"))
+        import X_ROBOT_X02DA_robotScript
+    except:
+        wx.MessageBox('RobotScript Python Library is needed to run this program!')
+        sys.exit (1)
+
+# Script Panel
+def create(parent):
+    return GUI_Main(parent)
+class __LoggingPipe__:
+    def __init__(self,logFileName='script',dirName='Robot_Logs'):
+        try:
+            os.listdir( os.path.expandvars ("$HOME/"+dirName+"/"))
+        except:
+            os.mkdir( os.path.expandvars ("$HOME/"+dirName+"/"))
+        
+        cday=datetime.date.today()
+        
+        self.logFileName=os.path.expandvars("$HOME/"+dirName+"/"+logFileName+"."+str(cday)+".log")
+        
+        self.write('\n'+time.asctime()+':'+logFileName+' freshly started'+'\n',0)
+    def write(self,myStr,indent=1):
+        tFile=open(self.logFileName,'a+')
+        tFile.write('\t'*indent+myStr)
+        tFile.close()
+class DataEvent(wx.PyEvent):
+    def __init__(self,threadType,kName,argBundle=[],myRobot=[],myRobotScript=[]):
+            wx.PyEvent.__init__(self)
+            self.SetEventType(threadType)
+            self.kName=kName
+            self.argBundle=argBundle
+            self.myRobot=myRobot
+            self.myRobotScript=myRobotScript
+            #self.mode=mode
+            #self.stagemoving=stagemoving
+            #self.data=data
+                    
+#def threadRobotCom(rCmd,rArgs):
+#    thread.start_new_thread(rCmd,rArgs)
+
+def xmlOneStep(aNodes,nodeName):
+    # generic function to grab subnodes and avoid overly nested code
+    outNode=[]
+    for aNode in aNodes:
+        for bNode in aNode.childNodes:
+            if bNode.nodeName.upper()==nodeName.upper():
+                outNode.append(bNode)
+    return outNode
+ 
+def create(parent):
+    return GUI_Main(parent)
+
+[wxID_GUI_MAIN, wxID_GUI_MAINBUTCLEARPOS, wxID_GUI_MAINBUTLOADFILE, 
+ wxID_GUI_MAINBUTQUICKSAVE, wxID_GUI_MAINBUTSAVEFILE, wxID_GUI_MAINDBPUSH, 
+ wxID_GUI_MAINPULLDB, wxID_GUI_MAINSTATICBOX1, wxID_GUI_MAINSTATICBOX3, 
+ wxID_GUI_MAINTREEBOOK1, 
+] = [wx.NewId() for _init_ctrls in range(10)]
+
+
+
+class GUI_Main(wx.Frame):
+    version=20100204
+    def _init_ctrls(self, prnt):
+        # generated method, don't edit
+        wx.Frame.__init__(self, id=wxID_GUI_MAIN, name=u'GUI_Main', parent=prnt,
+              pos=wx.Point(266, 275), size=wx.Size(800, 623),
+              style=wx.DEFAULT_FRAME_STYLE, title=u'X02DA User GUI')
+        self.SetClientSize(wx.Size(800, 623))
+
+        self.treebook1 = wx.Treebook(id=wxID_GUI_MAINTREEBOOK1,
+              name='treebook1', parent=self, pos=wx.Point(0, 65),
+              size=wx.Size(800, 543), style=0)
+        self.treebook1.Bind(wx.EVT_TREEBOOK_PAGE_CHANGING,
+              self.OnTreebook1TreebookPageChanging, id=wxID_GUI_MAINTREEBOOK1)
+
+        self.staticBox3 = wx.StaticBox(label=u'File Managment',
+              name='staticBox3', parent=self, pos=wx.Point(0, 0),
+              size=wx.Size(440, 64), style=0)
+        self.staticBox3.SetMinSize(wx.Size(0, 0))
+
+        self.butSaveFile = wx.Button(id=wx.ID_NEW, label=u'Save File As..',
+              name=u'butSaveFile', parent=self, pos=wx.Point(8, 16),
+              size=wx.Size(196, 32), style=0)
+        self.butSaveFile.SetToolTipString(u'To save the current tray and all the associated settings. This will also generate an older version script file and an XML file. The original file can be used with the sequencer program (cmdSequencer)')
+        self.butSaveFile.Bind(wx.EVT_BUTTON, self.OnButSaveButton, id=wx.ID_NEW)
+
+        self.butLoadFile = wx.Button(id=wx.ID_OPEN, label=u'Load File',
+              name=u'butLoadFile', parent=self, pos=wx.Point(276, 16),
+              size=wx.Size(156, 32), style=0)
+        self.butLoadFile.SetToolTipString(u'Load a file created with this program to resume work on a tray')
+        self.butLoadFile.SetMinSize(wx.Size(-1, -1))
+        self.butLoadFile.Bind(wx.EVT_BUTTON, self.OnButLoadFileButton)
+
+        self.butQuickSave = wx.Button(id=wx.ID_SAVE, label=u'Save',
+              name=u'butQuickSave', parent=self, pos=wx.Point(204, 16),
+              size=wx.Size(72, 32), style=0)
+        self.butQuickSave.Enable(False)
+        self.butQuickSave.Bind(wx.EVT_BUTTON, self.OnButQuickSaveButton)
+
+        self.dbPush = wx.Button(id=wxID_GUI_MAINDBPUSH,
+              label=u'Create DB Records', name=u'dbPush', parent=self,
+              pos=wx.Point(448, 16), size=wx.Size(136, 32), style=0)
+        self.dbPush.Bind(wx.EVT_LEFT_UP, self.OnDbPushLeftUp)
+
+        self.staticBox1 = wx.StaticBox(id=wxID_GUI_MAINSTATICBOX1,
+              label=u'Database Management', name='staticBox1', parent=self,
+              pos=wx.Point(440, 0), size=wx.Size(344, 64), style=0)
+        self.staticBox1.SetMinSize(wx.Size(-1, -1))
+
+        self.pullDB = wx.Button(id=wxID_GUI_MAINPULLDB, label=u'Read from DB',
+              name=u'pullDB', parent=self, pos=wx.Point(600, 16),
+              size=wx.Size(109, 32), style=0)
+        self.pullDB.Bind(wx.EVT_LEFT_UP, self.OnPullDBLeftUp)
+
+
+
+    def __init__(self, parent):
+        self._init_ctrls(parent)
+        
+        self.scriptText=''
+        self.scriptDict={}
+        self.lastSave=time.time()-20
+        self.autosaveTime=10
+        self.curFilename=''
+        self.curDirectory=''
+
+        optParse=OptionParser()
+        optParse.add_option('-A','--ADV',action='store_const',dest='userlevel',const=1,default=0,help='Set User to Advanced',metavar='USERLEVEL')
+        optParse.add_option('-X','--EXP',action='store_const',dest='userlevel',const=2,default=0,help='Set User to Expert',metavar='USERLEVEL')
+        optParse.add_option('-H','--HOST',dest='host',type='string',help='Override hostname for computer',default=socket.gethostname(),metavar='HOST')
+        optParse.add_option('-D','--DEBUG',action='store_true',dest='debug',help='Run program in debug mode',default=False,metavar='DEBUG')
+        optParse.add_option('-L','--LOG',action='store_true',dest='log',help='Pump screen output to a log',default=False,metavar='LOG')
+
+        optParse.add_option('-R','--RO',action='store_true',dest='readonly',help='Epics Variables are Read Only',default=False,metavar='READONLY')
+        
+        
+        optParse.set_description('The graphical frontend for the Robot Control and Sample Alignment')
+        
+        optParse.print_help()
+        (opt,args)=optParse.parse_args()
+        
+        self.advUser=opt.userlevel
+        if opt.readonly:
+            X_ROBOT_X02DA_robotCommon.ReadOnly=1
+        if opt.log:
+            newPipe=__LoggingPipe__('UserGUI')
+            globals()['sys'].stdout=newPipe
+            globals()['sys'].stderr=newPipe
+        
+        # disable channels based on what we know
+        
+        if opt.host.upper().find('CONS-3')>=0: # unblock channels if not at CONSOLE 3
+            nsChannels=['X02DA-ES1-SMP1:TRZ','X02DA-ES1-MS1:TRX','X02DA-ES1-MS1:TRY','X02DA-ES1-MS1:TRZ','X02DA-ES1-MS1:LNS+']
+            for chn in nsChannels:
+                if X_ROBOT_X02DA_robotCommon.BlockedChannels.has_key(chn):
+                    del(X_ROBOT_X02DA_robotCommon.BlockedChannels[chn])
+        else:
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-SMP1:TRZ']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:TRX']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:TRY']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:TRZ']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:LNS+']=1        
+        if self.advUser<1:
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:LNS+']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-SMP1:TRZ']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:TRX']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:TRY']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:TRZ']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-SHt2.D']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-SVt2.D']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-SHsize']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-SVsize']=1 
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-ES1-MS1:FOC_MovAbs']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-OP-ENE:UI']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-OP-ENE:C2THE_TWR']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-OP-ENE:C2THE_TWF']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-OP-ENE:C2THE_TWV']=1
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-OP-ENE:STA_MOVE']=1   
+            X_ROBOT_X02DA_robotCommon.BlockedChannels['X02DA-OP-ENE:ABO_MOVE']=1
+            userGuiBlockedPanels.extend(userGuiExpertPanels)
+              
+        self.operationMode=0 # 0-home,1-alignment,2-beamline
+        if opt.host.upper().find('X02DA')>0:
+            selfoperationMode=2
+            
+        if self.operationMode!=1:
+            cPrefix='X02DA-ES1-ROBO:'
+            cStage='SIM'
+        else:
+            cPrefix='X02DA-ES1-ROBO:'
+            cStage='ASIM'
+        cName=cPrefix+'-'+cStage
+        self.channels=[]
+        self.chMap={}
+        # field name, dial value
+        self.StageChannels=X_ROBOT_X02DA_robotCommon.StageChannels    
+
+        # check to see if the beamline is free
+        if not (opt.debug):
+            self.hostChan=X_ROBOT_X02DA_robotCommon.RoboEpicsChannel('X02DA-ES1-ROBO:GUI-HOST')
+            if (self.hostChan.getVal()==0) or (self.hostChan.getVal()=='None'):
+                self.hostChan.putVal(socket.gethostname())
+            else:
+                wx.MessageBox('Only one user at a time can control the beamline, and currently : '+self.hostChan.getVal()+' is using it')
+        if self.advUser==2:
+            # Unblock every channel!
+            X_ROBOT_X02DA_robotCommon.BlockedChannels={}    
+        # Tell user if the beam current is 5000 (simulated)
+        if X_ROBOT_X02DA_robotCommon.RoboEpicsChannel('ARIDI-PCT:CURRENT').getVal()>3000:
+            wx.MessageBox('Either the Epics Driver is Running in Machine-Day mode or the current is a whopping '+str(X_ROBOT_X02DA_robotCommon.RoboEpicsChannel('ARIDI-PCT:CURRENT').getVal())+' mA')
+        
+        self.ksmThread={}
+        self.ksmCtrls={}
+        self.eQueue=Queue.Queue()
+        self.ksmCtrlsHome={} # what panel owns which controls
+        self.ksmCtrlsCH={} # to which control each channel is mapped
+        if not (opt.debug):
+            self.kRegisterEvent('writeStageTray',self.writeStageTray)
+            self.kRegisterEvent('startRobot',self.startRobot)
+            self.kRegisterEvent('restartRobot',self.restartRobot)
+            self.kRegisterEvent('killSequencer',self.killSequencer)
+            self.kRegisterEvent('readStage',self.readStage)
+            self.kRegisterEvent('pushChVal',self.pushChVal)
+            self.kRegisterEvent('putStage',X_ROBOT_X02DA_robotScript.rsPutStage)
+            self.kRegisterEvent('pushControlVal',self.pushControlVal)
+            self.kRegisterEvent('kCtrlSet',self.kCtrlSet)
+        
+        self.kRegisterEvent('kCtrlGet',self.kCtrlGet)
+        # initialize Robot and Robot Script
+        rbsDebugMode=X_ROBOT_X02DA_robotCommon.DebugMode
+        if (X_ROBOT_X02DA_robotCommon.DebugMode) or (opt.debug):
+            globals()['myRobot']=0
+            rbsDebugMode=2
+        else:
+            globals()['myRobot']=X_ROBOT_X02DA_robotCommon.TomcatRobot()
+            
+        globals()['myRobotScript']=X_ROBOT_X02DA_robotScript.RobotScript(myRobot=globals()['myRobot'],debugMode=rbsDebugMode,mainPtr=self)
+            
+        globals()['myRobotScript'].InitializeStageChannels()
+        globals()['myRobotScript'].guiChannels()
+        
+        wx.ToolTip.Enable(1)
+        
+        # import the check disabled positions function
+        self.IsTrayPositionOpen=X_ROBOT_X02DA_robotScript.IsTrayPositionOpen
+        
+        
+        self.trayName=''
+
+        
+        self.ksmCtrls=[]
+        self.kCtrlTypes={}
+        # self.kCtrlTypes[type(wx.SpinCtrl(None))]=[[ReadingCommands],[WritingCommands],[BindEvents]]
+        # ReadingCommands = [chSuffix='chName',Obj.SetVal(chVal)]
+        # WritingCommands = [chSuffix='',int(jObj.GetVal())]
+        # InitCommands = [chSuffix='',int(jObj.GetVal())]
+        # BindingEvents = [evt,callback]
+        
+        # StaticText Controls
+        def tempCtrlGetLabel(Obj):
+            return Obj.GetLabel()
+        def tempCtrlGetLabelFlt(Obj):
+            return float(Obj.GetLabel())
+        def tempCtrlSetLabel(Obj,Val):
+            Obj.SetLabel(str(Val))
+        stRead=[['chName',tempCtrlSetLabel]]
+        stWrite=[]
+        stBind=[]
+        stInit=[]
+        stAsString=1
+        self.kCtrlTypes[wx.StaticText]=[stRead,stWrite,stInit,stBind,stAsString]
+        
+        # TextBox Control
+        def tempTextSetValue(Obj,Val):
+            Obj.SetValue(str(Val)) 
+        def tempTextGetValue(Obj):
+            return str(Obj.GetValue())
+        tfRead=[['chName',tempTextSetValue]]
+        tfWrite=[['chName',tempTextGetValue]]
+        tfInit=[]
+        tfBind=[[wx.EVT_KEY_UP, self.kCtrlGet],[wx.EVT_SET_FOCUS,self.kCtrlSetFocus],[wx.EVT_KILL_FOCUS,self.kCtrlKillFocus]]
+        tfAsString=0
+        self.kCtrlTypes[wx.TextCtrl]=[tfRead,tfWrite,tfInit,tfBind,tfAsString]
+        
+        def tempSpinSetMin(Obj,Val):
+            try:
+                fVal=float(Val)
+            except:
+                fVal=0
+                
+            if Obj.Max<fVal:
+                Obj.Max=fVal+1
+            Obj.SetRange(fVal,Obj.Max)
+        def tempSpinSetMax(Obj,Val):
+            try:
+                fVal=float(Val)
+            except:
+                fVal=0
+                
+            if Obj.Min>fVal:
+                Obj.Min=fVal-1
+            Obj.SetRange(Obj.Min,fVal)
+        def tempCtrlSetValue(Obj,Val):
+            Obj.SetValue(float(Val)) 
+        def tempCtrlGetValue(Obj):
+            return float(Obj.GetValue())
+        
+        spRead=[['chName',tempCtrlSetValue]]
+        spWrite=[['chName',tempCtrlGetValue]]
+        spInit=[['chName.LOPR',tempSpinSetMin],['chName.HOPR',tempSpinSetMax]]
+        spBind=[[wx.EVT_LEFT_UP, self.kCtrlGet],[wx.EVT_KEY_UP, self.kCtrlGet],[wx.EVT_SET_FOCUS,self.kCtrlSetFocus],[wx.EVT_KILL_FOCUS,self.kCtrlKillFocus]]
+        spAsString=0
+        self.kCtrlTypes[wx.SpinCtrl]=[spRead,spWrite,spInit,spBind,spAsString]
+        
+        # checkbox
+        # has a delay to update the control, so we assume that it will get changed
+        def tempCtrlGetValue(Obj):
+            return 1-float(Obj.GetValue())
+        ckRead=[['chName',tempCtrlSetValue]]
+        ckWrite=[['chName',tempCtrlGetValue]]
+        ckInit=[]
+        ckBind=[[wx.EVT_LEFT_DOWN, self.kCtrlGet]]
+        ckAsString=0
+        self.kCtrlTypes[wx.CheckBox]=[ckRead,ckWrite,ckInit,ckBind,ckAsString]
+        
+        def tempCtrlColor(Obj,nVal):
+            Obj.SetColor(nVal)
+                
+        # stageJumpPos control
+        def tempSJMin(Obj,Val):
+            try:
+                fVal=float(Val)
+            except:
+                fVal=0
+            Obj.SetMin(fVal)
+        def tempSJMax(Obj,Val):
+            try:
+                fVal=float(Val)
+            except:
+                fVal=0
+            Obj.SetMax(fVal)
+        def tempEmpty(Obj,Val):
+            return 1
+            
+        sjRead=[['chName.PROC',tempEmpty],['chName.VAL',tempCtrlSetValue],['chName.DMOV',tempCtrlColor]]
+        sjWrite=[['chName.VAL',tempCtrlGetValue]]
+        sjInit=[['chName.LLM',tempSJMin],['chName.HLM',tempSJMax]]
+        sjBind=[]
+        sjAsString=0
+        self.kCtrlTypes[X_ROBOT_X02DA_robotCommon.stageJumpPos]=[sjRead,sjWrite,sjInit,sjBind,sjAsString]
+        
+        def tempButColor(Obj,nVal):
+            if nVal==1:
+                Obj.SetForegroundColour('black')
+            else:
+                Obj.SetForegroundColour('red')
+        def tempButGetValue(Obj):
+            return 1
+        # proc Button, a button that runs a procedure
+        butRead=[['chName.PROC',tempButColor]]
+        butWrite=[['chName.PROC',tempButGetValue]]
+        butInit=[]
+        butBind=[[wx.EVT_LEFT_UP, self.kCtrlGet]]
+        butAsString=0
+        self.kCtrlTypes[wx.Button]=[butRead,butWrite,butInit,butBind,butAsString]
+        
+        
+        
+        try:
+            os.listdir( os.path.expandvars ("$HOME/UserGUI/"))
+            
+        except:
+            os.mkdir( os.path.expandvars ("$HOME/UserGUI/"))
+        
+        self.Bind(wx.EVT_CLOSE, self.OnWindowClose)
+        # load panel plug-ins, this should make it easier for other users to integrate
+        
+        if socket.gethostname().upper().find('X02DA')<0:
+            print 'lazy'
+            mapList=os.listdir('.')
+        else:
+            sys.path.insert (0, os.path.expandvars ("$SLSBASE/sls/bin/"))
+            mapList=os.listdir(os.path.expandvars ("$SLSBASE/sls/bin/"))    
+        cList=[]
+        def plugFind(curName):
+            if curName.find('X_ROBOT_X02DA_UserGUI_')>=0: 
+                if curName[curName.rfind('.')+1:len(curName)].upper()=='PY':
+                    if curName.find('Main')<0:
+                        cList.append(curName[0:curName.rfind('.')])
+        map(plugFind,mapList)
+        self.guiPanels={}
+        self.guiPlugins={}
+        for cFile in cList:
+            cPlug=__import__(cFile)
+            self.guiPlugins[cFile]=cPlug
+            cPlug.xmlOneStep=xmlOneStep
+            for cPanel in cPlug.panelInfo.keys():
+                if userGuiBlockedPanels.__contains__(cPanel):
+                    print cPanel + ' is disabled'
+                else:
+                    print cPanel
+                    self.guiPanels[cPanel]=cPlug.panelInfo[cPanel].__call__(self.treebook1,self)
+                    self.treebook1.AddPage(self.guiPanels[cPanel],cPanel)
+                    if cPanel.find('Tray Setup')>=0:
+                        self.robotPage=self.guiPanels[cPanel]
+        
+        # prepare timer events and thread callbacks
+        self.robotStatusTimer=wx.Timer(self,-1)
+        try:
+            self.OnButLoadFileButton([],filename='autosave.exp.xml')
+        except:
+            print 'Autosave was not present!'
+        self.timerCycle=300
+
+        self.robotStatusTimer.Start(self.timerCycle)
+        
+        self.Bind(wx.EVT_TIMER,self.mainTimerEvent)
+        print X_ROBOT_X02DA_robotCommon.CachedChannels.keys() 
+    def OnWindowClose(self,event):
+
+        self.robotStatusTimer.Stop()
+        self.Hide()
+        globals()['myRobot'].Disable()
+        self.hostChan.putVal('None')
+        try:
+            os.remove(os.path.expandvars ("$HOME/UserGUI/")+'autosave.exp.xml')
+            print 'Autosave Removed'
+        except:
+            print 'Error : Autosave Could not be Deleted'
+        time.sleep(1.5)
+        try:
+            X_ROBOT_X02DA_robotCommon.ClearRECCache()
+        except:
+            print 'Problem deleting channels!'
+        print self.ksmThread.keys()
+        self.Destroy()
+    def OnDbPushLeftUp(self, event):
+        
+        dlg=wx.TextEntryDialog(self,'Tray Name:','UserGUI',self.trayName)
+        if dlg.ShowModal()==wx.ID_OK:
+            self.trayName=dlg.GetValue()
+            if self.trayName!='':
+                self.kPostEvent('pushTrayToDB',[self.trayName])
+        
+        event.Skip()
+
+    def OnPullDBLeftUp(self, event):
+        
+        self.kPostEvent('pullTrayFromDB',[])
+        event.Skip()
+    def OnButSaveButton(self, event,filename='',dirname=os.path.expandvars ("$HOME/UserGUI/")):
+        #self.guiPanels['Tray Setup'].generateScript(0)
+        self.kPostEvent('generateScript',[0])
+        if len(filename)<3:
+            t4f = wx.SAVE|wx.FD_OVERWRITE_PROMPT
+            dlg = wx.FileDialog(self,"Save a file",dirname, "", "*.*", t4f)
+            if dlg.ShowModal() == wx.ID_OK:
+                filename = dlg.GetFilename()
+                dirname = dlg.GetDirectory()
+                self.curFilename=filename
+                self.curDirectory=dirname
+            dlg.Destroy()
+        if len(filename)>0:
+            filenameN=filename
+            if filename.find('.xml')<0: filenameN+='.xml'
+            self.writeXML(dirname+'/'+filenameN)
+            print(dirname+'/'+filename+' written successfully')
+            #if len(self.curFilename)>0:
+                #self.butQuickSave.Enable(True)
+    def OnButQuickSaveButton(self, event):
+        self.OnButSaveButton(event,filename=self.curFilename,dirname=self.curDirectory)
+        event.Skip()
+    def OnButLoadFileButton(self, event,filename='',dirname=os.path.expandvars ("$HOME/UserGUI/")):
+        if len(filename)<3:
+            t4f = wx.OPEN
+            dlg = wx.FileDialog(self,"Load a file",dirname, "", "*.*", t4f)
+            if dlg.ShowModal() == wx.ID_OK:
+                filename = dlg.GetFilename()
+                dirname = dlg.GetDirectory()
+                self.curFilename=filename
+                self.curDirectory=dirname
+            dlg.Destroy()
+        if len(filename)>0:
+            if filename.upper().find('.XML')>0: # she's an xml file
+                self.readXML(dirname+'/'+filename)
+            else: # she must be a pickle
+                print 'Error : Pickle Files No Longer Supported'
+            
+                      
+    def readXML(self,fileName):
+        from xml.dom import minidom
+        cFile=minidom.parse(fileName)
+        
+        
+        
+        mNodes=xmlOneStep([cFile],'UserGUITool')
+        for rPanel in self.guiPanels.keys():
+            self.guiPanels[rPanel].importXML(xmlOneStep(mNodes,'-'.join(rPanel.split(' '))))                    
+                                            
+    def writeXML(self,fileName):
+        from xml.dom.minidom import Document
+        # Create the minidom document
+        doc = Document()
+        
+        user = doc.createElement("UserGUITool")
+        user.setAttribute('UserGUI-version',str(self.version))
+        user.setAttribute('RobotScript-version',str(X_ROBOT_X02DA_robotScript.RSVersion))
+        user.setAttribute('RobotCommon-version',str(X_ROBOT_X02DA_robotCommon.RCVersion))
+        doc.appendChild(user)
+        for rPanel in self.guiPanels.keys():
+            panelElement = doc.createElement('-'.join(rPanel.split(' ')))
+            panelElement.setAttribute('version',str(self.guiPanels[rPanel].version))
+            self.guiPanels[rPanel].exportXML(doc,panelElement)
+            user.appendChild(panelElement)
+            # Live-Epics Channels : 
+            for [Obj,ctrlDict] in self.ksmCtrls:
+                if self.ksmCtrlsHome[Obj]==self.guiPanels[rPanel]:
+                    if self.kCtrlTypes.has_key(Obj.__class__):
+                        chName=Obj.GetToolTip().GetTip()
+                        cScript=self.kCtrlTypes[Obj.__class__][1]
+                        for cLine in cScript:
+                            chName2=chName.join(cLine[0].split('chName'))
+                            chVal=str(cLine[1].__call__(Obj))
+                            posEle = doc.createElement("EpicsChannel")
+                            posEle.setAttribute("channel", chName2)
+                            posEle.setAttribute("value", chVal)
+                            panelElement.appendChild(posEle)
+            user.appendChild(panelElement)
+            #print panelElement.toprettyxml(indent="  ")
+            
+        #print doc.toprettyxml(indent="  ")
+        fleOut=open(fileName,'w')
+        fleOut.write(doc.toprettyxml(indent="  "))
+        fleOut.close()
+
+               
+
+        
+        #self.trayPosSelect.SetGridCursor(0,1)
+    def startRobot(self,event):
+        myRobot=event.myRobot
+        if ((myRobot==type(0)) or wx.GetSingleChoiceIndex('Are you sure you wish to re-initialize/start the Robot?','UserGUI',['Yes','No'])==1):
+            print "Robot Will not be restarted!"
+        else:
+            myRobot.start()
+    def killSequencer(self,event):
+        robotPtr=event.myRobot
+        robotScriptPtr=event.myRobotScript
+        #[futureBnd]=event.argBundle
+        print 'Killing Sequencers ...'
+        seqList=X_ROBOT_X02DA_robotCommon.CheckSequencer()
+        
+        if len(seqList)>0:
+            for eachSeq in seqList:
+                if (wx.GetSingleChoiceIndex('Are you sure you wish to kill '+str(eachSeq[1])+' from user:'+str(eachSeq[0]),'UserGUI',['Yes','No'])==1):
+                    print "Sequencer will not be killed!"
+                else:
+                    os.system('kill -9 '+eachSeq[1])    
+        else:
+            print "ERROR: Sequencer List Empty, cannot kill"
+            wx.MessageBox('No Sequencer is currently running on this computer')
+    def restartRobot(self,event):
+        myRobot=event.myRobot
+        myRobotScript=event.myRobotScript
+        if ((myRobot==type(0)) or wx.GetSingleChoiceIndex('Are you sure you wish to restart the epics server? (Takes 10-20 seconds)','UserGUI',['Yes','No'])==1):
+            print "Robot Will not be restarted!"
+        else:
+            # reset the softioc, because it probably needs it
+            self.robotStatusTimer.Stop()
+            time.sleep(1)
+            #globals()['myRobot']=None
+            globals()['myRobot'].Disable()
+            X_ROBOT_X02DA_robotCommon.DisconnectRECCache()
+            os.system('X_ROBOT_X02DA_restartIOC.sh')
+            time.sleep(7) # takes about 5 seconds to reboot
+            X_ROBOT_X02DA_robotCommon.ReconnectRECCache()
+            globals()['myRobot'].Enable()
+            #X_ROBOT_X02DA_robotCommon.RefreshRECCache()
+            #globals()['myRobot']=X_ROBOT_X02DA_robotCommon.TomcatRobot()
+            #globals()['myRobotScript'].myRobot=globals()['myRobot']
+            
+            # old thread code
+            self.robotStatusTimer.Start(750)
+            #globals()['stillRunning']=True
+            #thread.start_new_thread ( threadRobotStatus,(self,) )   
+    def pushChVal(self,event):
+        [chName,nextEvent,evtBundle]=event.argBundle
+        tempChan=X_ROBOT_X02DA_robotCommon.RoboEpicsChannel(chName) 
+        cVal=tempChan.getVal()
+        self.kPostEvent(nextEvent,[cVal,evtBundle])
+    
+    def pushControlVal(self,event):
+        [chName,newVal]=event.argBundle
+        tempChan=X_ROBOT_X02DA_robotCommon.RoboEpicsChannel(chName) 
+        tempChan.putVal(newVal)
+    def kUnregisterPanel(self,panelRef):
+        # should write this code to clean up events and controls 
+        print 'Noch nicht geschriebt'
+    def kRegisterCtrl(self,ctrl):
+        if self.kCtrlTypes.has_key(ctrl.__class__):
+            chNameOrig=ctrl.GetToolTip().GetTip()
+            chName=''.join(chNameOrig.split('#'))
+            chName=''.join(chName.split('$'))
+            if (X_ROBOT_X02DA_robotCommon.BlockedChannels.has_key(chName) & (ctrl.__class__!=wx.StaticText)):
+                ctrl.Enable(False) # disable control
+                ctrl.SetToolTipString('Control Disabled in Current Mode!')
+                return 0
+            
+            ctrlDict={}
+            ctrlDict['hasFocus']=0
+            # record control and control parent so panels can be turned on and off
+            self.ksmCtrls.append([ctrl,ctrlDict])
+            self.ksmCtrlsHome[ctrl]=ctrl.GetParent()
+            
+            #self.ksmCtrls[ctrl.parent].append([ctrl,ctrlDict])
+            
+            for cBind in self.kCtrlTypes[ctrl.__class__][3]:
+                ctrl.Bind(cBind[0],cBind[1])
+            
+            forceString=0 # a dollar sign in the channel name
+            forceNum=0 # a pound sign in the channel name
+            if chNameOrig.find('#')>=0:
+                forceNum=1
+            elif chNameOrig.find('$')>=0:
+                forceString=1
+            
+            ctrl.SetToolTipString(chName)
+            # run the initialization script
+            cScript=self.kCtrlTypes[ctrl.__class__][2]
+            for cLine in cScript:
+                chName2=chName.join(cLine[0].split('chName'))
+                aString=self.kCtrlTypes[ctrl.__class__][4]
+                if forceNum:
+                    aString=0
+                elif forceString:
+                    aString=1
+                
+                tempChan=X_ROBOT_X02DA_robotCommon.RoboEpicsChannel(chName2,asString=aString) 
+                cVal=tempChan.getVal()
+                #print chName2+'='+str(cVal)
+                cLine[1].__call__(ctrl,cVal)
+            # Utilize Epics Feedbacks
+            cScript=self.kCtrlTypes[ctrl.__class__][0]
+            for cLine in cScript:
+                chName2=chName.join(cLine[0].split('chName'))
+                tempChan=X_ROBOT_X02DA_robotCommon.RoboEpicsChannel(chName2,asString=self.kCtrlTypes[ctrl.__class__][4]) 
+                #cLine[1].__call__(ctrl,cVal)
+                self.ksmCtrlsCH[chName2]=[ctrl,cLine[1]]
+                tempChan.rebind(self.kCtrlEpicsCallback)
+            # Read the first value
+            self.kPostEvent('kCtrlSet',[ctrl])
+            
+        else:
+            print 'Control Not Supported!'
+    def kCtrlEpicsCallback(self,chName,newVal,oldVal):
+        if self.ksmCtrlsCH.has_key(chName):
+            [Obj,cLine]=self.ksmCtrlsCH[chName]
+            print 'Live Call Read from '+chName+' = '+str(newVal)
+            cLine.__call__(Obj,newVal)
+        else:
+            print 'EpicsChan: '+chName+' is not mapped correctly'
+
+    def kCtrlSet(self,event):
+        [Obj]=event.argBundle  
+        chName=Obj.GetToolTip().GetTip()
+        event.Skip()
+        if self.kCtrlTypes.has_key(Obj.__class__):
+            cScript=self.kCtrlTypes[Obj.__class__][0]
+            for cLine in cScript:
+                chName2=chName.join(cLine[0].split('chName'))
+                tempChan=X_ROBOT_X02DA_robotCommon.RoboEpicsChannel(chName2,asString=self.kCtrlTypes[Obj.__class__][4]) 
+                cVal=tempChan.getVal()
+                cLine[1].__call__(Obj,cVal)
+        else:
+            print 'Control for :'+chName+' not supported'
+    def kCtrlGet(self,event):
+        Obj=event.GetEventObject()
+        chName=Obj.GetToolTip().GetTip()
+        event.Skip()
+        if self.kCtrlTypes.has_key(Obj.__class__):
+            cScript=self.kCtrlTypes[Obj.__class__][1]
+            for cLine in cScript:
+                
+                #chVal=eval(cLine[1])
+                chVal=cLine[1].__call__(Obj)
+                
+                chName2=chName.join(cLine[0].split('chName'))
+                evtBundle=[chName2,chVal]
+                self.kPostEvent('pushControlVal',evtBundle)
+        else:
+            print 'Control for :'+chName+' not supported'
+    def kCtrlSetFocus(self, event):
+        Obj=event.GetEventObject()
+        for [nObj,ctrlDict] in self.ksmCtrls:
+            if nObj==Obj:
+                #print str(Obj)+' is focused'
+                ctrlDict['hasFocus']=1
+                 
+        event.Skip()
+
+    def kCtrlKillFocus(self, event):
+        Obj=event.GetEventObject()
+        for [nObj,ctrlDict] in self.ksmCtrls:
+            if nObj==Obj:
+                #print str(Obj)+' isnt focused'
+                ctrlDict['hasFocus']=0
+        event.Skip()
+        
+    def kPushCtrlValueFunc(self,Obj,chName):
+        if self.kCtrlTypes.has_key(Obj.__class__):
+            cScript=self.kCtrlTypes[Obj.__class__][1]
+            for cLine in cScript:
+                #chVal=eval(cLine[1])
+                chVal=cLine[1].__call__(Obj)
+                chName2=chName.join(cLine[0].split('chName'))
+                evtBundle=[chName2,chVal]
+                self.kPostEvent('pushControlVal',evtBundle)
+        else:
+            print 'Error : Control for :'+chName+' not supported'
+                   
+    def readStage(self,event):
+        [cRow,cCol,cStgMem]=event.argBundle
+        cStg={}
+        #for i in range(0,len(channels)):
+        event.myRobotScript.chImagePosRecord.putVal(1)
+        time.sleep(0.75) # give epics 0.75 seconds to read everything    
+        for [cField,dVal] in self.StageChannels:
+            
+            tempChan=X_ROBOT_X02DA_robotCommon.RoboEpicsChannel(cField)
+            cVal=tempChan.getVal()
+            cStg[cField]=cVal
+        self.DCLUp('ReadStage',0)
+        self.kPostEvent('writeStageTray',[cRow,cCol,cStgMem,cStg])
+        
+    def writeStageTray(self,event):
+        [cRow,cCol,cStgMem,cStg]=event.argBundle
+        if (cRow>=0) & (cCol>=0):
+            while cStgMem>=len(self.CurTray[cRow][cCol][3]):
+                self.CurTray[cRow][cCol][3].append({})
+            self.CurTray[cRow][cCol][3][cStgMem]=cStg
+        else:
+            # must do something about this
+            #self.curLoadPos=cStg
+            wx.MessageBox('Move loading position has been disabled/removed')
+            
+        self.kPostEvent('updatePositionFields',[])
+            
+    def DCLUp(self,node,val):
+        self.kPostEvent('dispControlsLock',[node,val])
+    def mainTimerEvent(self,event):
+        mtS=time.time()
+        if (time.time()-self.lastSave)>self.autosaveTime:
+            self.OnButSaveButton([],filename='autosave.exp')
+            #X_ROBOT_X02DA_robotCommon.pickleSave(cPickle.dumps(self.CurTray))
+            self.lastSave=time.time()
+        
+        # execute events other plug-ins have registered
+        
+        futureBnd=[]
+        outBundle=[futureBnd]
+        for cEvt in self.ksmThread.keys():
+            if cEvt.find('timerevent_')>=0:
+                self.kPostEvent(cEvt,outBundle)
+        #for gh in self.ksmCtrlsHome.keys():
+        #    if self.ksmCtrlsHome[gh].Shown==1:
+                
+        ## Stop querying everytime, instead utilize callbacks
+        #for [Obj,ctrlDict] in self.ksmCtrls:
+        #    if self.ksmCtrlsHome[Obj].Shown==1:
+        #        if ctrlDict['hasFocus']==0:
+        #            self.kPostEvent('kCtrlSet',[Obj])
+        cQ=self.eQueue.qsize()
+        if 1>0:
+            while not self.eQueue.empty():
+                [eName,eData]=self.eQueue.get_nowait()
+                #print 'EXECUTING QUEUE '+str(eName)+','+str(eData)
+                self.ksmThread[eName][1].__call__(eData)
+        #except:
+        #    print 'List leere'
+        cQe=self.eQueue.qsize()
+        #print self.SetTitle('UserGUI : '+str(cQ)+', '+str((time.time()-mtS)*1000.0))
+        eTime=int((time.time()-mtS)*1000.0)
+        self.SetTitle('UserGUI\t'+str(cQe)+':'+str(cQ)+', '+str(eTime)+':'+str(self.timerCycle))
+        if eTime>(0.9*self.timerCycle) or eTime<(0.7*self.timerCycle):
+            self.timerCycle=int(min(1.1/2.0*(eTime+self.timerCycle),2000))
+            self.robotStatusTimer.Stop()         
+            self.robotStatusTimer.Start(self.timerCycle)
+        
+            
+    def OnTreebook1TreebookPageChanging(self, event): # might use this for something?
+        #print dir(event)
+        #print event.GetId()
+        #print event.Id
+        #if event.OldSelection>=0:
+        #    print self.guiPanels.keys()[event.OldSelection]
+        crapName=[self.guiPanels.keys()[event.OldSelection]]
+        for cEvt in self.ksmThread.keys():
+            if cEvt.find('panelevent_')>=0:
+                self.kPostEvent(cEvt,crapName)
+        event.Skip()
+    def kUnregisterEvent(self,eName):
+        if self.ksmThread.has_key[eName]:
+            print eName
+        
+    def kRegisterEvent(self,eName,action,site=-1,event=-1):
+        if site==-1:
+            site=self
+        if event==-1:
+            event=wx.NewEventType()
+        self.ksmThread[eName]=[event,action] # robotStatusUpdate
+        site.Connect(-1,-1,event,action)
+    def getEvent(self,eName):
+        return self.ksmThread[eName]
+    def kRegisterTimerEvent(self,action=-1,evtName='',evtBundle=[]):
+        self.kRegisterEvent(self.kNewName('timerevent_'),action)
+    def kRegisterPanelEvent(self,action=-1,evtName='',evtBundle=[]):
+        self.kRegisterEvent(self.kNewName('panelevent_'),action)
+    def kNewName(self,synName,cDict=-1):
+        cDex=0
+        if cDict==-1: 
+            cDict=self.ksmThread
+        while cDict.has_key(synName+str(cDex)):
+            cDex+=1
+        return synName+str(cDex)   
+    def kPostEvent(self,eName,argBund=[],site=-1):
+        if site==-1:
+            site=self
+        if self.ksmThread.has_key(eName):
+            de=DataEvent(self.ksmThread[eName][0],eName,argBund,globals()['myRobot'],globals()['myRobotScript']) # pollStage uses events since it is threaded
+            #wx.PostEvent(site,de)
+            self.eQueue.put([eName,de])
+        else:
+            print 'Error : PostEvent: '+eName+' failed!'
+            #wx.MessageBox('PostEvent :'+eName+' failed')
+
+
+
+
+
+
+
+
+
+
+ 

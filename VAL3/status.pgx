@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programList xmlns="ProgramNameSpace" >
+  <program name="status" public="false" >
+    <description>gitb den Status (moving; or not) des Roboters zurück</description>
+    <paramSection/>
+    <localSection>
+      <local name="jMaxDistance" type="joint" size="1" />
+    </localSection>
+    <source>
+      <code>begin
+  sioLink(sNetwork2,io:tomcatrobot2)
+  dioLink(dWorkPos,io:usrIn0)
+  dioLink(dMotPos,io:fIn0)
+  while true
+    //pOne=here(tGreifer,world)
+    jCheckMove[0]=herej()
+    delay(0.5)
+    jCheckMove[1]=herej()
+    jMaxDistance={0.1,0.1,0.1,0.1}
+    //pTwo=here(tGreifer,world)
+    if abs(jCheckMove[0]-jCheckMove[1])&gt;jMaxDistance
+      bStatus=true
+      sStatus=&quot;moving&quot;
+      //put &quot;robot is moving&quot;
+    else
+      bStatus=false
+      sStatus=&quot;still&quot;
+      //put &quot;robot still&quot;
+    endIf
+    if dWorkPos!=true
+      sStatus=sStatus+&quot;,unlockpos&quot;
+    else
+      sStatus=sStatus+&quot;,workpos&quot;
+    endIf
+    if dMotPos!=true
+      sStatus=sStatus+&quot;,StageFree&quot;
+    else
+      sStatus=sStatus+&quot;,StageLocked&quot;
+    endIf
+    sStatus=toString(&quot;&quot;,nRowPosition)+&quot;,&quot;+toString(&quot;&quot;,nColPosition)+&quot;,&quot;+toString(&quot;&quot;,nReady)+&quot;,&quot;+toString(&quot;&quot;,nStatus)+&quot;,&quot;+sStatus
+    sNetwork2=sStatus
+  endWhile
+end
+
+      </code>
+    </source>
+  </program>
+</programList>

@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<dataList xmlns="DataNameSpace" >
+  <aioSection />
+  <boolSection>
+    <bool name="b1" public="false" privilege="0" >
+      <valueBool index="0" value="false" />
+    </bool>
+    <bool name="bOk" public="false" privilege="0" >
+      <valueBool index="0" value="true" />
+    </bool>
+    <bool name="bPickupSample" public="false" privilege="0" >
+      <valueBool index="0" value="true" />
+    </bool>
+    <bool name="bPower" public="false" privilege="0" >
+      <valueBool index="0" value="true" />
+    </bool>
+    <bool name="bRunning" public="false" privilege="0" >
+      <valueBool index="0" value="false" />
+    </bool>
+    <bool name="bStatus" public="false" privilege="0" >
+      <valueBool index="0" value="false" />
+    </bool>
+  </boolSection>
+  <configRsSection />
+  <configSection />
+  <configVrbSection />
+  <dioSection>
+    <dio name="dGripperclosed" public="false" privilege="0" size="1" />
+    <dio name="dGripperopen" public="false" privilege="0" size="1" />
+    <dio name="dMotPos" public="false" privilege="0" size="1" />
+    <dio name="dWorkPos" public="false" privilege="0" size="1" />
+    <dio name="dclose" public="false" privilege="0" size="1" />
+    <dio name="dopen" public="false" privilege="0" size="1" />
+  </dioSection>
+  <frameSection>
+    <frame name="fTray" public="true" privilege="0" >
+      <fFather alias="" name="world" fatherIndex="0" />
+      <valueFrame index="0" >
+        <tfValue x="-4.97" y="-282.09578" z="77.706964" rx="0" ry="0" rz="60" />
+      </valueFrame>
+    </frame>
+    <frame name="world" public="false" privilege="0" >
+      <fFather alias="" name="" fatherIndex="0" />
+      <valueFrame index="0" >
+        <tfValue x="0" y="0" z="0" rx="0" ry="0" rz="0" />
+      </valueFrame>
+    </frame>
+  </frameSection>
+  <jointRsSection>
+    <jointRs name="jCheckMove" public="false" privilege="0" >
+      <valueJointRs index="0" >
+        <jointRsValue j1="-30.684403" j2="-112.66242" j3="44.340006" j4="-66.652407" />
+      </valueJointRs>
+      <valueJointRs index="1" >
+        <jointRsValue j1="-30.684403" j2="-112.66242" j3="44.340006" j4="-66.652407" />
+      </valueJointRs>
+    </jointRs>
+    <jointRs name="jWay1" public="false" privilege="0" >
+      <valueJointRs index="0" >
+        <jointRsValue j1="1.086413" j2="-112.472354" j3="167.458152" j4="-186.784018" />
+      </valueJointRs>
+    </jointRs>
+  </jointRsSection>
+  <jointSection />
+  <jointVrbSection />
+  <mdescSection>
+    <mdesc name="mFast" public="false" privilege="0" >
+      <valueMdesc index="0" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="250" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="1" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="12.5" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="2" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="25" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="3" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="62.5" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="4" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="125" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="5" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="187.5" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="6" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="250" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+    </mdesc>
+    <mdesc name="mNomSpeed" public="true" privilege="0" >
+      <valueMdesc index="0" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="99999" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+    </mdesc>
+    <mdesc name="mSlow" public="false" privilege="0" >
+      <valueMdesc index="0" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="20" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="1" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="1" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="2" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="2" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="3" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="5" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="4" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="10" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="5" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="15" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+      <valueMdesc index="6" >
+        <mdescValue accel="100" vel="100" decel="100" tmax="20" rmax="99999" blend="off" leave="50" reach="50" />
+      </valueMdesc>
+    </mdesc>
+  </mdescSection>
+  <numSection>
+    <num name="nColPosition" public="false" privilege="0" >
+      <valueNum index="0" value="0" />
+    </num>
+    <num name="nDeltaZ" public="false" privilege="0" >
+      <valueNum index="0" value="0" />
+    </num>
+    <num name="nOutpathWidth" public="false" privilege="0" >
+      <valueNum index="0" value="-1" />
+    </num>
+    <num name="nReady" public="false" privilege="0" >
+      <valueNum index="0" value="0" />
+    </num>
+    <num name="nRowPosition" public="false" privilege="0" >
+      <valueNum index="0" value="0" />
+    </num>
+    <num name="nSampleTray" public="false" privilege="0" >
+      <valueNum index="0" value="0" />
+    </num>
+    <num name="nSampleTrayCols" public="false" privilege="0" >
+      <valueNum index="0" value="10" />
+    </num>
+    <num name="nSampleTrayRows" public="false" privilege="0" >
+      <valueNum index="0" value="6" />
+    </num>
+    <num name="nSpeed" public="false" privilege="0" >
+      <valueNum index="0" value="6" />
+    </num>
+    <num name="nStatus" public="false" privilege="0" >
+      <valueNum index="0" value="2" />
+    </num>
+  </numSection>
+  <pointRsSection>
+    <pointRs name="newload" public="false" privilege="0" >
+      <pRsFather alias="" name="fTray" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="-8.022947" y="216.677192" z="0.140961" rx="-180" ry="0" rz="-89.999309" />
+        <cpRsValue shoulder="ssame" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pAvoidTray" public="false" privilege="0" >
+      <pRsFather alias="" name="fTray" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="208.356963" y="-48.058656" z="62.867156" rx="180" ry="0" rz="-90.049599" />
+        <cpRsValue shoulder="ssame" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pBeam" public="true" privilege="0" >
+      <pRsFather alias="" name="world" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="218.860535" y="290.595995" z="86.067705" rx="180" ry="0" rz="-150.000122" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pCamera" public="false" privilege="0" >
+      <pRsFather alias="" name="world" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="164.004734" y="322.265459" z="143.708291" rx="180" ry="0" rz="-150.001037" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pCurrentRow" public="true" privilege="0" >
+      <pRsFather alias="" name="fTray" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="87.961342" y="24.133505" z="-86.567657" rx="-180" ry="0" rz="-89.999722" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pRootAvoid" public="false" privilege="0" >
+      <pRsFather alias="" name="fTray" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="208.356963" y="-48.058656" z="62.867156" rx="180" ry="0" rz="-90.049599" />
+        <cpRsValue shoulder="ssame" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pRootPosition" public="true" privilege="0" >
+      <pRsFather alias="" name="fTray" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="87.961342" y="24.133505" z="-86.567657" rx="-180" ry="0" rz="-89.999722" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pSample" public="true" privilege="0" >
+      <pRsFather alias="" name="fTray" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="87.961342" y="24.133505" z="-86.567657" rx="-180" ry="0" rz="-89.999722" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pSecure" public="false" privilege="0" >
+      <pRsFather alias="" name="world" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="164.013491" y="322.258084" z="62.867156" rx="180" ry="0" rz="-149.997686" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pSleep" public="false" privilege="0" >
+      <pRsFather alias="" name="world" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="-58.337558" y="-144.215851" z="148.087962" rx="180" ry="0" rz="-151.024508" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pStart" public="false" privilege="0" >
+      <pRsFather alias="" name="world" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="164.013491" y="322.258084" z="143.709093" rx="180" ry="0" rz="-149.997686" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pWait" public="true" privilege="0" >
+      <pRsFather alias="" name="world" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="99.259635" y="149.971782" z="145.187232" rx="180" ry="0" rz="-150.009717" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="pWay1" public="false" privilege="0" >
+      <pRsFather alias="" name="fTray" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="83.961325" y="279.541712" z="40.836018" rx="-0.002405" ry="-179.997615" rz="87.701344" />
+        <cpRsValue shoulder="lefty" />
+      </valuePointRs>
+    </pointRs>
+    <pointRs name="temp" public="false" privilege="0" >
+      <pRsFather alias="" name="fTray" fatherIndex="0" />
+      <valuePointRs index="0" >
+        <tpRsValue x="-0.00253" y="1.205445" z="-58.68532" rx="-180" ry="0" rz="89.999911" />
+        <cpRsValue shoulder="ssame" />
+      </valuePointRs>
+    </pointRs>
+  </pointRsSection>
+  <pointSection />
+  <pointVrbSection />
+  <sioSection>
+    <sio name="sNetwork" public="false" privilege="0" size="1" />
+    <sio name="sNetwork2" public="false" privilege="0" size="1" />
+  </sioSection>
+  <stringSection>
+    <string name="sArgs" public="false" privilege="0" >
+      <valueString index="0" value="0" />
+      <valueString index="1" value="" />
+    </string>
+    <string name="sCmd" public="false" privilege="0" >
+      <valueString index="0" value="unload" />
+    </string>
+    <string name="sNum" public="false" privilege="0" >
+      <valueString index="0" value="unload" />
+    </string>
+    <string name="sSocket" public="false" privilege="0" >
+      <valueString index="0" value="unload" />
+    </string>
+    <string name="sSockets" public="false" privilege="0" >
+      <valueString index="0" value="Program finished, robot turned off" />
+    </string>
+    <string name="sSpeed" public="false" privilege="0" >
+      <valueString index="0" value="" />
+    </string>
+    <string name="sStatus" public="false" privilege="0" >
+      <valueString index="0" value="0,0,0,2,still,workpos,StageLocked" />
+    </string>
+  </stringSection>
+  <toolSection>
+    <tool name="flange" public="false" privilege="0" >
+      <tFather alias="" name="" fatherIndex="0" />
+      <valueTool index="0" >
+        <ttValue x="0" y="0" z="0" rx="0" ry="0" rz="0" />
+        <io alias="io" name="valve1" ioIndex="0" open="0" close="0" />
+      </valueTool>
+    </tool>
+    <tool name="tGreifer" public="false" privilege="0" >
+      <tFather alias="" name="flange" fatherIndex="0" />
+      <valueTool index="0" >
+        <ttValue x="50" y="0" z="52" rx="0" ry="0" rz="0" />
+        <io alias="io" name="valve1" ioIndex="0" open="0.8" close="0.8" />
+      </valueTool>
+    </tool>
+  </toolSection>
+  <trsfSection>
+    <trsf name="trInBeam" public="true" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="10" y="0" z="0" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+    <trsf name="trInTray" public="true" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="0" y="0" z="-85" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+    <trsf name="trInTrayHigh" public="false" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="0" y="0" z="-85" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+    <trsf name="trOutBeam" public="true" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="0" y="0" z="-20" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+    <trsf name="trOutTray" public="true" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="0" y="0" z="0" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+    <trsf name="trRowOffsets" public="false" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="0" y="-25" z="0" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+    <trsf name="trSampleDropBm" public="true" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="0" y="0" z="-1.2" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+    <trsf name="trSampleDropTy" public="true" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="0" y="0" z="-1.2" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+    <trsf name="trSampleOffsets" public="false" privilege="0" >
+      <valueTrsf index="0" >
+        <trsfValue x="26" y="-0.1" z="0" rx="0" ry="0" rz="0" />
+      </valueTrsf>
+    </trsf>
+  </trsfSection>
+</dataList>
